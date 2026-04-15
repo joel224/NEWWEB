@@ -9,7 +9,7 @@ import OtherVideoComponent from "@/components/OtherVideoComponent";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ✅ 1. Define actual React Elements here! 
+// ✅ 1. Define actual React Elements here!  dfdf
 const slides = [
   <TestimonialVideo 
     key="comp-1"
