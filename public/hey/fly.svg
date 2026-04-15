@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- Background (Off-white/Cream to avoid pure white) -->
+<rect width="100%" height="100%" fill="transparent" />
+
+  <!-- Dragonfly Group -->
+  <g transform="translate(200, 200) rotate(-45)">
+    
+    <!-- Wings -->
+    <g fill="rgba(230, 220, 200, 0.4)" stroke="#363333" stroke-width="0.5">
+      <!-- Top Right Wing -->
+      <path d="M 10,-10 C 40,-80 80,-120 110,-140 C 130,-130 120,-100 100,-60 C 80,-20 50,0 10,-10 Z" />
+      <!-- Veins for Top Right Wing -->
+      <path d="M 10,-10 Q 60,-70 110,-140 M 30,-30 Q 70,-50 100,-60 M 20,-20 Q 50,-40 80,-30" stroke="#363333" fill="none" stroke-width="0.5"/>
+
+      <!-- Bottom Right Wing -->
+      <path d="M 10,10 C 60,60 100,100 120,130 C 100,140 60,110 30,70 C 10,40 0,20 10,10 Z" />
+      <!-- Veins for Bottom Right Wing -->
+      <path d="M 10,10 Q 60,70 120,130 M 30,30 Q 70,60 100,90 M 20,20 Q 50,50 70,70" stroke="#363333" fill="none" stroke-width="0.5"/>
+
+      <!-- Top Left Wing -->
+      <path d="M -10,-10 C -40,-80 -80,-120 -110,-140 C -130,-130 -120,-100 -100,-60 C -80,-20 -50,0 -10,-10 Z" />
+      <!-- Veins for Top Left Wing -->
+      <path d="M -10,-10 Q -60,-70 -110,-140 M -30,-30 Q -70,-50 -100,-60 M -20,-20 Q -50,-40 -80,-30" stroke="#363333" fill="none" stroke-width="0.5"/>
+
+      <!-- Bottom Left Wing -->
+      <path d="M -10,10 C -60,60 -100,100 -120,130 C -100,140 -60,110 -30,70 C -10,40 0,20 -10,10 Z" />
+      <!-- Veins for Bottom Left Wing -->
+      <path d="M -10,10 Q -60,70 -120,130 M -30,30 Q -70,60 -100,90 M -20,20 Q -50,50 -70,70" stroke="#363333" fill="none" stroke-width="0.5"/>
+    </g>
+
+    <!-- Body -->
+    <g stroke="#3A3A3A" fill="#4A4A4A" stroke-width="0.5">
+      <!-- Abdomen (Tail) -->
+      <!-- Segment 1 -->
+      <ellipse cx="15" cy="0" rx="12" ry="8" fill="#555555" />
+      <!-- Segment 2 -->
+      <ellipse cx="35" cy="0" rx="12" ry="7" fill="#505050" />
+      <!-- Segment 3 -->
+      <ellipse cx="55" cy="0" rx="11" ry="6.5" fill="#4A4A4A" />
+      <!-- Segment 4 -->
+      <ellipse cx="75" cy="0" rx="10" ry="6" fill="#444444" />
+      <!-- Segment 5 -->
+      <ellipse cx="95" cy="0" rx="9" ry="5.5" fill="#3E3E3E" />
+      <!-- Segment 6 -->
+      <ellipse cx="115" cy="0" rx="8" ry="5" fill="#383838" />
+      <!-- Segment 7 -->
+      <ellipse cx="135" cy="0" rx="7" ry="4.5" fill="#333333" />
+      <!-- Segment 8 (Tip) -->
+      <ellipse cx="152" cy="0" rx="6" ry="3.5" fill="#2A2A2A" />
+
+      <!-- Thorax (Middle) -->
+      <path d="M -10,-12 L 10,-12 L 15,10 L -5,10 Z" rx="5" fill="#5A5A5A" />
+      <!-- Head -->
+      <circle cx="-15" cy="-5" r="10" fill="#4A4A4A" />
+      
+      <!-- Eyes -->
+      <circle cx="-22" cy="-8" r="4" fill="#2A2A2A" />
+      <circle cx="-8" cy="-8" r="4" fill="#2A2A2A" />
+    </g>
+
+    <!-- Legs -->
+    <g stroke="#2A2A2A" stroke-width="1" fill="none" stroke-linecap="round">
+      <!-- Front Right -->
+      <path d="M -5,-8 L -15,-25 L -25,-20" />
+      <!-- Middle Right -->
+      <path d="M 0,-5 L -10,-20 L -20,-15" />
+      <!-- Back Right -->
+      <path d="M 5,5 L -5,-5 L -15,0" />
+      
+      <!-- Front Left -->
+      <path d="M -5,-2 L -15,15 L -25,20" />
+      <!-- Middle Left -->
+      <path d="M 0,0 L -10,15 L -20,20" />
+      <!-- Back Left -->
+      <path d="M 5,5 L -5,20 L -15,25" />
+    </g>
+  </g>
+</svg>

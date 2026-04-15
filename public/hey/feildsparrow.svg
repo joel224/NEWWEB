@@ -1,0 +1,44 @@
+<svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .feathers-main { fill: #c2a68c; } /* Light buff/brown */
+    .feathers-wing { fill: #9e7e63; }  /* Darker brown for wings */
+    .wing-bar { fill: #ffffff; }       /* White wing bars */
+    .feathers-streaks { stroke: #6b5340; stroke-width: 0.5; fill: none; } /* Subtle streaks */
+    .cap { fill: #a67153; }            /* Rufous/rusty cap */
+    .face { fill: #dedede; }           /* Gray face */
+    .eye-ring { stroke: #ffffff; stroke-width: 0.5; fill: none; } /* White eye-ring */
+    .eye { fill: #000000; }
+    .beak { fill: #fcaeae; }           /* Pink beak */
+    .legs { fill: #d6b8a3; }           /* Pale legs */
+    .grass { fill: #8fa87c; }
+  </style>
+
+  <ellipse class="grass" cx="55" cy="85" rx="20" ry="3" opacity="0.6"/>
+
+  <path class="feathers-main" d="M 30,50 C 40,40 70,50 85,70 C 80,85 50,85 35,70 C 25,60 25,55 30,50 Z" />
+  
+  <path fill="#f7f1e6" d="M 35,70 C 45,75 65,75 75,72 C 65,82 45,80 35,70 Z" />
+
+  <path class="feathers-wing" d="M 85,70 L 98,82 L 95,85 L 82,73 Z" />
+
+  <path class="feathers-wing" d="M 45,55 C 60,50 80,60 82,75 C 75,78 50,70 45,55 Z" />
+  
+  <path class="feathers-streaks" d="M 50,58 L 75,68 M 52,62 L 72,70 M 55,65 L 68,72" />
+  <rect class="wing-bar" x="50" y="58" width="15" height="1.5" rx="0.5" transform="rotate(20 50 58)"/>
+  <rect class="wing-bar" x="53" y="63" width="12" height="1" rx="0.5" transform="rotate(22 53 63)"/>
+
+  <ellipse class="face" cx="30" cy="45" rx="10" ry="9" />
+  
+  <path class="cap" d="M 22,40 C 25,32 35,32 39,39 C 35,42 25,43 22,40 Z" />
+  
+  <path class="feathers-main" d="M 28,42 C 32,42 38,45 38,50 L 30,52 Z" opacity="0.7"/>
+
+  <circle class="eye-ring" cx="32" cy="43" r="2.5" />
+  <circle class="eye" cx="32" cy="43" r="1.2" />
+
+  <path class="beak" d="M 20,44 L 14,46 L 20,48 Z" />
+
+  <path class="legs" d="M 50,80 L 48,90 L 44,92 L 48,90 L 52,91" stroke="#d6b8a3" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <path class="legs" d="M 60,78 L 62,88 L 58,90 L 62,88 L 66,89" stroke="#d6b8a3" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+</svg>

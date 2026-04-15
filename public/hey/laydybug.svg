@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="transparent" />
+
+  <!-- Branch -->
+  <path d="M 40 200 Q 150 180 260 150 Q 320 130 380 110" 
+        stroke="#8B7355" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Leaves Group -->
+  <g stroke="#8B7355" stroke-width="1" fill="none">
+    <!-- Leaf 1 (Bottom Left) -->
+    <path d="M 100 190 Q 80 220 120 240 Q 140 210 100 190 Z" fill="#E8E4D8"/>
+    <path d="M 100 190 Q 110 215 125 235 M 105 210 Q 115 215 120 220 M 110 220 Q 120 225 125 230" stroke-width="0.5" stroke="#A69478"/>
+    
+    <!-- Leaf 2 (Top Left) -->
+    <path d="M 140 180 Q 130 140 160 120 Q 180 150 140 180 Z" fill="#E8E4D8"/>
+    <path d="M 140 180 Q 135 155 155 130 M 142 160 Q 145 155 150 150 M 145 145 Q 150 140 155 135" stroke-width="0.5" stroke="#A69478"/>
+
+    <!-- Leaf 3 (Bottom Middle) -->
+    <path d="M 180 170 Q 170 200 210 210 Q 220 180 180 170 Z" fill="#E8E4D8"/>
+    <path d="M 180 170 Q 185 190 215 200 M 185 185 Q 195 190 200 195 M 190 195 Q 200 198 210 200" stroke-width="0.5" stroke="#A69478"/>
+
+    <!-- Leaf 4 (Top Middle) -->
+    <path d="M 220 160 Q 220 120 250 110 Q 260 140 220 160 Z" fill="#E8E4D8"/>
+    <path d="M 220 160 Q 225 140 245 120 M 225 145 Q 230 140 235 135 M 230 130 Q 235 125 240 120" stroke-width="0.5" stroke="#A69478"/>
+
+    <!-- Leaf 5 (Bottom Right) -->
+    <path d="M 260 150 Q 250 180 290 180 Q 300 160 260 150 Z" fill="#E8E4D8"/>
+    <path d="M 260 150 Q 265 170 295 170 M 265 160 Q 275 165 280 168 M 270 170 Q 280 172 290 170" stroke-width="0.5" stroke="#A69478"/>
+
+    <!-- Leaf 6 (Top Right - with Ladybug) -->
+    <path d="M 300 140 Q 300 100 330 90 Q 340 120 300 140 Z" fill="#E8E4D8"/>
+    <path d="M 300 140 Q 305 120 325 100 M 305 125 Q 310 120 315 115 M 310 110 Q 315 105 320 100" stroke-width="0.5" stroke="#A69478"/>
+
+    <!-- Leaf 7 (Far Right - with Ladybug) -->
+    <path d="M 330 130 Q 340 100 370 110 Q 360 140 330 130 Z" fill="#E8E4D8"/>
+    <path d="M 330 130 Q 345 115 365 120 M 335 125 Q 340 120 345 118 M 340 120 Q 345 118 350 118" stroke-width="0.5" stroke="#A69478"/>
+  </g>
+
+  <!-- Ladybug -->
+  <g transform="translate(340, 100) rotate(-10)">
+    <!-- Legs -->
+    <path d="M -10 -5 Q -20 -10 -25 -15 M -12 0 Q -22 0 -28 0 M -10 5 Q -20 10 -25 15" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M 10 -5 Q 20 -10 25 -15 M 12 0 Q 22 0 28 0 M 10 5 Q 20 10 25 15" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M 0 -15 Q 0 -25 -5 -30 M 0 15 Q 0 25 -5 30" stroke="#1A1A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Antennae -->
+    <path d="M -5 -18 Q -10 -25 -8 -28 M 5 -18 Q 10 -25 8 -28" stroke="#1A1A1A" stroke-width="1" fill="none"/>
+
+    <!-- Body Base -->
+    <ellipse cx="0" cy="0" rx="18" ry="22" fill="#C0392B"/>
+    
+    <!-- Body Divider -->
+    <line x1="0" y1="-20" x2="0" y2="20" stroke="#1A1A1A" stroke-width="1.5"/>
+    
+    <!-- Spots -->
+    <circle cx="-8" cy="-8" r="3.5" fill="#1A1A1A"/>
+    <circle cx="8" cy="-8" r="3.5" fill="#1A1A1A"/>
+    <circle cx="-9" cy="5" r="3" fill="#1A1A1A"/>
+    <circle cx="9" cy="5" r="3" fill="#1A1A1A"/>
+    <circle cx="-4" cy="12" r="2.5" fill="#1A1A1A"/>
+    <circle cx="4" cy="12" r="2.5" fill="#1A1A1A"/>
+
+    <!-- Head -->
+    <path d="M -8 -18 Q 0 -25 8 -18 Q 0 -15 -8 -18 Z" fill="#1A1A1A"/>
+    
+    <!-- Thorax (white spot on head) -->
+    <path d="M -6 -19 Q 0 -22 6 -19 Q 6 -16 0 -17 Q -6 -16 -6 -19 Z" fill="#F5F2EB"/>
+  </g>
+</svg>
