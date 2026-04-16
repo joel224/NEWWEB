@@ -1,287 +1,287 @@
-'use client';
+// 'use client';
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Canvas, useThree } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
-import * as THREE from 'three';
-import { useLoader } from '@react-three/fiber'
-import { TextureLoader  } from 'three'
- import { Suspense } from "react";
+// import { useEffect, useRef } from 'react';
+// import gsap from 'gsap';
+// import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// import { Canvas, useThree } from '@react-three/fiber';
+// import { Html } from '@react-three/drei';
+// import * as THREE from 'three';
+// import { useLoader } from '@react-three/fiber'
+// import { TextureLoader  } from 'three'
+//  import { Suspense } from "react";
 
 
-gsap.registerPlugin(ScrollTrigger);
+// gsap.registerPlugin(ScrollTrigger);
 
-// =========================================
-// 1. TYPESCRIPT DEFINITIONS
-// This fixes the "implicitly has an 'any' type" and the spread operator errors.
-// =========================================
-type CameraMove = {
-  position: [number, number, number]; // Strictly a tuple of 3 numbers
-  target: [number, number, number];
-  duration: number;
-  fov?: number;
-  ease?: string;
-};
+// // =========================================
+// // 1. TYPESCRIPT DEFINITIONS
+// // This fixes the "implicitly has an 'any' type" and the spread operator errors.
+// // =========================================
+// type CameraMove = {
+//   position: [number, number, number]; // Strictly a tuple of 3 numbers
+//   target: [number, number, number];
+//   duration: number;
+//   fov?: number;
+//   ease?: string;
+// };
 
-// Apply the type to the props
-function CameraRig({ movements,wrapperRef }: { movements: CameraMove[],wrapperRef: React.RefObject<HTMLDivElement | null>}) {
-  const { camera } = useThree();
-  const cam = camera as THREE.PerspectiveCamera;
+// // Apply the type to the props
+// function CameraRig({ movements,wrapperRef }: { movements: CameraMove[],wrapperRef: React.RefObject<HTMLDivElement | null>}) {
+//   const { camera } = useThree();
+//   const cam = camera as THREE.PerspectiveCamera;
  
 
-  useEffect(() => {
-    if (!movements || movements.length === 0) return;
+//   useEffect(() => {
+//     if (!movements || movements.length === 0) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ 
-        // Remove paused: true, ScrollTrigger handles the play state automatically now
-        defaults: { ease: 'power3.inOut' },
-        scrollTrigger: {
-          trigger: wrapperRef.current, // Watches the outer DOM element
-          start: 'top 60%',            // Triggers when the top of the section hits 60% down the screen
-          once: true,                  // Ensures it only plays EXACTLY once
-        }
-      });
+//     const ctx = gsap.context(() => {
+//       const tl = gsap.timeline({ 
+//         // Remove paused: true, ScrollTrigger handles the play state automatically now
+//         defaults: { ease: 'power3.inOut' },
+//         scrollTrigger: {
+//           trigger: wrapperRef.current, // Watches the outer DOM element
+//           start: 'top 60%',            // Triggers when the top of the section hits 60% down the screen
+//           once: true,                  // Ensures it only plays EXACTLY once
+//         }
+//       });
 
-      const currentTarget = { 
-        x: movements[0].target[0], 
-        y: movements[0].target[1], 
-        z: movements[0].target[2] 
-      };
+//       const currentTarget = { 
+//         x: movements[0].target[0], 
+//         y: movements[0].target[1], 
+//         z: movements[0].target[2] 
+//       };
 
-      // Now TypeScript knows this is exactly 3 numbers, so the spread operator works perfectly.
-      camera.position.set(...movements[0].position);
-      camera.lookAt(currentTarget.x, currentTarget.y, currentTarget.z);
+//       // Now TypeScript knows this is exactly 3 numbers, so the spread operator works perfectly.
+//       camera.position.set(...movements[0].position);
+//       camera.lookAt(currentTarget.x, currentTarget.y, currentTarget.z);
       
-      if (movements[0].fov) {
-        camera.fov = movements[0].fov;
-        camera.updateProjectionMatrix();
-      }
+//       if (movements[0].fov) {
+//         camera.fov = movements[0].fov;
+//         camera.updateProjectionMatrix();
+//       }
 
-      movements.forEach((step, i) => {
-        const syncLabel = `move${i}`;
+//       movements.forEach((step, i) => {
+//         const syncLabel = `move${i}`;
 
-        tl.to(camera.position, {
-          x: step.position[0],
-          y: step.position[1],
-          z: step.position[2],
-          duration: step.duration,
-          ease: step.ease || 'power3.inOut',
-        }, syncLabel);
+//         tl.to(camera.position, {
+//           x: step.position[0],
+//           y: step.position[1],
+//           z: step.position[2],
+//           duration: step.duration,
+//           ease: step.ease || 'power3.inOut',
+//         }, syncLabel);
 
-        tl.to(currentTarget, {
-          x: step.target[0],
-          y: step.target[1],
-          z: step.target[2],
-          duration: step.duration,
-          ease: step.ease || 'power3.inOut',
-          onUpdate: () => {
-            camera.lookAt(currentTarget.x, currentTarget.y, currentTarget.z);
-          }
-        }, syncLabel);
+//         tl.to(currentTarget, {
+//           x: step.target[0],
+//           y: step.target[1],
+//           z: step.target[2],
+//           duration: step.duration,
+//           ease: step.ease || 'power3.inOut',
+//           onUpdate: () => {
+//             camera.lookAt(currentTarget.x, currentTarget.y, currentTarget.z);
+//           }
+//         }, syncLabel);
 
-        if (step.fov) {
-          tl.to(camera, {
-            fov: step.fov,
-            duration: step.duration,
-            ease: step.ease || 'power3.inOut',
-            onUpdate: () => camera.updateProjectionMatrix()
-          }, syncLabel);
-        }
-      });
-    });
+//         if (step.fov) {
+//           tl.to(camera, {
+//             fov: step.fov,
+//             duration: step.duration,
+//             ease: step.ease || 'power3.inOut',
+//             onUpdate: () => camera.updateProjectionMatrix()
+//           }, syncLabel);
+//         }
+//       });
+//     });
 
-    return () => ctx.revert();
-  }, [camera, movements]);
+//     return () => ctx.revert();
+//   }, [camera, movements]);
 
-  return null;
-}
-function BackgroundPlane() {
-  const texture = useLoader(TextureLoader, '/Mobile/image5.png');
+//   return null;
+// }
+// function BackgroundPlane() {
+//   const texture = useLoader(TextureLoader, '/Mobile/image5.png');
 
-  return (
-  <mesh position={[0, 0, -20]}>
-  <planeGeometry args={[50, 30]} />
-  <meshBasicMaterial map={texture} />
-  <primitive object={texture} attach="map" />
-</mesh>
-  );
-}
-// =========================================
-// 2. MAIN COMPONENT
-// =========================================
-export default function ContactSection() {
-   const texture = useLoader(TextureLoader, 'Mobile/image5.png')
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+//   return (
+//   <mesh position={[0, 0, -20]}>
+//   <planeGeometry args={[50, 30]} />
+//   <meshBasicMaterial map={texture} />
+//   <primitive object={texture} attach="map" />
+// </mesh>
+//   );
+// }
+// // =========================================
+// // 2. MAIN COMPONENT
+// // =========================================
+// export default function ContactSection() {
+//    const texture = useLoader(TextureLoader, 'Mobile/image5.png')
+//   const containerRef = useRef<HTMLDivElement>(null);
+//   const textRef = useRef<HTMLDivElement>(null);
+//   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const socials = [
-    { name: '(Behance)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
-    { name: '(Dribbble)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
-    { name: '(Linkedin)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
-    { name: '(Medium)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
-  ];
+//   const socials = [
+//     { name: '(Behance)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
+//     { name: '(Dribbble)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
+//     { name: '(Linkedin)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
+//     { name: '(Medium)', url: 'https://www.linkedin.com/in/joel-j-824099264/' },
+//   ];
 
-  useEffect(() => {
-    if (!containerRef.current) return;
+//   useEffect(() => {
+//     if (!containerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        containerRef.current?.querySelectorAll('.contact-heading, .email-section, .social-link') || [],
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 70%',
-          }
-        }
-      );
+//     const ctx = gsap.context(() => {
+//       gsap.fromTo(
+//         containerRef.current?.querySelectorAll('.contact-heading, .email-section, .social-link') || [],
+//         { y: 30, opacity: 0 },
+//         {
+//           y: 0,
+//           opacity: 1,
+//           duration: 1,
+//           stagger: 0.1,
+//           ease: 'power3.out',
+//           scrollTrigger: {
+//             trigger: containerRef.current,
+//             start: 'top 70%',
+//           }
+//         }
+//       );
 
-      gsap.to('.footer-graphic', {
-        opacity: 0.8,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-    }, containerRef);
+//       gsap.to('.footer-graphic', {
+//         opacity: 0.8,
+//         duration: 2,
+//         repeat: -1,
+//         yoyo: true,
+//         ease: 'sine.inOut'
+//       });
+//     }, containerRef);
 
-    return () => ctx.revert();
-  }, []);
+//     return () => ctx.revert();
+//   }, []);
 
-  // Typed explicitly to our new CameraMove type
-  const myCameraMoves: CameraMove[] = [
-    { position: [14, -10, 31], target: [3, -0.6, 5], duration: 0, fov: 30, ease: 'power2.inOut' },
-    { position: [13, -10, 30], target: [2, -0.5, 5], duration: 0.9, fov: 30, ease: 'power2.inOut' },
-    { position: [0, -0, 20], target: [0.5, -0.1, 5], duration: 1.9, fov: 10, ease: 'back.out(1.7)' },
-    { position: [0, 0, 10], target: [0, 0, 0], duration: 0.5, fov: 10, ease: 'sine.inOut' },
-    { position: [0, 0, 10], target: [0, -0.4, 0], duration: 0.5, fov: 10, ease: 'power4.out' },
+//   // Typed explicitly to our new CameraMove type
+//   const myCameraMoves: CameraMove[] = [
+//     { position: [14, -10, 31], target: [3, -0.6, 5], duration: 0, fov: 30, ease: 'power2.inOut' },
+//     { position: [13, -10, 30], target: [2, -0.5, 5], duration: 0.9, fov: 30, ease: 'power2.inOut' },
+//     { position: [0, -0, 20], target: [0.5, -0.1, 5], duration: 1.9, fov: 10, ease: 'back.out(1.7)' },
+//     { position: [0, 0, 10], target: [0, 0, 0], duration: 0.5, fov: 10, ease: 'sine.inOut' },
+//     { position: [0, 0, 10], target: [0, -0.4, 0], duration: 0.5, fov: 10, ease: 'power4.out' },
    
-    // { position: [0, 0, 10], target: [0, -0.3, 0], duration: 0.9, fov: 10, ease: 'power2.inOut' },
-    // { position: [0, 0, 10], target: [0, -0.3, 0], duration: 0.5, fov: 10, ease: 'power3.inOut' }
-  ];
+//     // { position: [0, 0, 10], target: [0, -0.3, 0], duration: 0.9, fov: 10, ease: 'power2.inOut' },
+//     // { position: [0, 0, 10], target: [0, -0.3, 0], duration: 0.5, fov: 10, ease: 'power3.inOut' }
+//   ];
 
-  return (
-  <div ref={wrapperRef} className="relative w-full h-screen bg-[#0a0a0a] overflow-hidden">
-      {/* THE MISSING CANVAS TAG IS RESTORED HERE 👇 */}
-   <Canvas style={{ pointerEvents: 'none' }}>
+//   return (
+//   <div ref={wrapperRef} className="relative w-full h-screen bg-[#0a0a0a] overflow-hidden">
+//       {/* THE MISSING CANVAS TAG IS RESTORED HERE 👇 */}
+//    <Canvas style={{ pointerEvents: 'none' }}>
 
-        <Suspense fallback={null}>
-           // Inside your Canvas:
-          <CameraRig movements={myCameraMoves} wrapperRef={wrapperRef} />
-            <BackgroundPlane />
+//         <Suspense fallback={null}>
+//            // Inside your Canvas:
+//           <CameraRig movements={myCameraMoves} wrapperRef={wrapperRef} />
+//             <BackgroundPlane />
          
         
-        <Html 
-          transform 
+//         <Html 
+//           transform 
           
-          distanceFactor={1} 
+//           distanceFactor={1} 
           
          
-          occlude={false}
+//           occlude={false}
          
-        >
-          <section 
-            ref={containerRef} 
-            className="relative h-[800px] w-[1200px] bg-[#0a0a0a] overflow-hidden font-sans"
-          >
-            <style>{`
-              .rolling-text {
-                display: inline-block;
-                font-size: 14px;
-                line-height: 20px;
-                height: 20px;
-                text-decoration: none;
-                overflow: hidden;
-                color: #FFF;
-                font-weight: 400;
-                letter-spacing: -0.03em;
-                position: relative;
-              }
-              .rolling-text .block { position: relative; }
-              .rolling-text .letter {
-                display: inline-block;
-                transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
-                position: relative;
-                color: #fff;
-              }
-              .rolling-text .letter::before {
-                content: attr(data-letter);
-                position: absolute;
-                top: 100%;
-                left: 0;
-                color: #FFF;
-              }
-              .rolling-text:hover .letter {
-                transform: translateY(-100%);
-              }
-            `}</style>
+//         >
+//           <section 
+//             ref={containerRef} 
+//             className="relative h-[800px] w-[1200px] bg-[#0a0a0a] overflow-hidden font-sans"
+//           >
+//             <style>{`
+//               .rolling-text {
+//                 display: inline-block;
+//                 font-size: 14px;
+//                 line-height: 20px;
+//                 height: 20px;
+//                 text-decoration: none;
+//                 overflow: hidden;
+//                 color: #FFF;
+//                 font-weight: 400;
+//                 letter-spacing: -0.03em;
+//                 position: relative;
+//               }
+//               .rolling-text .block { position: relative; }
+//               .rolling-text .letter {
+//                 display: inline-block;
+//                 transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+//                 position: relative;
+//                 color: #fff;
+//               }
+//               .rolling-text .letter::before {
+//                 content: attr(data-letter);
+//                 position: absolute;
+//                 top: 100%;
+//                 left: 0;
+//                 color: #FFF;
+//               }
+//               .rolling-text:hover .letter {
+//                 transform: translateY(-100%);
+//               }
+//             `}</style>
 
-            <img 
-              src="/Contact.png"
-              alt="Design Graphic"
-              className="footer-graphic absolute left-[30px] top-0 h-full w-auto object-contain opacity-60 z-0 pointer-events-none"
-            />
+//             <img 
+//               src="/Contact.png"
+//               alt="Design Graphic"
+//               className="footer-graphic absolute left-[30px] top-0 h-full w-auto object-contain opacity-60 z-0 pointer-events-none"
+//             />
 
-            <div 
-              ref={textRef} 
-              className="contact-content absolute right-[30px] bottom-[30px] h-[66.2%] w-[470px] flex flex-col justify-between items-start z-10"
-            >
-              <h2 className="contact-heading max-w-[300px] text-white font-normal text-[32px] leading-none tracking-[-0.05em]">
-                Engineering the Human Connection and digital experiences
-              </h2>
+//             <div 
+//               ref={textRef} 
+//               className="contact-content absolute right-[30px] bottom-[30px] h-[66.2%] w-[470px] flex flex-col justify-between items-start z-10"
+//             >
+//               <h2 className="contact-heading max-w-[300px] text-white font-normal text-[32px] leading-none tracking-[-0.05em]">
+//                 Engineering the Human Connection and digital experiences
+//               </h2>
 
-              <div className="contact-info flex flex-col gap-[80px] w-full">
-                <div className="email-section flex flex-col w-full">
-                  <div className="email-label text-white opacity-70 text-[12px] font-normal leading-[1.5] tracking-[-0.36px]">
-                    For work:
-                  </div>
-                  <a 
-                    href="mailto:joeljoshy224@gmail.com" 
-                    className="email-text text-white text-[20px] font-normal leading-none tracking-[-1px] hover:text-neutral-300 transition-colors mt-1"
-                  >
-                    joeljoshy224@gmail.com
-                  </a>
-                </div>
+//               <div className="contact-info flex flex-col gap-[80px] w-full">
+//                 <div className="email-section flex flex-col w-full">
+//                   <div className="email-label text-white opacity-70 text-[12px] font-normal leading-[1.5] tracking-[-0.36px]">
+//                     For work:
+//                   </div>
+//                   <a 
+//                     href="mailto:joeljoshy224@gmail.com" 
+//                     className="email-text text-white text-[20px] font-normal leading-none tracking-[-1px] hover:text-neutral-300 transition-colors mt-1"
+//                   >
+//                     joeljoshy224@gmail.com
+//                   </a>
+//                 </div>
 
-                <div className="social-links flex justify-between items-center gap-[20px] w-full pt-6 border-t border-neutral-900/50">
-                  {socials.map((social) => (
-                    <a 
-                      key={social.name} 
-                      href={social.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="rolling-text social-link"
-                    >
-                      <div className="block">
-                        {social.name.split('').map((char, index) => (
-                          <span 
-                            key={index} 
-                            data-letter={char} 
-                            className="letter"
-                            style={{ transitionDelay: `${index * 0.015}s` }}
-                          >
-                            {char}
-                          </span>
-                        ))}
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        </Html>
-         </Suspense>
-      </Canvas>
-    </div>
-  );
-}
+//                 <div className="social-links flex justify-between items-center gap-[20px] w-full pt-6 border-t border-neutral-900/50">
+//                   {socials.map((social) => (
+//                     <a 
+//                       key={social.name} 
+//                       href={social.url} 
+//                       target="_blank" 
+//                       rel="noopener noreferrer" 
+//                       className="rolling-text social-link"
+//                     >
+//                       <div className="block">
+//                         {social.name.split('').map((char, index) => (
+//                           <span 
+//                             key={index} 
+//                             data-letter={char} 
+//                             className="letter"
+//                             style={{ transitionDelay: `${index * 0.015}s` }}
+//                           >
+//                             {char}
+//                           </span>
+//                         ))}
+//                       </div>
+//                     </a>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
+//           </section>
+//         </Html>
+//          </Suspense>
+//       </Canvas>
+//     </div>
+//   );
+// }

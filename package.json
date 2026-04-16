@@ -2,14 +2,14 @@
   "name": "my-glass-ui",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-  "node": "20.x"
-},
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
