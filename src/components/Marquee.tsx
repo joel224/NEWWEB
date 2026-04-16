@@ -80,8 +80,8 @@ export default function ExperienceList() {
             
             {/* 1. DEFAULT STATE (Fades out on hover) */}
             <div className="absolute inset-0 flex justify-between items-center px-8 transition-opacity duration-500 group-hover:opacity-0 z-10 pointer-events-none">
-              <div className="w-1/4 min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.category}</div>
-              <div className="w-2/4 text-center text-6xl md:text-8xl tracking-tighter font-medium">
+              <div className="w-1/4 min-[375px]:w-1/6  min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.category}</div>
+              <div className="w-2/4 text-center text-4xl  min-[373px]:text-6xl   md:text-8xl tracking-tighter font-medium">
                 {item.name}
               </div>
               <div className="w-1/4 text-right min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.timeline}</div>
