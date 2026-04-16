@@ -122,7 +122,7 @@ const router = useRouter();
               <div className="relative z-10 will-change-transform">
                <GlassButton 
   text="ME"
-  onClick={() => router.push("/me")}
+  onClick={() => router.push("/#")}
 />
               </div>
                  </div>

@@ -218,7 +218,7 @@ const handleCursorMove = (e: React.MouseEvent) => {
                          border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]
                          transition-all duration-300 active:scale-95"
             >
-              Give to Colgato
+              Next Page
             </button>
           </div>
        {/* Mobile Hamburger */}
@@ -271,7 +271,7 @@ const handleCursorMove = (e: React.MouseEvent) => {
         className="mt-2 px-4 py-2 rounded-xl text-xs font-cormorant uppercase text-white
                    bg-white/10 border border-white/20 hover:bg-white/20 transition-colors"
       >
-        Give to Colgato
+        Next Page
       </button>
     </div>
   </motion.div>
