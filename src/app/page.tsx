@@ -4,6 +4,7 @@ import GlassButton from "@/components/Glassbuttonforhome";
 import { useReveal } from "./context/RevealContext";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import GlassNavbar from "@/components/GlassNavbar";
 
 export default function Home() {
   const { isRevealed } = useReveal(); // ✅ Extract isRevealed from context
@@ -54,6 +55,7 @@ const router = useRouter();
   return (
     <main className="min-h-screen w-full bg-gradient-to-b from-[#f5f1e8] to-[#e8e3d8] flex flex-col items-center justify-center relative overflow-hidden px-6">
      {/* AURORA AUSTRALIS REVEAL COVER */}
+     <GlassNavbar/>
 <motion.div
   variants={coverVariants}
   initial="hidden"
