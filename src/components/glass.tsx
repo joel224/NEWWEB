@@ -178,25 +178,25 @@ export default function ProjectShowcase() {
               HEADER ROW (Absolute positioned so it stays fixed during scroll)
               ========================================= */}
               <div className="absolute top-12 left-0 z-40 flex justify-between items-start w-full px-8 pointer-events-none">
-                  <div className="text-sm text-neutral-400">Independent</div>
-                  <div className="text-center text-xl md:text-2xl font-light tracking-tight max-w-sm leading-tight">
+                  <div className="text-sm min-[375px]:text-xs  min-[425px]:text-sm text-neutral-400">Independent</div>
+                  <div className="text-center min-[375px]:text-sm min-[533px]:text-xl  min-[425px]:text-sm md:text-2xl font-light tracking-tight max-w-sm leading-tight">
                       Visual concepts & what-if moments.<br />
                       Curiosity and growth
                   </div>
-                  <div className="text-sm text-neutral-400">Showcase</div>
+                  <div className="text-sm min-[375px]:text-xs  min-[425px]:text-sm text-neutral-400">Showcase</div>
               </div>
 
               {/* =========================================
           HEADER ROW (Absolute so it stays fixed while images scroll horizontally)
           ========================================= */}
-              <div className="absolute top-12 left-0 z-40 flex justify-between items-start w-full px-8 pointer-events-none">
+              {/* <div className="absolute top-12 left-0 z-40 flex justify-between items-start w-full px-8 pointer-events-none">
                   <div className="text-sm text-neutral-400">Independent</div>
                   <div className="text-center text-xl md:text-2xl font-light tracking-tight max-w-sm leading-tight">
                       Visual concepts & what-if moments.<br />
                       Curiosity and growth
                   </div>
                   <div className="text-sm text-neutral-400">Showcase</div>
-              </div>
+              </div> */}
 
               {/* =========================================
         HORIZONTAL SCROLLING PANELS

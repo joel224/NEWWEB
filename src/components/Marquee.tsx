@@ -61,11 +61,11 @@ export default function ExperienceList() {
           TOP HEADER ROW
           ========================================= */}
       <div className="flex justify-between items-start px-8 pb-12 border-b border-[#222]">
-        <div className="w-1/4 text-sm text-neutral-400">Industry</div>
-        <div className="w-2/4 text-center text-sm md:text-base text-neutral-400 max-w-sm mx-auto leading-relaxed">
+        <div className="w-1/4 min-[375px]:text-xs  min-[425px]:text-sm text-neutral-400 min-[532px]:w-1/6  ">Industry</div>
+        <div className="w-2/4 text-center min-[375px]:text-xs  min-[425px]:text-sm md:text-base text-neutral-400 max-w-sm mx-auto leading-relaxed">
           Every decision, every detail is a lever, each one working to make the whole run better than before
         </div>
-        <div className="w-1/4 text-right text-sm text-neutral-400">Timeline</div>
+        <div className="w-1/4 text-right min-[375px]:text-xs  min-[425px]:text-sm text-sm text-neutral-400 min-[532px]:w-1/6  ">Timeline</div>
       </div>
 
       {/* =========================================
@@ -80,11 +80,11 @@ export default function ExperienceList() {
             
             {/* 1. DEFAULT STATE (Fades out on hover) */}
             <div className="absolute inset-0 flex justify-between items-center px-8 transition-opacity duration-500 group-hover:opacity-0 z-10 pointer-events-none">
-              <div className="w-1/4 text-lg font-light">{item.category}</div>
+              <div className="w-1/4 min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.category}</div>
               <div className="w-2/4 text-center text-6xl md:text-8xl tracking-tighter font-medium">
                 {item.name}
               </div>
-              <div className="w-1/4 text-right text-lg font-light">{item.timeline}</div>
+              <div className="w-1/4 text-right min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.timeline}</div>
             </div>
 
             {/* 2. HOVER STATE: MARQUEE (Fades in on hover) */}

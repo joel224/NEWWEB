@@ -37,8 +37,8 @@ export default function PortfolioHero() {
         }
       )
       .to(loaderBoxRef.current, {
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        height: '100%',
         duration: 1.2,
         ease: 'expo.inOut',
         delay: 0.2
@@ -75,7 +75,7 @@ export default function PortfolioHero() {
           <img 
             src="/heropro/name.svg" 
             alt="Joel Joshy" 
-            className="w-[80%] md:w-[20%] h-auto object-contain" 
+            className="xl:w-[50%] w-[50%] md:w-[25%] h-auto object-contain" 
           />
         </div>
         
@@ -108,10 +108,10 @@ export default function PortfolioHero() {
 
             <div className="ui-overlay absolute inset-0 pointer-events-none p-8 flex flex-col justify-between z-50">
               <div className="flex-1 flex items-center justify-between">
-                <div className="text-block text-sm text-neutral-400 max-w-[200px]">
+                <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">
                   A Product Designer with a passion for Design Operations.
                 </div>
-                <div className="text-block text-sm text-neutral-400 max-w-[200px] text-right">
+                <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[99px] md:max-w-[200px] text-right">
                   Focused on how to save the business, not the world.
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function PortfolioHero() {
 
       {/* SCROLLABLE CONTENT AREA */}
       {/* This section sits below the hero and will become visible as you scroll down */}
-     <section className="w-full min-h-screen flex items-center bg-[#0a0a0a] px-6 -mt-20">
+     <section className="w-full min-h-screen flex items-center bg-[#0a0a0a] px-6 -pt-20">
       <div className="max-w-full mx-auto w-full">
         <SpotlightText
           content="I found my way by chasing every spark. I fixed
@@ -140,7 +140,7 @@ dream stand tall and stay bright."
           spotlightColor="#ffffff"
           enableGlow={true}
           
-          className="max-w-[84ch] indent-40 text-3xl md:text-5xl font-medium leading-[1.1] tracking-tight"
+          className="max-w-[84ch]   min-[375px]:indent-10 min-[425px]:indent-20 xl:indent-40 md:indent-40 text-3xl md:text-5xl font-medium leading-[1.1] tracking-tight"
           
         /></div>
       </section>

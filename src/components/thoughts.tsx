@@ -160,7 +160,7 @@ tl.add(imgTl, i * baseSpacing);
     >
       {/* TEXT LAYER */}
       <div className="relative z-30 text-center pointer-events-none px-4">
-        <h2 className="text-white text-4xl md:text-5xl lg:text-3xl font-medium tracking-tight leading-[1.1] drop-shadow-2xl">
+        <h2 className="text-white text-4xl  min-[320px]:text-2xl min-[484px]:text-3xl   md:text-5xl lg:text-3xl font-medium tracking-tight leading-[1.1] drop-shadow-2xl">
           Creativity is intelligence having fun:<br />
           The machinery of my design
         </h2>
@@ -177,7 +177,7 @@ tl.add(imgTl, i * baseSpacing);
             <img 
               src={src} 
               alt={`Project ${index + 1}`} 
-              className="w-full h-full object-cover"
+              className="  min-[320px]:w-1/3 min-[320px]:h-1/3  min-[370px]:w-1/2 min-[370px]:h-1/2    md:w-full md:h-full object-cover"
             />
           </div>
         ))}
