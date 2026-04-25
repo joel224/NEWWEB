@@ -45,7 +45,7 @@ const scrollToContact = () => {
         { 
           yPercent: 0, 
           duration: 1, 
-          stagger: 0.25, 
+          stagger: 0.22, 
           ease: 'power3.out' 
         }
       )
