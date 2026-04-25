@@ -35,8 +35,8 @@ export default function PortfolioHero() {
         { yPercent: 100 },
         { 
           yPercent: 0, 
-          duration: 0.7, 
-          stagger: 0.20, 
+          duration: 0.9, 
+          stagger: 0.29, 
           ease: 'power3.out' 
         }
       )
