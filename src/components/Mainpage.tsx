@@ -18,7 +18,7 @@ export default function ColgatePage() {
   };
 
   return (
-    <main className="bg-[#821019] h-screen w-full flex items-center justify-center overflow-hidden">
+   <main className="bg-[#821019] h-dvh w-full flex items-center justify-center overflow-hidden">
       <div className="relative w-full h-full bg-white/5 backdrop-blur-xl shadow-2xl overflow-hidden flex flex-col items-center justify-center">
 
         {/* 1. Text + Button Wrapper */}

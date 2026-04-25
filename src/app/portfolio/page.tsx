@@ -17,7 +17,11 @@ export default function PortfolioHero() {
     '/heropro/1.webp',
     '/heropro/2.webp',
     '/heropro/3.webp',
-    '/heropro/4.webp'
+    '/heropro/4.webp',
+    '/heropro/5.webp',
+    '/heropro/6.webp',
+    '/heropro/7.webp',
+    '/heropro/8.webp',
   ];
 
   useEffect(() => {
@@ -32,32 +36,58 @@ export default function PortfolioHero() {
         { 
           yPercent: 0, 
           duration: 0.7, 
-          stagger: 0.35, 
+          stagger: 0.20, 
           ease: 'power3.out' 
         }
       )
       .to(loaderBoxRef.current, {
         width: '100%',
         height: '100%',
-        backgroundColor: '#0a0a0aff',
+        // backgroundColor: '#0a0a0aff',
         duration: 1.2,
         ease: 'expo.inOut',
         delay: 0.2
       })
       .to('.loader-img-wrapper', {
         autoAlpha: 0,
-        duration: 0.4,
+        duration: 0.3,
         ease: 'power2.out'
-      }, '-=0.4') 
-      .to('.hero-25', { 
-        autoAlpha: 1, 
-        duration: 1.5, 
-        ease: 'power2.out' 
-      }, '<')
+      }, '<') // <--- Change '-=0.4' to '<' 
+     // ... previous loaderBoxRef and loader-img-wrapper animations ...
+
+      // 1. Cinematic emerge for the background image
+      .fromTo('.hero-25', 
+        { 
+          autoAlpha: 0, 
+          scale: 1.15,          // Starts 15% larger
+          filter: 'blur(12px)'  // Starts quite blurry
+        },
+        { 
+          autoAlpha: 1, 
+          scale: 1,             // Settles to normal size
+          filter: 'blur(0px)',  // Settles to sharp
+          duration: 2, 
+          ease: 'power3.out' 
+        }, 
+        '<' // Starts at the exact same time the box expands
+      )
+      
+      // 2. Subtle emerge for nav and text blocks
       .fromTo(['.nav-item', '.ui-overlay .text-block'], 
-        { y: 15 },
-        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, ease: 'power3.out' },
-        '-=0.8'
+        { 
+          autoAlpha: 0, 
+          scale: 1.1,         // Starts slightly larger
+          filter: 'blur(4px)'  // Starts slightly blurry
+        },
+        { 
+          autoAlpha: 1, 
+          scale: 1, 
+          filter: 'blur(0px)', 
+          duration: 1.2, 
+          stagger: 0.08,       // Ripples through the items
+          ease: 'power3.out' 
+        },
+        '-=1.5' // Starts 1.5 seconds before the background image finishes settling
       );
 
     }, containerRef);
@@ -82,9 +112,9 @@ export default function PortfolioHero() {
         
         <div 
           ref={loaderBoxRef} 
-         className="relative w-[300px] h-[400px] bg-transparent overflow-hidden shadow-2xl flex items-center justify-center text-white z-10" 
+         className="relative w-[300px] h-[400px] bg-[#0a0a0aff]    overflow-hidden shadow-2xl flex items-center justify-center text-white z-10" 
         >
-          <div className="loader-img-wrapper absolute inset-0 z-20 pointer-events-none">
+          <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent z-20 pointer-events-none">
             {loaderImages.map((src, index) => (
               <img 
                 key={index}
