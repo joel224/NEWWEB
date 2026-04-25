@@ -42,7 +42,7 @@ export default function ColgatePage() {
             University
           </h2>
 
-          <GlassGradientButton text="Apply Now" />
+          <GlassGradientButton text=" " />
         </div>
 
         {/* 2. Main Static Grid Layer */}

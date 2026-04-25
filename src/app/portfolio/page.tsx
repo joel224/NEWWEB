@@ -8,10 +8,17 @@ import TextMarquee from '@/components/Magazine';
 import ExperienceList from '@/components/Marquee';
 import ProjectShowcase from '@/components/glass';
 import ContactSection from '@/components/lastly';
+import { useRouter } from 'next/navigation';
 
 export default function PortfolioHero() {
+  const router = useRouter(); // <--- ADD THIS LINE
   const containerRef = useRef<HTMLDivElement>(null);
   const loaderBoxRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
+
+const scrollToContact = () => {
+  contactRef.current?.scrollIntoView({ behavior: 'smooth' });
+};
 
   const loaderImages = [
     '/heropro/1.webp',
@@ -35,8 +42,8 @@ export default function PortfolioHero() {
         { yPercent: 100 },
         { 
           yPercent: 0, 
-          duration: 0.9, 
-          stagger: 0.29, 
+          duration: 1, 
+          stagger: 0.25, 
           ease: 'power3.out' 
         }
       )
@@ -106,7 +113,7 @@ export default function PortfolioHero() {
           <img 
             src="/heropro/name.svg" 
             alt="Joel Joshy" 
-            className="xl:w-[50%] w-[50%] md:w-[25%] h-auto object-contain" 
+            className="xl:w-[40%] 2xl:w-[50%] w-[50%] md:w-[25%] h-auto object-contain" 
           />
         </div>
         
@@ -130,13 +137,31 @@ export default function PortfolioHero() {
               <img src="/heropro/bg.png" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
             </div>
 
-            <nav className="absolute top-5 left-0 w-full px-8 flex justify-between items-center text-sm z-50 pointer-events-auto">
-  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(About)</span>
-  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(Philosophy)</span>
-  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(Works)</span>
-  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(Contact)</span>
-</nav>
-
+           <nav className="absolute top-5 left-0 w-full px-8 flex justify-between items-center text-sm z-50 pointer-events-auto">
+              <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">
+                (About)
+              </span>
+              
+              {/* Uses Next.js router to navigate to the new page */}
+              <span 
+                onClick={() => router.push('/colgato')}
+                className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors"
+              >
+                (Philosophy)
+              </span>
+              
+              <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">
+                (Works)
+              </span>
+              
+              {/* Uses native smooth scroll to find the ID we just added */}
+              <span 
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors"
+              >
+                (Contact)
+              </span>
+            </nav>
             <div className="ui-overlay absolute inset-0 pointer-events-none p-8 flex flex-col justify-between z-50">
               <div className="flex-1 flex items-center justify-between">
                 <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">

@@ -57,6 +57,7 @@ export default function ContactSection() {
 
   return (
     <section 
+    id="contact"
       ref={containerRef} 
       className="relative h-screen w-full bg-[#0a0a0a] overflow-hidden font-sans"
     >
