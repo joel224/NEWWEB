@@ -39,6 +39,7 @@ export default function PortfolioHero() {
       .to(loaderBoxRef.current, {
         width: '100%',
         height: '100%',
+        backgroundColor: '#0a0a0aff',
         duration: 1.2,
         ease: 'expo.inOut',
         delay: 0.2
@@ -81,7 +82,7 @@ export default function PortfolioHero() {
         
         <div 
           ref={loaderBoxRef} 
-          className="relative w-[300px] h-[400px] bg-[#0a0a0a] overflow-hidden shadow-2xl flex items-center justify-center text-white z-10"
+         className="relative w-[300px] h-[400px] bg-transparent overflow-hidden shadow-2xl flex items-center justify-center text-white z-10" 
         >
           <div className="loader-img-wrapper absolute inset-0 z-20 pointer-events-none">
             {loaderImages.map((src, index) => (
@@ -95,31 +96,31 @@ export default function PortfolioHero() {
           </div>
 
           <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-            <div className="hero-25 absolute inset-0 flex items-center justify-center mix-blend-screen pointer-events-none -z-10">
+            <div className="hero-25 opacity-0 absolute inset-0 flex items-center justify-center mix-blend-screen pointer-events-none -z-10">
               <img src="/heropro/bg.png" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
             </div>
 
             <nav className="absolute top-5 left-0 w-full px-8 flex justify-between items-center text-sm z-50 pointer-events-auto">
-              <span className="nav-item cursor-pointer hover:text-neutral-400 transition-colors">(About)</span>
-              <span className="nav-item cursor-pointer hover:text-neutral-400 transition-colors">(Philosophy)</span>
-              <span className="nav-item cursor-pointer hover:text-neutral-400 transition-colors">(Works)</span>
-              <span className="nav-item cursor-pointer hover:text-neutral-400 transition-colors">(Contact)</span>
-            </nav>
+  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(About)</span>
+  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(Philosophy)</span>
+  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(Works)</span>
+  <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">(Contact)</span>
+</nav>
 
             <div className="ui-overlay absolute inset-0 pointer-events-none p-8 flex flex-col justify-between z-50">
               <div className="flex-1 flex items-center justify-between">
                 <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">
-                  A Product Designer with a passion for Design Operations.
+                  Web Developer. Scalable systems over social statements.
                 </div>
                 <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[99px] md:max-w-[200px] text-right">
-                  Focused on how to save the business, not the world.
+                  A Web Developer focused on building high-performance solutions, not just websites.
                 </div>
               </div>
 
               <div className="flex justify-between items-end text-xs text-neutral-500 tracking-widest uppercase">
-                <div className="text-block">16°03'35" N</div>
-                <div className="text-block text-center transform -translate-x-6">Koratty, Kerala, India</div>
-                <div className="text-block">108°14'33" E</div>
+                <div className="text-block text-left min-[240px]:w-[10.8%] min-[455px]:w-1/4 md:w-full ">16°03'35" N</div>
+                <div className="text-block text-center transform -translate-x-6 ">Koratty, Kerala, India</div>
+                <div className="text-block text-right">108°14'33" E</div>
               </div>
             </div>
           </div>

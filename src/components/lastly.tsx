@@ -125,7 +125,7 @@ export default function ContactSection() {
               For work:
             </div>
             <a 
-              href="joeljoshy224@gmail.com" 
+               href="mailto:joeljoshy224@gmail.com"
               className="email-text text-white text-[20px] font-normal leading-none tracking-[-1px] hover:text-neutral-300 transition-colors mt-1"
             >
               joeljoshy224@gmail.com

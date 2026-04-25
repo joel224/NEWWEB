@@ -43,8 +43,8 @@ export default function TextMarquee() {
   return (
     <section 
       ref={containerRef} 
-      // min-h-screen to give it space, overflow-hidden so the giant text doesn't cause horizontal scrolling
-      className="relative w-full min-h-screen bg-[#0a0a0a] flex flex-col justify-center overflow-hidden font-sans py-24"
+      // min-h-screen to give it space, overflow-hidden so the giant text doesn't cause horizontal scrolling 
+      className="relative  min-[425px]:h-1/3  w-full md:min-h-screen bg-[#0a0a0a] flex flex-col justify-center overflow-hidden font-sans py-24"
     >
       
       {/* ROW 1: Selected Work

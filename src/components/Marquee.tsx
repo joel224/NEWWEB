@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function ExperienceList() {
   // 4 Dummy items as requested
+  const [activeId, setActiveId] = useState<number | null>(null);
   const experiences = [
     {
       id: 1,
@@ -73,28 +74,43 @@ export default function ExperienceList() {
           ========================================= */}
       <div className="flex flex-col w-full">
         {experiences.map((item) => (
+          
           <div 
             key={item.id}
+         onClick={(e) => {
+  e.stopPropagation();
+  setActiveId(activeId === item.id ? null : item.id);
+}}
             className="group relative w-full border-b border-[#222] transition-colors duration-500 hover:bg-white text-white hover:text-black overflow-hidden flex items-center min-h-[220px] cursor-pointer"
           >
             
             {/* 1. DEFAULT STATE (Fades out on hover) */}
-            <div className="absolute inset-0 flex justify-between items-center px-8 transition-opacity duration-500 group-hover:opacity-0 z-10 pointer-events-none">
-              <div className="w-1/4 min-[375px]:w-1/6  min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.category}</div>
-              <div className="w-2/4 text-center text-4xl  min-[373px]:text-6xl   md:text-8xl tracking-tighter font-medium">
+           <div
+  className={`absolute inset-0 flex justify-between items-center px-8 transition-opacity duration-500 z-10
+  ${activeId === item.id ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'}`}
+>
+              <div className="w-1/4 min-[375px]:w-1/6 leading-tight min-[375px]:text-xs  min-[425px]:text-xs  min-[517px]:text-lg font-light">  
+               
+    {item.category}
+          
+              </div>
+              <div className="w-2/4 text-center text-4xl  min-[375px]:text-[47px]  min-[373px]:text-6xl   md:text-8xl tracking-tighter font-medium">
                 {item.name}
               </div>
-              <div className="w-1/4 text-right min-[375px]:text-xs  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.timeline}</div>
+              <div className="w-1/4 text-right min-[375px]:text-[10px]  min-[425px]:text-sm  min-[517px]:text-lg font-light">{item.timeline}</div>
             </div>
 
             {/* 2. HOVER STATE: MARQUEE (Fades in on hover) */}
-            <div className="absolute inset-0 flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none">
-              
+           <div
+  className={`absolute inset-0 flex items-center transition-opacity duration-500 z-0
+  ${activeId === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+>
               <div className="animate-marquee-right">
                 {/* We render the block of images/text TWICE to create a seamless infinite loop.
                   Because the animation starts at -50% and moves to 0%.
                 */}
                 {[...Array(2)].map((_, loopIndex) => (
+                  
                   <div key={loopIndex} className="flex items-center gap-12 px-6">
                     
                     {/* Item 1: Pill Image */}

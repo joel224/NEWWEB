@@ -21,9 +21,9 @@ export default function ProjectShowcase() {
   ];
 
   useEffect(() => {
-    // 1. Cursor Follower Logic
-    const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.2, ease: 'power3' });
-    const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.2, ease: 'power3' });
+    // 1. Cursor Follower Logic (Optimized for GPU)
+    const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.15, ease: 'power3' });
+    const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.15, ease: 'power3' });
 
     const handleMouseMove = (e: MouseEvent) => {
       xTo(e.clientX);
@@ -32,54 +32,41 @@ export default function ProjectShowcase() {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // 2. Simple Scroll Reveal for Images
-   // 2. Horizontal Scroll + Slide-up/Flip from Bottom
-   // 2. Horizontal Scroll + Bottom Slide/Flip Reveal
-    const ctx = gsap.context(() => {
-      const panels = gsap.utils.toArray('.horizontal-panel');
+    // 2. Vertical Scroll + 3D Bottom Slide/Flip Reveal
+   const ctx = gsap.context(() => {
+  const panels = gsap.utils.toArray('.horizontal-panel');
 
-      // Pin the section and scroll the container horizontally
-      const scrollTween = gsap.to(panels, {
-        xPercent: -100 * (panels.length - 1),
-        ease: 'none',
+  panels.forEach((panel: any, i) => {
+    const imgWrap = panel.querySelector('.reveal-img');
+
+    // Skip first if you want it visible immediately
+    if (i === 0) return;
+
+    gsap.fromTo(
+      imgWrap,
+      {
+        y: '45vh',              // comes from bottom
+        rotationX: -60,         // book fold effect
+        transformOrigin: 'bottom center',
+        transformPerspective: 1200,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        rotationX: 0,
+        opacity: 1,
+        ease: 'expo.out',
         scrollTrigger: {
-          trigger: containerRef.current,
-          pin: true,
-          scrub: 1,
-          end: '+=4000', // Scroll duration. Increase to slow down the scroll speed.
+          trigger: panel,
+          start: 'top 90%',
+          end: 'top 20%',
+          toggleActions: 'play reverse play reverse',
+          scrub: true,
         },
-      });
-
-      // 3D "Page Flip / Slide-up from Bottom" effect
-      panels.forEach((panel: any, i) => {
-        if (i === 0) return; // Skip the first image so it's already on screen
-        
-        const imgWrap = panel.querySelector('.reveal-img');
-        
-        gsap.fromTo(imgWrap, 
-          { 
-            y: '60vh',           // Starts down at the bottom
-            rotationX: -60,      // Folded backward
-            transformOrigin: 'bottom center', // Hinges from the bottom like a page
-            transformPerspective: 1200, 
-            opacity: 0 
-          },
-          {
-            y: 0,
-            rotationX: 0,
-            opacity: 1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: panel,
-              containerAnimation: scrollTween, // Links animation to the horizontal scroll
-              start: 'left 85%', // Starts flipping when panel enters from right
-              end: 'center center',
-              scrub: true,
-            }
-          }
-        );
-      });
-    }, containerRef);
+      }
+    );
+  });
+}, containerRef);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -93,7 +80,7 @@ export default function ProjectShowcase() {
       gsap.to(cursorRef.current, {
         width: 150, 
         height: 150,
-        duration: 0.5,
+        duration: 0.4,
         ease: 'expo.out',
       });
       gsap.to(cursorTextRef.current, {
@@ -118,111 +105,98 @@ export default function ProjectShowcase() {
   }, [isHovering]);
 
   return (
-    <><svg className="hidden">
-          <filter id="displacementFilter">
-              <feTurbulence
-                  type="turbulence"
-                  baseFrequency="0.01"
-                  numOctaves="3"
-                  result="turbulence" />
-              <feDisplacementMap
-                  in="SourceGraphic"
-                  in2="turbulence"
-                  scale="60"
-                  xChannelSelector="R"
-                  yChannelSelector="G" />
-          </filter>
+    <>
+      <svg className="hidden">
+        <filter id="displacementFilter">
+          <feTurbulence
+            type="turbulence"
+            baseFrequency="0.01"
+            numOctaves="3"
+            result="turbulence" 
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="turbulence"
+            scale="60"
+            xChannelSelector="R"
+            yChannelSelector="G" 
+          />
+        </filter>
       </svg>
       
       <section
-          ref={containerRef}
-          className="relative w-full min-h-screen bg-[#0a0a0a] text-white font-sans px-8 py-12 cursor-none"
+        ref={containerRef}
+        // Removed the mobile check, it just uses cursor-none everywhere now
+        className="relative w-full min-h-screen bg-[#0a0a0a] text-white font-sans px-8 py-12 cursor-none"
       >
-              {/* =========================================
-        RAW APPCARD.VUE SVG FILTER
-        Exact values: baseFrequency="0.01", numOctaves="2", scale="200"
-        ========================================= */}
+        {/* =========================================
+            THE RAW APPCARD.VUE CURSOR (Optimized)
+            ========================================= */}
+        <div
+          ref={cursorRef}
+          className="fixed top-0 left-0 z-50 flex items-center justify-center rounded-full pointer-events-none"
+          style={{
+            // translate3d forces hardware acceleration on the GPU to fix the lag
+            transform: 'translate3d(-50%, -50%, 0)',
+            willChange: 'transform, width, height',
+            filter: 'drop-shadow(-8px -10px 46px rgba(0, 0, 0, 0.37))',
+            backdropFilter: 'brightness(1.1) blur(2px) url(#displacementFilter)',
+            WebkitBackdropFilter: 'brightness(1.1) blur(2px) url(#displacementFilter)',
+          }}
+        >
+          <div
+            className="absolute inset-0 z-0 rounded-full"
+            style={{
+              boxShadow: 'inset 6px 6px 0px -6px rgba(255, 255, 255, 0.7), inset 0 0 8px 1px rgba(255, 255, 255, 0.7)',
+              WebkitBoxShadow: 'inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7)'
+            }} 
+          />
 
+          <span
+            ref={cursorTextRef}
+            className="text-white text-sm font-semibold tracking-widest opacity-0 scale-0 relative z-10 mix-blend-difference"
+          >
+            VIEW
+          </span>
+        </div>
 
-              {/* =========================================
-        THE RAW APPCARD.VUE CURSOR
-        ========================================= */}
+        {/* =========================================
+            HEADER ROW (Sticky so it stays on screen while scrolling down)
+            ========================================= */}
+        <div className="sticky top-12 z-40 flex justify-between items-start w-full pointer-events-none mb-12">
+          <div className="text-sm min-[375px]:text-xs min-[425px]:text-sm text-neutral-400">Independent</div>
+          <div className="text-center min-[375px]:text-sm min-[533px]:text-xl min-[425px]:text-sm md:text-2xl font-light tracking-tight max-w-sm leading-tight">
+            Visual concepts & what-if moments.<br />
+            Curiosity and growth
+          </div>
+          <div className="text-sm min-[375px]:text-xs min-[425px]:text-sm text-neutral-400">Showcase</div>
+        </div>
+
+        {/* =========================================
+            VERTICAL SCROLLING PANELS
+            ========================================= */}
+        <div className="flex flex-col items-center gap-24 py-12 w-full">
+          {projectImages.map((src, index) => (
+           <div
+  key={index}
+  className="horizontal-panel w-full flex justify-center items-center perspective-[2000px]"
+>
               <div
-                  ref={cursorRef}
-                  className="fixed top-0 left-0 z-50 flex items-center justify-center rounded-full pointer-events-none"
-                  style={{
-                      transform: 'translate(-50%, -50%)',
-                      // Exactly matching: filter: drop-shadow(-8px -10px 46px #0000005f);
-                      filter: 'drop-shadow(-8px -10px 46px rgba(0, 0, 0, 0.37))',
-                      // Exactly matching: backdrop-filter: brightness(1.1) blur(2px) url(#displacementFilter);
-                      backdropFilter: 'brightness(1.1) blur(2px) url(#displacementFilter)',
-                      WebkitBackdropFilter: 'brightness(1.1) blur(2px) url(#displacementFilter)',
-                  }}
+                // max-w handles mobile vs desktop widths perfectly
+                className="reveal-img relative w-full max-w-[90%] md:max-w-[80%] h-[60vh] md:h-[75vh] rounded-[3rem] overflow-hidden bg-neutral-900 shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
               >
-                  {/* Exactly matching the .card::before pseudo element */}
-                  <div
-                      className="absolute inset-0 z-0 rounded-full"
-                      style={{
-                          boxShadow: 'inset 6px 6px 0px -6px rgba(255, 255, 255, 0.7), inset 0 0 8px 1px rgba(255, 255, 255, 0.7)',
-                          WebkitBoxShadow: 'inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7)'
-                      }} />
-
-                  <span
-                      ref={cursorTextRef}
-                      className="text-white text-sm font-semibold tracking-widest opacity-0 scale-0 relative z-10 mix-blend-difference"
-                  >
-                      VIEW
-                  </span>
+                <img
+                  src={src}
+                  alt={`Project Showcase ${index + 1}`}
+                  className="w-full h-full object-cover" 
+                />
               </div>
-              {/* =========================================
-              HEADER ROW (Absolute positioned so it stays fixed during scroll)
-              ========================================= */}
-              <div className="absolute top-12 left-0 z-40 flex justify-between items-start w-full px-8 pointer-events-none">
-                  <div className="text-sm min-[375px]:text-xs  min-[425px]:text-sm text-neutral-400">Independent</div>
-                  <div className="text-center min-[375px]:text-sm min-[533px]:text-xl  min-[425px]:text-sm md:text-2xl font-light tracking-tight max-w-sm leading-tight">
-                      Visual concepts & what-if moments.<br />
-                      Curiosity and growth
-                  </div>
-                  <div className="text-sm min-[375px]:text-xs  min-[425px]:text-sm text-neutral-400">Showcase</div>
-              </div>
-
-              {/* =========================================
-          HEADER ROW (Absolute so it stays fixed while images scroll horizontally)
-          ========================================= */}
-              {/* <div className="absolute top-12 left-0 z-40 flex justify-between items-start w-full px-8 pointer-events-none">
-                  <div className="text-sm text-neutral-400">Independent</div>
-                  <div className="text-center text-xl md:text-2xl font-light tracking-tight max-w-sm leading-tight">
-                      Visual concepts & what-if moments.<br />
-                      Curiosity and growth
-                  </div>
-                  <div className="text-sm text-neutral-400">Showcase</div>
-              </div> */}
-
-              {/* =========================================
-        HORIZONTAL SCROLLING PANELS
-        ========================================= */}
-              <div className="flex h-screen w-max items-center">
-                  {projectImages.map((src, index) => (
-                      <div
-                          key={index}
-                          className="horizontal-panel w-screen h-screen flex justify-center items-center"
-                      >
-                          <div
-                              className="reveal-img relative w-full max-w-[80%] h-[75vh] rounded-[3rem] overflow-hidden bg-neutral-900 shadow-2xl"
-                              onMouseEnter={() => setIsHovering(true)}
-                              onMouseLeave={() => setIsHovering(false)}
-                          >
-                              <img
-                                  src={src}
-                                  alt={`Project Showcase ${index + 1}`}
-                                  className="w-full h-full object-cover" />
-                          </div>
-                      </div>
-                  ))}
-              </div>
-          </section></>
-   
-
- 
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
