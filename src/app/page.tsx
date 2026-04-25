@@ -110,7 +110,7 @@ const router = useRouter();
              JOEL JOSHY 
             </h1>
             <p className="mt-6 text-lg text-[#5c5045]">
-              A moment of calm, connection, and renewal.
+              A moment of calm, connection, and renewal.[]
             </p>
           </motion.div>
 

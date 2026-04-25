@@ -45,8 +45,10 @@ export default function ProjectShowcase() {
     gsap.fromTo(
       imgWrap,
       {
-        y: '45vh',              // comes from bottom
-        rotationX: -60,         // book fold effect
+        y: '30vh',              // Slightly less distance so it doesn't feel rushed
+        rotationX: -45,         // Less extreme fold for a more elegant look
+        scale: 0.85,            // Starts slightly scaled down
+        filter: 'blur(12px)',   // Cinematic out-of-focus start
         transformOrigin: 'bottom center',
         transformPerspective: 1200,
         opacity: 0,
@@ -54,14 +56,15 @@ export default function ProjectShowcase() {
       {
         y: 0,
         rotationX: 0,
+        scale: 1,               // Resolves to natural size
+        filter: 'blur(0px)',    // Comes into sharp focus
         opacity: 1,
-        ease: 'expo.out',
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: panel,
-          start: 'top 90%',
-          end: 'top 20%',
-          toggleActions: 'play reverse play reverse',
-          scrub: true,
+          start: 'top 95%',     // Starts revealing slightly earlier
+          end: 'top 35%',       // Gives it more scroll room to breathe
+          scrub: 1.5,           // 👈 THE MAGIC INGREDIENT
         },
       }
     );

@@ -9,6 +9,8 @@ import ExperienceList from '@/components/Marquee';
 import ProjectShowcase from '@/components/glass';
 import ContactSection from '@/components/lastly';
 import { useRouter } from 'next/navigation';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
 export default function PortfolioHero() {
   const router = useRouter(); // <--- ADD THIS LINE
@@ -47,55 +49,57 @@ const scrollToContact = () => {
           ease: 'power3.out' 
         }
       )
+      // 1. The Expansion
       .to(loaderBoxRef.current, {
-        width: '100%',
-        height: '100%',
-        // backgroundColor: '#0a0a0aff',
+        width: '100vw',  // <--- Change from '100%'
+        height: '100vh', // <--- Change from '100%'
         duration: 1.2,
         ease: 'expo.inOut',
         delay: 0.2
       })
+      // 2. Blur UP (Starts exactly when expansion starts)
+      .to(loaderBoxRef.current, {
+        filter: 'blur(15px)',
+        duration: 0.6,
+        ease: 'power2.in'
+      }, '<')
+      // 3. Blur DOWN (Starts right after Blur UP finishes, making it sharp at the end)
+      .to(loaderBoxRef.current, {
+        filter: 'blur(0px)',
+        duration: 0.6,
+        ease: 'power2.out'
+      }, '>')
+      
+      // The rest of your timeline animations...
       .to('.loader-img-wrapper', {
         autoAlpha: 0,
         duration: 0.3,
         ease: 'power2.out'
-      }, '<') // <--- Change '-=0.4' to '<' 
-     // ... previous loaderBoxRef and loader-img-wrapper animations ...
-
-      // 1. Cinematic emerge for the background image
+      }, '<') 
       .fromTo('.hero-25', 
-        { 
-          autoAlpha: 0, 
-          scale: 1.15,          // Starts 15% larger
-          filter: 'blur(12px)'  // Starts quite blurry
-        },
-        { 
-          autoAlpha: 1, 
-          scale: 1,             // Settles to normal size
-          filter: 'blur(0px)',  // Settles to sharp
-          duration: 2, 
-          ease: 'power3.out' 
-        }, 
-        '<' // Starts at the exact same time the box expands
+        { autoAlpha: 0, scale: 1.15, filter: 'blur(12px)' },
+        { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 
+        '<' 
       )
-      
-      // 2. Subtle emerge for nav and text blocks
       .fromTo(['.nav-item', '.ui-overlay .text-block'], 
-        { 
-          autoAlpha: 0, 
-          scale: 1.1,         // Starts slightly larger
-          filter: 'blur(4px)'  // Starts slightly blurry
-        },
-        { 
-          autoAlpha: 1, 
-          scale: 1, 
-          filter: 'blur(0px)', 
-          duration: 1.2, 
-          stagger: 0.08,       // Ripples through the items
-          ease: 'power3.out' 
-        },
-        '-=1.5' // Starts 1.5 seconds before the background image finishes settling
+        { autoAlpha: 0, scale: 1.1, filter: 'blur(4px)' },
+        { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 1.2, stagger: 0.08, ease: 'power3.out' },
+        '-=1.5' 
       );
+
+      // ==========================================
+      // PARALLAX EFFECT FOR NAME SVG
+      // ==========================================
+      gsap.to('.name-logo-wrap', {
+        y: '50vh', // Moves it down at a different speed than the scroll
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true, // Locks the movement strictly to the user's scrollbar
+        }
+      });
 
     }, containerRef);
 
@@ -107,19 +111,19 @@ const scrollToContact = () => {
     <main className="w-full bg-[#0a0a0a] min-h-screen font-sans overflow-x-hidden">
       
       {/* HERO SECTION: Locked to exactly one screen height (h-screen) with overflow hidden for the animation */}
-      <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-gray-100 flex items-center justify-center">
+      <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-gray-100  ">
         
-        <div className="absolute inset-0 z-[60] flex items-center justify-center pointer-events-none">
+       <div className="name-logo-wrap absolute inset-0 z-[60] flex items-center justify-center pointer-events-none">
           <img 
             src="/heropro/name.svg" 
             alt="Joel Joshy" 
-            className="xl:w-[40%] 2xl:w-[50%] w-[50%] md:w-[25%] h-auto object-contain" 
+            className="xl:w-[20%] 2xl:w-[50%] w-[50%] md:w-[25%] h-auto object-contain" 
           />
         </div>
         
         <div 
           ref={loaderBoxRef} 
-         className="relative w-[300px] h-[400px] bg-[#0a0a0aff]    overflow-hidden shadow-2xl flex items-center justify-center text-white z-10" 
+         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0aff] overflow-hidden shadow-2xl flex items-center justify-center text-white z-10"
         >
           <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent z-20 pointer-events-none">
             {loaderImages.map((src, index) => (
