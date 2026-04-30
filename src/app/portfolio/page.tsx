@@ -59,6 +59,11 @@ const scrollToContact = () => {
           index === 0 ? "+=0" : "-=0.5" 
         );
       });
+
+      // Remove the images and show the hero background immediately so they switch places before expansion
+      tl.set('.loader-img-wrapper', { autoAlpha: 0 })
+        .set('.hero-25', { autoAlpha: 1 });
+
       // 1. The Expansion
       tl.to(loaderBoxRef.current, {
         width: '100vw', 
