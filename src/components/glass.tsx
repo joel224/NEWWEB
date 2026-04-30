@@ -10,6 +10,8 @@ export default function ProjectShowcase() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorTextRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const rafRef = useRef<number>(0);
   const [isHovering, setIsHovering] = useState(false);
 
   // Array of dummy images for the scroll reveal
@@ -95,7 +97,7 @@ useEffect(() => {
     };
   }, [isMobile]);
 
-  // 3. Handle Cursor Hover State
+  // 3. Handle Cursor Hover State + water animation
   useEffect(() => {
     if (isHovering) {
       gsap.to(cursorRef.current, {
@@ -110,7 +112,23 @@ useEffect(() => {
         duration: 0.3,
         delay: 0.1,
       });
+
+      // Start water-like turbulence animation (only while hovering)
+      const startTime = performance.now();
+      const animate = (time: number) => {
+        const t = (time - startTime) / 1000;
+        // Two offset oscillations create organic, non-repeating water motion
+        const bfX = 0.012 + Math.sin(t * 1.4) * 0.006;
+        const bfY = 0.012 + Math.cos(t * 1.9) * 0.006;
+        turbulenceRef.current?.setAttribute('baseFrequency', `${bfX.toFixed(4)} ${bfY.toFixed(4)}`);
+        rafRef.current = requestAnimationFrame(animate);
+      };
+      rafRef.current = requestAnimationFrame(animate);
     } else {
+      // Kill animation loop immediately when not hovering
+      cancelAnimationFrame(rafRef.current);
+      turbulenceRef.current?.setAttribute('baseFrequency', '0.01');
+
       gsap.to(cursorRef.current, {
         width: 16, 
         height: 16,
@@ -123,6 +141,8 @@ useEffect(() => {
         duration: 0.2,
       });
     }
+
+    return () => cancelAnimationFrame(rafRef.current);
   }, [isHovering]);
 
   return (
@@ -130,6 +150,7 @@ useEffect(() => {
       <svg className="hidden">
         <filter id="displacementFilter">
           <feTurbulence
+            ref={turbulenceRef}
             type="turbulence"
             baseFrequency="0.01"
             numOctaves="3"
