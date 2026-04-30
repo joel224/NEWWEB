@@ -176,7 +176,7 @@ const scrollToContact = () => {
                   Web Developer. Scalable systems over social statements.
                 </div>
                 <div className="text-block opacity-0 text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[99px] md:max-w-[200px] text-right">
-                  A Web Developer focused on building high-performance solutions, not just websites.
+                  Focused on building high-performance solutions, not just websites.
                 </div>
               </div>
 
