@@ -26,6 +26,10 @@
   overflow: hidden; 
 }
 
+.disable-standard-hover {
+  pointer-events: none;
+}
+
 .nature-btn {
   @apply flex items-center gap-3 px-8 py-4 rounded-full 
   bg-white/40 backdrop-blur-md 
@@ -51,5 +55,6 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
+    cursor: none !important;
   font-family: Arial, Helvetica, sans-serif;
 }
