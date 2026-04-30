@@ -180,9 +180,9 @@ const scrollToContact = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-end text-xs text-neutral-500 tracking-widest uppercase">
-                <div className="text-block opacity-0 text-left min-[240px]:w-[10.8%] min-[455px]:w-1/4 md:w-[10%] ">16°03'35" N</div>
-                <div className="text-block opacity-0 text-center transform -translate-x-6 ">Koratty, Kerala, India</div>
+             <div className="grid grid-cols-3 items-end text-xs  text-neutral-500 tracking-widest uppercase w-full">
+                <div className="text-block opacity-0 text-left  whitespace-nowrap  ">16°03'35" N</div>
+                <div className="text-block opacity-0 text-center transform   whitespace-nowrap  ">Koratty, Kerala, India</div>
                 <div className="text-block  opacity-0 text-right">108°14'33" E</div>
               </div>
             </div>
