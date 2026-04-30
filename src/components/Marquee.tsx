@@ -61,7 +61,7 @@ export default function ExperienceList() {
       {/* =========================================
           TOP HEADER ROW
           ========================================= */}
-      <div className="flex justify-between items-start px-8 pb-12 border-b border-[#222]">
+      <div className="flex justify-between items-start px-3 md:px-8 pb-12 border-b border-[#222]">
         <div className="w-1/4 min-[375px]:text-xs  min-[425px]:text-sm text-neutral-400 min-[532px]:w-1/6  ">Industry</div>
         <div className="w-2/4 text-center min-[375px]:text-xs  min-[425px]:text-sm md:text-base text-neutral-400 max-w-sm mx-auto leading-relaxed">
           Every decision, every detail is a lever, each one working to make the whole run better than before
