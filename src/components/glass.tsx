@@ -19,12 +19,69 @@ export default function ProjectShowcase() {
     '/Mobile/image3.png',
     '/Mobile/image4.png',
   ];
+const [isMobile, setIsMobile] = useState(false);
 
+useEffect(() => {
+  const check = () => setIsMobile(window.innerWidth < 768);
+  check();
+  window.addEventListener('resize', check);
+  return () => window.removeEventListener('resize', check);
+}, []);
   useEffect(() => {
-    // 1. Cursor Follower Logic (Optimized for GPU)
+    // 2. Vertical Scroll + 3D Bottom Slide/Flip Reveal (runs on all devices)
+    const ctx = gsap.context(() => {
+      const panels = gsap.utils.toArray('.horizontal-panel');
+
+      panels.forEach((panel: any, i) => {
+        const imgWrap = panel.querySelector('.reveal-img');
+        if (i === 0) return;
+
+        gsap.fromTo(
+          imgWrap,
+          {
+            y: '30vh',
+            rotationX: -45,
+            scale: 0.85,
+            filter: 'blur(12px)',
+            transformOrigin: 'bottom center',
+            transformPerspective: 1200,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            rotationX: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+            opacity: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: panel,
+              start: 'top 95%',
+              end: 'top 35%',
+              scrub: 1.5,
+            },
+          }
+        );
+      });
+    }, containerRef);
+
+    if (isMobile) {
+      // Park cursor at bottom-center on mobile — it won't follow touch
+      gsap.set(cursorRef.current, {
+        x: window.innerWidth / 2,
+        y: window.innerHeight - 60,
+        opacity: 0,          // hide it entirely on mobile
+      });
+      return () => ctx.revert();
+    }
+
+    // 1. Cursor Follower — desktop only
+    // IMPORTANT: do NOT put translate3d in the style prop — GSAP owns x/y.
+    // The -50% centering is handled via marginLeft/marginTop instead.
     const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.15, ease: 'power3' });
     const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.15, ease: 'power3' });
 
+    // Seed cursor at current mouse position to avoid snap from (0,0) on first move
     const handleMouseMove = (e: MouseEvent) => {
       xTo(e.clientX);
       yTo(e.clientY);
@@ -32,50 +89,11 @@ export default function ProjectShowcase() {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // 2. Vertical Scroll + 3D Bottom Slide/Flip Reveal
-   const ctx = gsap.context(() => {
-  const panels = gsap.utils.toArray('.horizontal-panel');
-
-  panels.forEach((panel: any, i) => {
-    const imgWrap = panel.querySelector('.reveal-img');
-
-    // Skip first if you want it visible immediately
-    if (i === 0) return;
-
-    gsap.fromTo(
-      imgWrap,
-      {
-        y: '30vh',              // Slightly less distance so it doesn't feel rushed
-        rotationX: -45,         // Less extreme fold for a more elegant look
-        scale: 0.85,            // Starts slightly scaled down
-        filter: 'blur(12px)',   // Cinematic out-of-focus start
-        transformOrigin: 'bottom center',
-        transformPerspective: 1200,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        rotationX: 0,
-        scale: 1,               // Resolves to natural size
-        filter: 'blur(0px)',    // Comes into sharp focus
-        opacity: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: panel,
-          start: 'top 95%',     // Starts revealing slightly earlier
-          end: 'top 35%',       // Gives it more scroll room to breathe
-          scrub: 1.5,           // 👈 THE MAGIC INGREDIENT
-        },
-      }
-    );
-  });
-}, containerRef);
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       ctx.revert();
     };
-  }, []);
+  }, [isMobile]);
 
   // 3. Handle Cursor Hover State
   useEffect(() => {
@@ -139,8 +157,10 @@ export default function ProjectShowcase() {
           ref={cursorRef}
           className="fixed top-0 left-0 z-50 flex items-center justify-center rounded-full pointer-events-none"
           style={{
-            // translate3d forces hardware acceleration on the GPU to fix the lag
-            transform: 'translate3d(-50%, -50%, 0)',
+            // GSAP controls x/y via transform. We use negative margins for the
+            // -50% centering offset so GSAP's transform is never overridden.
+            marginLeft: '-8px',
+            marginTop: '-8px',
             willChange: 'transform, width, height',
             filter: 'drop-shadow(-8px -10px 46px rgba(0, 0, 0, 0.37))',
             backdropFilter: 'brightness(1.1) blur(2px) url(#displacementFilter)',
