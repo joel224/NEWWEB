@@ -51,8 +51,8 @@ const scrollToContact = () => {
       )
       // 1. The Expansion
       .to(loaderBoxRef.current, {
-        width: '100vw',  // <--- Change from '100%'
-        height: '100vh', // <--- Change from '100%'
+        width: '100vw', 
+        height: '100vh',
         duration: 1.2,
         ease: 'expo.inOut',
         delay: 0.2
@@ -111,7 +111,8 @@ const scrollToContact = () => {
     <main className="w-full bg-[#0a0a0a] min-h-screen font-sans overflow-x-hidden">
       
       {/* HERO SECTION: Locked to exactly one screen height (h-screen) with overflow hidden for the animation */}
-      <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-gray-100  ">
+      {/* Add: flex items-center justify-center */}
+<section ref={containerRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-gray-100">
         
        <div className="name-logo-wrap absolute inset-0 z-[60] flex items-center justify-center pointer-events-none">
           <img 
@@ -122,18 +123,19 @@ const scrollToContact = () => {
         </div>
         
         <div 
-          ref={loaderBoxRef} 
-         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0aff] overflow-hidden shadow-2xl flex items-center justify-center text-white z-10"
-        >
+            ref={loaderBoxRef} 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0aff] overflow-hidden shadow-2xl flex items-center justify-center text-white z-10 will-change-[width,height,filter]"
+          >
           <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent z-20 pointer-events-none">
             {loaderImages.map((src, index) => (
              <Image
                 key={index}
                 src={src}
-                fill // <--- YOU MUST ADD THIS
+                fill
+                sizes="300px"
                 priority={index === 0}
                 alt={`Loader image ${index + 1}`}
-                className="loader-img  object-cover"
+                className="loader-img h-full w-full object-cover"
               />
             ))}
           </div>

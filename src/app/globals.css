@@ -21,6 +21,11 @@
     --foreground: #ededed;
   }
 }
+/* Add this to your wrapper class */
+.loader-img-wrapper {
+  overflow: hidden; 
+}
+
 .nature-btn {
   @apply flex items-center gap-3 px-8 py-4 rounded-full 
   bg-white/40 backdrop-blur-md 
