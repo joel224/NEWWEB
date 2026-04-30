@@ -80,8 +80,8 @@ useEffect(() => {
     // 1. Cursor Follower — desktop only
     // IMPORTANT: do NOT put translate3d in the style prop — GSAP owns x/y.
     // The -50% centering is handled via marginLeft/marginTop instead.
-    const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.15, ease: 'power3' });
-    const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.15, ease: 'power3' });
+    const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.12, ease: 'power3' });
+    const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.12, ease: 'power3' });
 
     // Seed cursor at current mouse position to avoid snap from (0,0) on first move
     const handleMouseMove = (e: MouseEvent) => {
