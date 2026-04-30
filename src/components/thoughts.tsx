@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Image from 'next/image';
+ 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -167,15 +167,11 @@ tl.add(imgTl, i * baseSpacing);
             className="floating-img absolute  rounded-sm overflow-hidden"
             style={{ width: '180px', height: '130px' }} 
           >
-           <Image
-            src={src}
-            alt={`Project ${index + 1}`}
-            fill
-            sizes="(max-width: 768px) 50vw, 180px"
-            className="object-cover"
-            loading={index < 3 ? "eager" : "lazy"} // only first few
-            priority={index < 3} // only first few
-          />
+            <img 
+              src={src} 
+              alt={`Project ${index + 1}`} 
+              className="  min-[320px]:w-1/3 min-[320px]:h-1/3  min-[370px]:w-1/2 min-[370px]:h-1/2    md:w-full md:h-full object-cover"
+            />
           </div>
         ))}
       </div>

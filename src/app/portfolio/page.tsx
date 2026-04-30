@@ -170,7 +170,7 @@ const scrollToContact = () => {
                 (Contact)
               </span>
             </nav>
-            <div className="ui-overlay absolute inset-0 pointer-events-none p-4 md:p-8 flex flex-col justify-between z-50">
+            <div className="ui-overlay absolute inset-0 pointer-events-none p-1.5 md:p-8 flex flex-col justify-between z-50">
               <div className="flex-1 flex items-center justify-between">
                 <div className="text-block opacity-0 text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">
                   Web Developer. Scalable systems over social statements.
