@@ -39,18 +39,28 @@ const scrollToContact = () => {
 
       gsap.set(['.hero-25', '.nav-item', '.ui-overlay .text-block'], { autoAlpha: 0 });
 
-      tl.fromTo(
-        '.loader-img',
-        { yPercent: 100 },
-        { 
-          yPercent: 0, 
-          duration: 1, 
-          stagger: 0.22, 
-          ease: 'power3.out' 
-        }
-      )
+      // 1. Grab all the image elements
+      // Get all images as an array
+      const images = gsap.utils.toArray('.loader-img');
+
+      // Create a specific, controlled loop for the "office blind" effect
+      images.forEach((img, index) => {
+        tl.fromTo(img,
+          // Starting state: The image is "rolled up" (invisible, clipped to the bottom)
+          { clipPath: 'inset(100% 0% 0% 0%)' }, 
+          {
+            // End state: The image unrolls fully
+            clipPath: 'inset(0% 0% 0% 0%)',
+            duration: 0.7,         // <-- CONTROL 1: Speed of ONE individual image unrolling
+            ease: 'power2.inOut',  // The "mechanical but elegant" feel
+          },
+          // <-- CONTROL 2: When does the NEXT image start?
+          // i === 0 starts immediately. Every other image starts 0.5s before the previous one finishes.
+          index === 0 ? "+=0" : "-=0.5" 
+        );
+      });
       // 1. The Expansion
-      .to(loaderBoxRef.current, {
+      tl.to(loaderBoxRef.current, {
         width: '100vw', 
         height: '100vh',
         duration: 1.2,
@@ -60,7 +70,7 @@ const scrollToContact = () => {
       // 2. Blur UP (Starts exactly when expansion starts)
       .to(loaderBoxRef.current, {
         filter: 'blur(15px)',
-        duration: 0.6,
+        duration: 1,
         ease: 'power2.in'
       }, '<')
       // 3. Blur DOWN (Starts right after Blur UP finishes, making it sharp at the end)
@@ -124,7 +134,7 @@ const scrollToContact = () => {
         
         <div 
             ref={loaderBoxRef} 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0aff] overflow-hidden shadow-2xl flex items-center justify-center text-white z-10 will-change-[width,height,filter]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0aff] overflow-hidden  flex items-center justify-center text-white z-10 will-change-[width,height,filter]"
           >
           <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent z-20 pointer-events-none">
             {loaderImages.map((src, index) => (
@@ -136,6 +146,7 @@ const scrollToContact = () => {
                 priority={index === 0}
                 alt={`Loader image ${index + 1}`}
                 className="loader-img h-full w-full object-cover"
+              
               />
             ))}
           </div>
