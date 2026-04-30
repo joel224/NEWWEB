@@ -16,28 +16,20 @@ export default function PhilosophyCircles() {
 useEffect(() => {
     const ctx = gsap.context(() => {
       // 1. Ambient rotation for Venn circles
-      gsap.set('.venn-circle-1', { yPercent: -35 ,rotation: "+=-0" });
-      gsap.set('.venn-circle-2', { xPercent: 21.65, yPercent: 12.5 ,rotation: "+=120"});
-      gsap.set('.venn-circle-3', { xPercent: -21.65, yPercent: 12.5 ,rotation: "+=360"});
+      gsap.set('.venn-group-1', { yPercent: -35 ,rotation: "+=-0" });
+      gsap.set('.venn-group-2', { xPercent: 21.65, yPercent: 12.5 ,rotation: "+=120"});
+      gsap.set('.venn-group-3', { xPercent: -21.65, yPercent: 12.5 ,rotation: "+=360"});
 
-
-
-    //   gsap.to('.venn-circle', {
-    //     rotation: 360,
-    //     duration: 40, bug here if i add it like this cuz it will not actually spin the circle 
-    //     ease: 'none', 
-    //     repeat: -1, // Loops forever so it never stops rotating
-    //   });
-     gsap.to('.venn-circle', {
-  rotation: "+=860", //'; this setup does work just fine ,it does spin just fine am okey with this 
-  ease: 'none',
-  scrollTrigger: {
-    trigger: containerRef.current,
-     start: 'top bottom',   
-    end: '+=12000', // 🔥 THIS is the key
-    scrub: 1.5,
-  },
-});
+      gsap.to('.venn-dot-container', {
+        rotation: "+=860", 
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',   
+          end: '+=12000', 
+          scrub: 1.5,
+        },
+      });
 
       // 2. Initial state
       gsap.set('.floating-img', {
@@ -186,14 +178,23 @@ tl.add(imgTl, i * baseSpacing);
       {/* CIRCLES LAYER */}
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
         <div className="relative w-[50vh] h-[50vh] max-w-[500px] max-h-[500px]">
-          <div className="venn-circle venn-circle-1 absolute inset-0 rounded-full border border-[#333333]">
-            <div className="absolute w-[4px] h-[4px] bg-white rounded-full top-[-2px] left-1/2 -ml-[2px]" />
+          <div className="venn-group venn-group-1 absolute inset-0">
+            <div className="absolute inset-0 rounded-full border border-[#333333]" />
+            <div className="venn-dot-container absolute inset-0 rounded-full">
+              <div className="absolute w-[4px] h-[4px] bg-white rounded-full top-[-2px] left-1/2 -ml-[2px]" />
+            </div>
           </div>
-          <div className="venn-circle venn-circle-2 absolute inset-0 rounded-full border border-[#333333]">
-            <div className="absolute w-[4px] h-[4px] bg-white rounded-full top-[-2px] left-1/2 -ml-[2px]" />
+          <div className="venn-group venn-group-2 absolute inset-0">
+            <div className="absolute inset-0 rounded-full border border-[#333333]" />
+            <div className="venn-dot-container absolute inset-0 rounded-full">
+              <div className="absolute w-[4px] h-[4px] bg-white rounded-full top-[-2px] left-1/2 -ml-[2px]" />
+            </div>
           </div>
-          <div className="venn-circle venn-circle-3 absolute inset-0 rounded-full border border-[#333333]">
-            <div className="absolute w-[4px] h-[4px] bg-white rounded-full top-[-2px] left-1/2 -ml-[2px]" />
+          <div className="venn-group venn-group-3 absolute inset-0">
+            <div className="absolute inset-0 rounded-full border border-[#333333]" />
+            <div className="venn-dot-container absolute inset-0 rounded-full">
+              <div className="absolute w-[4px] h-[4px] bg-white rounded-full top-[-2px] left-1/2 -ml-[2px]" />
+            </div>
           </div>
         </div>
       </div>

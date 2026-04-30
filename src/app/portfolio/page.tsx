@@ -145,7 +145,7 @@ const scrollToContact = () => {
               <img src="/heropro/bg.png" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
             </div>
 
-           <nav className="absolute top-5 left-0 w-full px-8 flex justify-between items-center text-sm z-50 pointer-events-auto">
+           <nav className="absolute top-5 left-0 w-full p-4 md:px-8 flex justify-between items-center text-sm z-50 pointer-events-auto">
               <span className="nav-item opacity-0 cursor-pointer hover:text-neutral-400 transition-colors">
                 (About)
               </span>
@@ -170,7 +170,7 @@ const scrollToContact = () => {
                 (Contact)
               </span>
             </nav>
-            <div className="ui-overlay absolute inset-0 pointer-events-none p-8 flex flex-col justify-between z-50">
+            <div className="ui-overlay absolute inset-0 pointer-events-none p-4 md:p-8 flex flex-col justify-between z-50">
               <div className="flex-1 flex items-center justify-between">
                 <div className="text-block opacity-0 text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">
                   Web Developer. Scalable systems over social statements.

@@ -86,7 +86,7 @@ export default function ExperienceList() {
             
             {/* 1. DEFAULT STATE (Fades out on hover) */}
            <div
-  className={`absolute inset-0 flex justify-between items-center px-8 transition-opacity duration-500 z-10
+  className={`absolute inset-0 flex justify-between items-center px-3 md:px-8 transition-opacity duration-500 z-10
   ${activeId === item.id ? 'opacity-0' : 'opacity-100 group-hover:opacity-0'}`}
 >
               <div className="w-1/4 min-[375px]:w-1/6 leading-tight min-[375px]:text-xs  min-[425px]:text-xs  min-[517px]:text-lg font-light">  
