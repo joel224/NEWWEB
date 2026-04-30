@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import SpotlightText from '@/components/SpotlightText';
@@ -127,11 +127,13 @@ const scrollToContact = () => {
         >
           <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent z-20 pointer-events-none">
             {loaderImages.map((src, index) => (
-              <img 
+             <Image
                 key={index}
                 src={src}
+                fill // <--- YOU MUST ADD THIS
+                priority={index === 0}
                 alt={`Loader image ${index + 1}`}
-                className="loader-img absolute inset-0 w-full h-full object-cover"
+                className="loader-img  object-cover"
               />
             ))}
           </div>
@@ -168,18 +170,18 @@ const scrollToContact = () => {
             </nav>
             <div className="ui-overlay absolute inset-0 pointer-events-none p-8 flex flex-col justify-between z-50">
               <div className="flex-1 flex items-center justify-between">
-                <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">
+                <div className="text-block opacity-0 text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[70px] md:max-w-[200px]">
                   Web Developer. Scalable systems over social statements.
                 </div>
-                <div className="text-block text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[99px] md:max-w-[200px] text-right">
+                <div className="text-block opacity-0 text-sm text-neutral-400 min-[240px]:w-[20.8%]  max-[425px]:w-[99px] md:max-w-[200px] text-right">
                   A Web Developer focused on building high-performance solutions, not just websites.
                 </div>
               </div>
 
               <div className="flex justify-between items-end text-xs text-neutral-500 tracking-widest uppercase">
-                <div className="text-block text-left min-[240px]:w-[10.8%] min-[455px]:w-1/4 md:w-[10%] ">16°03'35" N</div>
-                <div className="text-block text-center transform -translate-x-6 ">Koratty, Kerala, India</div>
-                <div className="text-block text-right">108°14'33" E</div>
+                <div className="text-block opacity-0 text-left min-[240px]:w-[10.8%] min-[455px]:w-1/4 md:w-[10%] ">16°03'35" N</div>
+                <div className="text-block opacity-0 text-center transform -translate-x-6 ">Koratty, Kerala, India</div>
+                <div className="text-block  opacity-0 text-right">108°14'33" E</div>
               </div>
             </div>
           </div>
