@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import Image from 'next/image';
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -109,6 +109,7 @@ const burstY = targetY * gsap.utils.random(0.18, 0.25);
               x: 0, 
               y: 0, 
               opacity: 0, 
+                ease: 'power2.out',
               scale: 0.05 // Start tiny so it doesn't block the center
             },
             { 
@@ -117,7 +118,7 @@ const burstY = targetY * gsap.utils.random(0.18, 0.25);
               opacity: depth.opacity, 
               scale: depth.scale,
               duration: 0.9, // Very fast burst
-             ease: "sine.in", // 🔥 important
+              ease: 'none', // 🔥 important
             }
           )
          .to(img as Element, {
@@ -166,11 +167,15 @@ tl.add(imgTl, i * baseSpacing);
             className="floating-img absolute  rounded-sm overflow-hidden"
             style={{ width: '180px', height: '130px' }} 
           >
-            <img 
-              src={src} 
-              alt={`Project ${index + 1}`} 
-              className="  min-[320px]:w-1/3 min-[320px]:h-1/3  min-[370px]:w-1/2 min-[370px]:h-1/2    md:w-full md:h-full object-cover"
-            />
+           <Image
+            src={src}
+            alt={`Project ${index + 1}`}
+            fill
+            sizes="(max-width: 768px) 50vw, 180px"
+            className="object-cover"
+            loading={index < 3 ? "eager" : "lazy"} // only first few
+            priority={index < 3} // only first few
+          />
           </div>
         ))}
       </div>

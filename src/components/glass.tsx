@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -190,11 +190,18 @@ export default function ProjectShowcase() {
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
-                <img
-                  src={src}
-                  alt={`Project Showcase ${index + 1}`}
-                  className="w-full h-full object-cover" 
-                />
+               <Image
+                src={src}
+                alt={`Project Showcase ${index + 1}`}
+                fill
+                sizes="(max-width: 768px) 90vw, 80vw"
+                 
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                
+             
+                className="object-cover will-change-transform"
+              />
               </div>
             </div>
           ))}
