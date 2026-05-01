@@ -18,7 +18,7 @@ export default function Home() {
       >
 
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
-      <section className="relative w-full h-[96dvh] overflow-hidden">
+      <section className="relative w-full h-[90dvh] md:h-[96dvh] overflow-hidden">
 
         {/* Background video — replaces the placeholder brown */}
         <video
@@ -26,7 +26,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-[96dvh] object-cover object-[25%]"
+          className="absolute inset-0 w-full h-[90dvh]  md:h-[96dvh] object-cover object-[25%]"
         >
           <source src="/heropro/nettisivut (2160p).mp4" type="video/mp4" />
         </video>
