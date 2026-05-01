@@ -106,8 +106,7 @@ export default function Home() {
               target="_blank" 
               rel="noopener noreferrer"
               className="tracking-[0.2em]"
-            >
-              About
+            >About
             </Link>
             <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Portfolio</Link>
             <Link 
