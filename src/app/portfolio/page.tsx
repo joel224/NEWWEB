@@ -146,7 +146,7 @@ export default function PortfolioHero() {
             src="/heropro/name.svg"
             alt="Joel Joshy"
             className="xl:w-[20%] 2xl:w-[50%] w-[50%] md:w-[25%] h-auto object-contain"
-          /> 
+          />   
         </div>
 
         {/* Hero background — lives OUTSIDE loaderBox so expansion/blur don't affect it */}
