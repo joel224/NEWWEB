@@ -18,7 +18,7 @@ export default function Home() {
       >
 
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
-      <section className="relative w-full h-[90dvh] md:h-[96dvh] overflow-hidden">
+      <section className="relative w-full h-[90dvh] md:h-[96.2dvh] overflow-hidden">
 
         {/* Background video — replaces the placeholder brown */}
         <video
