@@ -80,7 +80,7 @@ export default function Home() {
               className="text-[8px] uppercase tracking-[0.45em] text-[#5c5045] mt-1"
               style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
             >
-              Engineer
+              WEBSITE'S
             </p>
           </div>
 
@@ -148,7 +148,7 @@ export default function Home() {
           className="text-[9px] tracking-[0.5em] text-[#5c5045] mt-1 mb-8"
           style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
         >
-          WEBSITE'S
+          Engineer
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
