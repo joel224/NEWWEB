@@ -10,7 +10,7 @@ export default function Home() {
     <main className="w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
 
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
-      <section className="relative w-full h-screen overflow-hidden">
+      <section className="relative w-full h-[96dvh] overflow-hidden">
 
         {/* Background video — replaces the placeholder brown */}
         <video
@@ -18,7 +18,7 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-[96dvh] object-cover object-[25%]"
         >
           <source src="/heropro/nettisivut (2160p).mp4" type="video/mp4" />
         </video>
@@ -45,7 +45,7 @@ export default function Home() {
           <div className="flex gap-10 mt-5 text-xl   text-[#3a2f25]"
                style={{ fontFamily: "var(--font-timesnewroman)", fontWeight: 300 }}>
             <Link href="#about" className="hover:opacity-90 transition-opacity tracking-wide">About</Link>
-            <Link href="#portfolio" className="hover:opacity-90 transition-opacity tracking-wide">Portfolio</Link>
+            <Link href="/portfolio" className="hover:opacity-90 transition-opacity tracking-wide">Portfolio</Link>
             <Link href="#contact" className="hover:opacity-90 transition-opacity tracking-wide">Contact Me</Link>
           </div>
         </nav>
@@ -85,8 +85,16 @@ export default function Home() {
           <div className="md:hidden absolute top-16 left-0 right-0 z-30 bg-[#f4f0eb]/90 backdrop-blur-sm flex flex-col items-center gap-5 py-8 text-sm text-[#3a2f25]"
                style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}>
             <Link href="#about" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">About</Link>
-            <Link href="#portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Portfolio</Link>
-            <Link href="#contact" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Contact Me</Link>
+            <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Portfolio</Link>
+            <Link 
+              href="https://www.linkedin.com/in/joel-j-824099264/'" 
+              onClick={() => setMobileMenuOpen(false)} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="tracking-[0.2em]"
+            >
+              Contact Me
+            </Link>
           </div>
         )}
 
@@ -122,7 +130,7 @@ export default function Home() {
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
-          <Link href="#portfolio" className="tracking-wide">Portfolio</Link>
+          <Link href="/portfolio" className="tracking-wide">Portfolio</Link>
           <Link href="#contact" className="tracking-wide">Contact</Link>
         </nav>
       </section>
