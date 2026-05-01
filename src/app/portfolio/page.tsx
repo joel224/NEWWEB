@@ -148,7 +148,7 @@ export default function PortfolioHero() {
 
         {/* Hero background — lives OUTSIDE loaderBox so expansion/blur don't affect it */}
         <div className="hero-25   opacity-0 absolute inset-0 z-[15] flex items-center justify-center mix-blend-screen pointer-events-none">
-          <img src="/heropro/bg (2).png" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
+          <img src="/heropro/bg (3).png" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
         </div>
 
         <div
