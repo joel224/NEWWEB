@@ -2,15 +2,18 @@
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import SpotlightText from '@/components/SpotlightText';
-import PhilosophyCircles from '@/components/thoughts';
-import TextMarquee from '@/components/Magazine';
-import ExperienceList from '@/components/Marquee';
-import ProjectShowcase from '@/components/glass';
-import ContactSection from '@/components/lastly';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
+
+// Below-fold components — loaded only when needed, not in the initial bundle
+const SpotlightText = dynamic(() => import('@/components/SpotlightText'), { ssr: false });
+const PhilosophyCircles = dynamic(() => import('@/components/thoughts'), { ssr: false });
+const TextMarquee = dynamic(() => import('@/components/Magazine'), { ssr: false });
+const ExperienceList = dynamic(() => import('@/components/Marquee'), { ssr: false });
+const ProjectShowcase = dynamic(() => import('@/components/glass'), { ssr: false });
+const ContactSection = dynamic(() => import('@/components/lastly'), { ssr: false });
 
 export default function PortfolioHero() {
   const router = useRouter(); // <--- ADD THIS LINE
@@ -148,12 +151,12 @@ export default function PortfolioHero() {
 
         {/* Hero background — lives OUTSIDE loaderBox so expansion/blur don't affect it */}
         <div className="hero-25   opacity-0 absolute inset-0 z-[15] flex items-center justify-center mix-blend-screen pointer-events-none">
-          <img src="/heropro/bg (6).png" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
+          <img src="/heropro/bg6.webp" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
         </div>
 
         <div
           ref={loaderBoxRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0a] overflow-hidden flex items-center justify-center text-white z-10 will-change-[width,height,filter]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0a] overflow-hidden flex items-center justify-center text-white z-10"
         >
           <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent   pointer-events-none">
             {loaderImages.map((src, index) => (
