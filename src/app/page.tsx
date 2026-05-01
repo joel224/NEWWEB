@@ -52,7 +52,15 @@ export default function Home() {
           </div>
           <div className="flex gap-10 mt-5 text-xl   text-[#3a2f25]"
                style={{ fontFamily: "var(--font-timesnewroman)", fontWeight: 300 }}>
-            <Link href="#about" className="hover:opacity-90 transition-opacity tracking-wide">About</Link>
+            <Link 
+              href="https://www.linkedin.com/in/joel-j-824099264/'" 
+              onClick={() => setMobileMenuOpen(false)} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="tracking-[0.2em]"
+            >
+              About
+            </Link>
             <Link href="/portfolio" className="hover:opacity-90 transition-opacity tracking-wide">Portfolio</Link>
             <Link href="#contact" className="hover:opacity-90 transition-opacity tracking-wide">Contact Me</Link>
           </div>
@@ -92,7 +100,15 @@ export default function Home() {
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 z-30 bg-[#f4f0eb]/90 backdrop-blur-sm flex flex-col items-center gap-5 py-8 text-sm text-[#3a2f25]"
                style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}>
-            <Link href="#about" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">About</Link>
+             <Link 
+              href="https://www.linkedin.com/in/joel-j-824099264/'" 
+              onClick={() => setMobileMenuOpen(false)} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="tracking-[0.2em]"
+            >
+              About
+            </Link>
             <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Portfolio</Link>
             <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
@@ -152,86 +168,72 @@ export default function Home() {
       </section>
 
       {/* ─── ABOUT SECTION ────────────────────────────────────── */}
-      <section id="about" className="w-full bg-[#f4f0eb] flex flex-col items-center px-6 py-24 md:py-22 relative z-20">
-        <div className="max-w-4xl text-center flex flex-col items-center gap-9">
+      <section id="about" className="w-full bg-[#f4f0eb] flex flex-col items-center px-6 md:px-8 py-18 md:py-32 relative z-20 overflow-hidden">
+        <div className="w-full max-w-4xl text-center flex flex-col items-center gap-10 md:gap-12">
           <h3 
-            className="text-2xl uppercase md:text-4xl lg:text-5xl text-[#3a2f25] leading-snug md:leading-relaxed"
+            className="text-3xl uppercase md:text-4xl lg:text-5xl text-[#3a2f25] leading-snug md:leading-relaxed"
             style={{ fontFamily: "var(--font-montserrat)", fontWeight: 400 }}
           >
             Jo`el 
           </h3>
           
-          {/* Elegant vertical divider */}
-         <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start group">
-  {/* The Spine: Increased height and a subtle gradient to feel "mechanical" */}
-  <div className="w-[1px] h-12 md:h-24 bg-gradient-to-b from-[#3a2f25] via-[#3a2f25]/40 to-transparent opacity-50"></div>
-  
-  <div className="space-y-4">
-    {/* The Label: Designers use "Meta-data" to frame the art */}
-    <p className="text-[10px] tracking-[0.3em] uppercase text-[#3a2f25]/50 select-none" aria-hidden="true">
-      01 — Philosophy
-    </p>
+          <div className="w-full flex flex-col md:flex-row gap-8 md:gap-12 items-start md:justify-center group">
+            {/* The Spine: Visible on desktop, subtle horizontal line on mobile */}
+            <div className="hidden md:block w-[1px] h-24 bg-gradient-to-b from-[#3a2f25] via-[#3a2f25]/40 to-transparent opacity-50 mt-2"></div>
+            <div className="md:hidden w-12 h-[1px] bg-gradient-to-r from-[#3a2f25] to-transparent opacity-30 mb-2"></div>
+            
+            <div className="flex flex-col items-start text-left space-y-5 w-full md:w-auto max-w-xl">
+              {/* The Label */}
+              <p className="text-[10px] tracking-[0.3em] uppercase text-[#3a2f25]/50 select-none" aria-hidden="true">
+                01 — Philosophy
+              </p>
 
-    <p 
-      className="text-lg md:text-xl text-[#3a2f25] leading-[1.6] max-w-[38ch] tracking-tight"
-      style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
-    >
-      I specialize in designing and building <span className="font-light">high-performance</span> web applications that don’t just function flawlessly, but <span className="italic">feel alive</span>. 
-    </p>
-    
-    <p 
-      className="text-sm md:text-base text-[#5c5045]/80 leading-relaxed max-w-[45ch] indent-8 md:indent-12"
-      style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
-    >
-      By combining modern frameworks with sophisticated animation techniques, I create digital environments that captivate and engage.
-    </p>
-    
-  </div>
-  {/* Social Wrapper: Aligned to the paragraph's indent for a clean vertical 'spine' */}
-<div className="flex items-center gap-8 pt-6 ml-8 md:ml-12 relative z-[70]">
-  <div className="w-4 h-[1px] bg-white/20" aria-hidden="true"></div>
+              <p 
+                className="text-lg md:text-xl text-[#3a2f25] leading-[1.6] md:max-w-[38ch] tracking-tight"
+                style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
+              >
+                I specialize in designing and building <span className="font-light">high-performance</span> web applications that don’t just function flawlessly, but <span className="italic">feel alive</span>. 
+              </p>
+              
+              {/* Social Wrapper */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8 pt-4 md:pt-6 md:ml-8 relative z-[70] w-full">
+                <div className="hidden sm:block w-4 h-[1px] bg-white/20" aria-hidden="true"></div>
 
-  <div className="flex gap-6 items-center">
-    <a 
-      href="https://www.linkedin.com/in/joel-j-824099264/" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="group/icon"
-    >
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        width="60" 
-        height="60" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="#ffffffff" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round"
-        /* 
-           Base State: Opacity 80% (Always visible)
-           Hover State: Pure White + Drop Shadow Glow
-        */
-        className="opacity-80 group-hover/icon:opacity-100 group-hover/icon:drop-shadow-[0_0_12px_rgba(100,215,130,30)] transition-all duration-300 ease-out"
-      >
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
-      </svg>
-    </a>
+                <div className="flex items-center gap-4">
+                  <a 
+                    href="https://www.linkedin.com/in/joel-j-824099264/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group/icon"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      className="w-12 h-12 md:w-[60px] md:h-[60px] opacity-80 group-hover/icon:opacity-100 group-hover/icon:drop-shadow-[0_0_12px_rgba(167,243,208,0.6)] transition-all duration-300 ease-out"
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="#ffffffff" 
+                      strokeWidth="1.5" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
+                    </svg>
+                  </a>
+                </div>
 
-  </div>
-
-  {/* The "Available" Dot: A designer trick to show activity */}
-  <div className="flex items-center gap-2 ml-4">
-    <span className="relative flex h-20 w-20">
-      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/40 opacity-75"></span>
-      <span className="relative inline-flex rounded-full h-10 w-10 bg-white/30"></span>
-    </span>
-    <p className="text-[19px] tracking-widest uppercase text-white/30 select-none">
-      Open for collab
-    </p>
-  </div>
-</div>
-</div>
+                {/* The "Available" Dot */}
+                <div className="flex items-center gap-3 md:gap-4 sm:ml-2">
+                  <span className="relative flex h-12 w-12 md:h-20 md:w-20 items-center justify-center">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/40 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-6 w-6 md:h-10 md:w-10 bg-white/30"></span>
+                  </span>
+                  <p className="text-xs md:text-[19px] tracking-widest uppercase text-[#3a2f25]/60 md:text-white/30 select-none whitespace-nowrap">
+                    Open for collab
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
