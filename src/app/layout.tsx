@@ -1,11 +1,15 @@
 //src\app\layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat,EB_Garamond } from "next/font/google";
 import "./globals.css";
 import GlassNavbar from "@/components/GlassNavbar";
 import { RevealProvider } from "./context/RevealContext";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
-
+const timesNewRoman = EB_Garamond({
+  variable: "--font-timesnewroman", // This matches your inline style!
+  subsets: ["latin"],
+  weight: ["400"], // EB Garamond doesn't usually use 300, 400 is very elegant
+});
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,6 +18,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["300", "400"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased`}
+      className={`${timesNewRoman.variable} ${geistSans.variable} ${geistMono.variable} ${montserrat.variable} min-h-screen antialiased`}
     >
       <body className="min-h-screen flex flex-col">
   <SmoothScrollProvider>
