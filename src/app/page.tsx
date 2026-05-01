@@ -30,10 +30,8 @@ export default function Home() {
           muted
           playsInline
           thumbnailTime={0} // Instantly loads the first frame to prevent the black screen
-          className="absolute inset-0 w-full h-[90dvh] md:h-[96dvh] pointer-events-none"
+          className="absolute inset-0 w-full h-[90dvh] md:h-[96dvh] pointer-events-none [--media-object-fit:cover] [--media-object-position:47%_center] md:[--media-object-position:center]"
           style={{ 
-            "--media-object-fit": "cover",
-            "--media-object-position": "25% 50%",
             "--controls": "none",              // Kills all UI controls
             "--loading-indicator": "none",     // Kills the spinner
             "--center-controls": "none",       // Kills the center play button animation
