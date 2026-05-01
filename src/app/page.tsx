@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import ClickSpark from "@/components/clicki";
+import MuxPlayer from "@mux/mux-player-react";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,14 +21,22 @@ export default function Home() {
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
       <section className="relative w-full h-[90dvh] md:h-[96.2dvh] overflow-hidden">
 
-        {/* Background video — Mux iframe with all controls hidden and full-cover sizing */}
-        <iframe
-          src="https://player.mux.com/AIacZLSZFiPD9jfMY00Dqipq8jNAEL3Xv01Z34g1LG6d8?metadata-video-title=nettisivut+%282160p%29&video-title=nettisivut+%282160p%29&autoplay=any&muted=true&loop=true&controls=false&playsinline=true"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] pointer-events-none"
-          style={{ border: 'none' }}
-          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        {/* Background video — Mux React Player (Fully cached native <video>) */}
+        <MuxPlayer
+          playbackId="AIacZLSZFiPD9jfMY00Dqipq8jNAEL3Xv01Z34g1LG6d8"
+          metadataVideoTitle="nettisivut (2160p)"
+          autoPlay="muted"
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-[90dvh] md:h-[96dvh] pointer-events-none"
+          style={{ 
+            "--media-object-fit": "cover",
+            "--media-object-position": "25% 50%",
+            width: "100%",
+            height: "100%"
+          } as React.CSSProperties}
+        />
 
         {/* Subtle dark overlay so text stays legible */}
         <div className="absolute inset-0 bg-black/10" />
