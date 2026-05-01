@@ -44,10 +44,10 @@ export default function Home() {
               JOEL JOSHY
             </h1> 
             <p
-              className="text-[12px] tracking-[1.85em] text-[#5c5045] mt-1"
+              className="text-[12px] tracking-[1.85em] text-[#5c5045] mt-1.5"
               style={{ fontFamily: "var(--font-montserrat)", fontWeight: 600 }}
             >
-              WEBSITES
+              Engineer
             </p>
           </div>
           <div className="flex gap-10 mt-5 text-xl   text-[#3a2f25]"
@@ -77,10 +77,10 @@ export default function Home() {
               JOEL JOSHY
             </p>
             <p
-              className="text-[8px] tracking-[0.45em] text-[#5c5045] mt-0.5"
+              className="text-[8px] uppercase tracking-[0.45em] text-[#5c5045] mt-1"
               style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
             >
-              WEBSITE'S
+              Engineer
             </p>
           </div>
 
@@ -100,14 +100,13 @@ export default function Home() {
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 z-30 bg-[#f4f0eb]/90 backdrop-blur-sm flex flex-col items-center gap-5 py-8 text-sm text-[#3a2f25]"
                style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}>
-             <Link 
+            <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
               onClick={() => setMobileMenuOpen(false)} 
               target="_blank" 
               rel="noopener noreferrer"
               className="tracking-[0.2em]"
-            >About
-            </Link>
+            >About</Link>
             <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Portfolio</Link>
             <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
