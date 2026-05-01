@@ -55,7 +55,7 @@ export default function PortfolioHero() {
         const images = gsap.utils.toArray('.loader-img');
 
         // Create a specific, controlled loop for the "office blind" effect
-        images.forEach((img, index) => {
+        images.forEach((img: any, index) => {
           tl.fromTo(img,
             // Starting state: The image is "rolled up" (invisible, clipped to the bottom)
             { clipPath: 'inset(100% 0% 0% 0%)' },
