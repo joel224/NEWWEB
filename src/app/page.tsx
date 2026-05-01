@@ -22,7 +22,7 @@ export default function Home() {
 
         {/* Background video — replaces the placeholder brown */}
         <video
-          autoPlay
+          autoPlay 
           muted
           loop
           playsInline
