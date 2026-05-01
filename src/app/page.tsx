@@ -123,7 +123,7 @@ export default function Home() {
       </section>
 
       {/* ─── BELOW-WAVE: MOBILE title + nav ───────────────────── */}
-      <section id="about" className="w-full bg-[#f4f0eb] flex flex-col items-center pt-6 pb-16 md:hidden">
+      <section id="mobile-hero-nav" className="w-full bg-[#f4f0eb] flex flex-col items-center pt-6 pb-16 md:hidden">
         <h2
           className="text-3xl tracking-[0.25em] font-light text-[#3a2f25]"
           style={{ fontFamily: "`'Montserrat', sans-serif", fontWeight: 300 }}
@@ -149,6 +149,90 @@ export default function Home() {
               Contact Me
             </Link>
         </nav>
+      </section>
+
+      {/* ─── ABOUT SECTION ────────────────────────────────────── */}
+      <section id="about" className="w-full bg-[#f4f0eb] flex flex-col items-center px-6 py-24 md:py-22 relative z-20">
+        <div className="max-w-4xl text-center flex flex-col items-center gap-9">
+          <h3 
+            className="text-2xl uppercase md:text-4xl lg:text-5xl text-[#3a2f25] leading-snug md:leading-relaxed"
+            style={{ fontFamily: "var(--font-montserrat)", fontWeight: 400 }}
+          >
+            Jo`el 
+          </h3>
+          
+          {/* Elegant vertical divider */}
+         <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start group">
+  {/* The Spine: Increased height and a subtle gradient to feel "mechanical" */}
+  <div className="w-[1px] h-12 md:h-24 bg-gradient-to-b from-[#3a2f25] via-[#3a2f25]/40 to-transparent opacity-50"></div>
+  
+  <div className="space-y-4">
+    {/* The Label: Designers use "Meta-data" to frame the art */}
+    <p className="text-[10px] tracking-[0.3em] uppercase text-[#3a2f25]/50 select-none" aria-hidden="true">
+      01 — Philosophy
+    </p>
+
+    <p 
+      className="text-lg md:text-xl text-[#3a2f25] leading-[1.6] max-w-[38ch] tracking-tight"
+      style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
+    >
+      I specialize in designing and building <span className="font-light">high-performance</span> web applications that don’t just function flawlessly, but <span className="italic">feel alive</span>. 
+    </p>
+    
+    <p 
+      className="text-sm md:text-base text-[#5c5045]/80 leading-relaxed max-w-[45ch] indent-8 md:indent-12"
+      style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
+    >
+      By combining modern frameworks with sophisticated animation techniques, I create digital environments that captivate and engage.
+    </p>
+    
+  </div>
+  {/* Social Wrapper: Aligned to the paragraph's indent for a clean vertical 'spine' */}
+<div className="flex items-center gap-8 pt-6 ml-8 md:ml-12 relative z-[70]">
+  <div className="w-4 h-[1px] bg-white/20" aria-hidden="true"></div>
+
+  <div className="flex gap-6 items-center">
+    <a 
+      href="https://www.linkedin.com/in/joel-j-824099264/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="group/icon"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="60" 
+        height="60" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="#ffffffff" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        /* 
+           Base State: Opacity 80% (Always visible)
+           Hover State: Pure White + Drop Shadow Glow
+        */
+        className="opacity-80 group-hover/icon:opacity-100 group-hover/icon:drop-shadow-[0_0_12px_rgba(100,215,130,30)] transition-all duration-300 ease-out"
+      >
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
+      </svg>
+    </a>
+
+  </div>
+
+  {/* The "Available" Dot: A designer trick to show activity */}
+  <div className="flex items-center gap-2 ml-4">
+    <span className="relative flex h-20 w-20">
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white/40 opacity-75"></span>
+      <span className="relative inline-flex rounded-full h-10 w-10 bg-white/30"></span>
+    </span>
+    <p className="text-[19px] tracking-widest uppercase text-white/30 select-none">
+      Open for collab
+    </p>
+  </div>
+</div>
+</div>
+        </div>
       </section>
 
       </ClickSpark>
