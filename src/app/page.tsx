@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  return (
+  return (   
     <main className="w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
 
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
