@@ -29,13 +29,19 @@ export default function Home() {
           loop
           muted
           playsInline
+          thumbnailTime={0} // Instantly loads the first frame to prevent the black screen
           className="absolute inset-0 w-full h-[90dvh] md:h-[96dvh] pointer-events-none"
           style={{ 
             "--media-object-fit": "cover",
             "--media-object-position": "25% 50%",
+            "--controls": "none",              // Kills all UI controls
+            "--loading-indicator": "none",     // Kills the spinner
+            "--center-controls": "none",       // Kills the center play button animation
+            "--bottom-play-button": "none",
+            backgroundColor: "transparent",    // Prevents black background flash
             width: "100%",
             height: "100%"
-          } as React.CSSProperties}
+          } as any}
         />
 
         {/* Subtle dark overlay so text stays legible */}
