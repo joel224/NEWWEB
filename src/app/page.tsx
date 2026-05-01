@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ClickSpark from "@/components/clicki";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (   
     <main className="w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
+      <ClickSpark
+        sparkColor="#d47d5aff"
+        sparkSize={10}
+        sparkRadius={15}
+        sparkCount={8}
+        duration={400}
+      >
 
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
       <section className="relative w-full h-[96dvh] overflow-hidden">
@@ -131,10 +139,19 @@ export default function Home() {
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
           <Link href="/portfolio" className="tracking-wide">Portfolio</Link>
-          <Link href="#contact" className="tracking-wide">Contact</Link>
+          <Link 
+              href="https://www.linkedin.com/in/joel-j-824099264/'" 
+              onClick={() => setMobileMenuOpen(false)} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="tracking-[0.2em]"
+            >
+              Contact Me
+            </Link>
         </nav>
       </section>
 
+      </ClickSpark>
     </main>
   );
 }
