@@ -6,6 +6,7 @@ import ClickSpark from "@/components/clicki";
 import MuxPlayer from "@mux/mux-player-react";
 import { motion } from "framer-motion";
 import BubbleText from "@/components/BubbleText";
+import LiquidFragRenderer from "@/components/LiquidFragRenderer";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -269,6 +270,14 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* ─── MINIMAL LIQUID DROPLET AT BOTTOM ───────────────────── */}
+      <section className="w-full bg-[#f4f0eb] flex justify-center pb-32 overflow-hidden">
+        <LiquidFragRenderer 
+          className="w-64 h-64 md:w-80 md:h-80 opacity-90 rounded-full mix-blend-multiply" 
+          imageSrc="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIj48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImdyYWQiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+PHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9ImJsYWNrIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSJ3aGl0ZSIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMjQwIiBmaWxsPSJ1cmwoI2dyYWQpIi8+PC9zdmc+"
+        />
       </section>
       
       {/* PRELOAD PORTFOLIO IMAGES */}
