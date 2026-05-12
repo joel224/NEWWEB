@@ -51,7 +51,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/10" />
 
         {/* Floating Liquid Ball (Shortcut to Bento) */}
-        <Link href="/bento" className="fixed bottom-8 right-8 z-50">
+        <Link href="/portfolio" className="fixed bottom-8 right-8 z-50">
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
