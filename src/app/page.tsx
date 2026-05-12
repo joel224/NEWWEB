@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ClickSpark from "@/components/clicki";
 import MuxPlayer from "@mux/mux-player-react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -197,12 +198,35 @@ export default function Home() {
                 01 — Philosophy
               </p>
 
-              <p 
+              <motion.p 
                 className="text-lg md:text-xl text-[#3a2f25] leading-[1.6] md:max-w-[38ch] tracking-tight"
                 style={{ fontFamily: "var(--font-montserrat)", fontWeight: 300 }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                variants={{
+                  visible: { transition: { staggerChildren: 0.04 } },
+                  hidden: {}
+                }}
               >
-                I specialize in designing and building <span className="font-light">high-performance</span> web applications that don’t just function flawlessly, but <span className="italic">feel alive</span>. 
-              </p>
+                {[
+                  "I", "specialize", "in", "designing", "and", "building",
+                  <span key="hp" className="font-light">high-performance</span>,
+                  "web", "applications", "that", "don’t", "just", "function", "flawlessly,", "but",
+                  <span key="fa" className="italic">feel alive.</span>
+                ].map((word, i) => (
+                  <motion.span
+                    key={i}
+                    className="inline-block mr-[0.25em] align-top"
+                    variants={{
+                      hidden: { opacity: 0, y: 15 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.p>
               
               {/* Social Wrapper */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8 pt-4 md:pt-6 md:ml-8 relative z-[70] w-full">
