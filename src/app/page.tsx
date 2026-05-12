@@ -5,6 +5,7 @@ import Link from "next/link";
 import ClickSpark from "@/components/clicki";
 import MuxPlayer from "@mux/mux-player-react";
 import { motion } from "framer-motion";
+import BubbleText from "@/components/BubbleText";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -73,7 +74,7 @@ export default function Home() {
             >
               About
             </Link>
-            <Link href="/portfolio" className="hover:opacity-90 transition-opacity tracking-wide">Portfolio</Link>
+            <Link href="/portfolio" className="hover:opacity-90 transition-opacity tracking-wide"><BubbleText text="Portfolio" /></Link>
             <Link href="#contact" className="hover:opacity-90 transition-opacity tracking-wide">Contact Me</Link>
           </div>
         </nav>
@@ -119,7 +120,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="tracking-[0.2em]"
             >About</Link>
-            <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]">Portfolio</Link>
+            <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)} className="tracking-[0.2em]"><BubbleText text="Portfolio" /></Link>
             <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
               onClick={() => setMobileMenuOpen(false)} 
@@ -164,7 +165,7 @@ export default function Home() {
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
-          <Link href="/portfolio" className="tracking-wide">Portfolio</Link>
+          <Link href="/portfolio" className="tracking-wide"><BubbleText text="Portfolio" /></Link>
           <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
               onClick={() => setMobileMenuOpen(false)} 
