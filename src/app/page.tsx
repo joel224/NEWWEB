@@ -6,6 +6,9 @@ import ClickSpark from "@/components/clicki";
 import MuxPlayer from "@mux/mux-player-react";
 import { motion } from "framer-motion";
 import BubbleText from "@/components/BubbleText";
+import LiquidFragRenderer from "@/components/LiquidFragRenderer";
+
+const CIRCLE_MASK = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0id2hpdGUiIC8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDAiIGZpbGw9ImJsYWNrIiAvPjwvc3ZnPg==`;
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,6 +49,25 @@ export default function Home() {
 
         {/* Subtle dark overlay so text stays legible */}
         <div className="absolute inset-0 bg-black/10" />
+
+        {/* Floating Liquid Ball */}
+        <motion.div
+          animate={{
+            y: [0, -30, 0],
+            rotate: [0, 5, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-[20%] right-[10%] w-32 h-32 md:w-48 md:h-48 z-10 pointer-events-none opacity-80"
+        >
+          <LiquidFragRenderer 
+            imageSrc={CIRCLE_MASK} 
+            className="w-full h-full drop-shadow-2xl" 
+          />
+        </motion.div>
 
         {/* ── DESKTOP NAV (center-top) ── */}
         <nav className="hidden md:flex absolute top-13 left-0 right-0 flex-col items-center z-20 gap-2">
