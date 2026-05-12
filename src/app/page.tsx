@@ -64,7 +64,7 @@ export default function Home() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-16 h-16  md:w-24 md:h-24 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
+            className="w-16 h-16  md:w-24 md:h-24 lg:w-28 lg:h-28 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
           >
             <LiquidFragRenderer 
               imageSrc={CIRCLE_MASK} 
