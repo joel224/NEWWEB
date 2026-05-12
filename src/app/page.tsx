@@ -274,7 +274,7 @@ export default function Home() {
       <section className="w-full bg-[#f4f0eb] flex justify-center items-center pb-24 md:pb-32 px-6 relative z-20">
         <Link 
           href="/portfolio"
-          className="block w-full max-w-[280px] md:max-w-[400px] lg:max-w-[500px] hover:scale-105 transition-transform duration-500 ease-out"
+          className="block w-full max-w-[250px] md:max-w-[230px] lg:max-w-[300px] hover:scale-105 transition-transform duration-500 ease-out"
         >
           <img 
             src="/svghere/Portfolio.svg" 
