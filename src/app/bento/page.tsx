@@ -68,6 +68,17 @@ export default function RevealBento() {
             imageSrc={CIRCLE_MASK} 
             className="w-full h-full " 
           />
+          <motion.span
+            animate={{ x: [0, 4, 0] }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute inset-0 flex items-center justify-center text-[6px] md:text-[10px] font-black text-white pointer-events-none uppercase tracking-tighter"
+          >
+            Next -&gt;
+          </motion.span>
         </motion.div>
       </Link>
     </div>
