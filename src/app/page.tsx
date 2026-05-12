@@ -59,7 +59,7 @@ export default function Home() {
               className="text-[12px] tracking-[1.85em] text-[#5c5045] mt-1.5"
               style={{ fontFamily: "var(--font-montserrat)", fontWeight: 600 }}
             >
-              Engineer
+              Fullstack Dev
             </p>
           </div>
           <div className="flex gap-10 mt-5 text-xl   text-[#3a2f25]"
