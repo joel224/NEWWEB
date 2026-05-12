@@ -62,7 +62,7 @@ export default function RevealBento() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="w-16 h-16 md:w-21 md:h-20 2xl:w-24  2xl:h-24 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
+          className="w-14 h-14 md:w-21 md:h-20 2xl:w-24  2xl:h-24 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
         >
           <LiquidFragRenderer 
             imageSrc={CIRCLE_MASK} 
