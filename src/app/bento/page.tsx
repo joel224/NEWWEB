@@ -528,133 +528,97 @@ const LoadingScreenBlock = () => (
   </Block>
 );
 
+type FeatureCardProps = {
+  title: string;
+  description: string;
+  bg: string;
+  pathId: string;
+  offset?: string;
+};
+
+const FeatureCard = ({ title, description, bg, pathId, offset = "" }: FeatureCardProps) => (
+  <div className={`group w-full border-2 border-black ${bg} ${offset}`}>
+    <motion.div
+      className={`-m-0.5 border-2 border-black ${bg}`}
+      whileHover={{ x: -4, y: -4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      <div className={`relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 border-black ${bg} p-8`}>
+        <p className="flex items-center text-2xl font-medium uppercase text-black">
+          <svg
+            stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24"
+            strokeLinecap="round" strokeLinejoin="round"
+            className="-ml-8 mr-2 shrink-0 opacity-0 transition-all duration-300 ease-in-out group-hover:ml-0 group-hover:opacity-100"
+            height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+          {title}
+        </p>
+        <div>
+          <p className="mb-0 transition-[margin] duration-300 ease-in-out group-hover:mb-10 text-black text-sm leading-snug">
+            {description}
+          </p>
+          <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 font-bold text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+            LET'S GO
+          </button>
+        </div>
+        <svg
+          width="200" height="200"
+          className="pointer-events-none absolute z-10 rounded-full"
+          style={{ top: 0, right: 0, transform: "translateX(50%) translateY(-50%) scale(0.75) rotate(64.8144deg)" }}
+        >
+          <path id={pathId} d="M100,100 m-100,0 a100,100 0 1,0 200,0 a100,100 0 1,0 -200,0" fill="none" />
+          <text>
+            <textPath
+              href={`#${pathId}`}
+              fill="black"
+              className="fill-black text-2xl font-black uppercase opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+            >
+              LEARN MORE • LEARN MORE • LEARN MORE • LEARN MORE •
+            </textPath>
+          </text>
+        </svg>
+      </div>
+    </motion.div>
+  </div>
+);
+
 const FeaturesBlock = () => (
   <Block className="col-span-12 p-0 overflow-hidden">
-    <div className="no-scrollbar relative w-full overflow-hidden border border-neutral-300 bg-white" style={{ display: "block" }}>
+    <div className="no-scrollbar relative w-full overflow-hidden border border-neutral-300 bg-white">
       <section className="bg-white px-8 py-24">
         <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
-          {/* Card 1 */}
-          <div className="group w-full border-2 border-black bg-emerald-300">
-            <div className="-m-0.5 border-2 border-black bg-emerald-300" style={{ transform: "none" }}>
-              <div className="relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 border-black bg-emerald-300 p-8" style={{ transform: "none" }}>
-                <p className="flex items-center text-2xl font-medium uppercase">
-                  <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="-ml-8 mr-2 opacity-0 transition-all duration-300 ease-in-out group-hover:ml-0 group-hover:opacity-100" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                  Dynamic
-                </p>
-                <div>
-                  <p className="transition-[margin] duration-300 ease-in-out group-hover:mb-10 text-black">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima.
-                  </p>
-                  <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 font-bold">
-                    LET'S GO
-                  </button>
-                </div>
-                <svg width="200" height="200" className="pointer-events-none absolute z-10 rounded-full" style={{ top: "0px", right: "0px", transform: "translateX(50%) translateY(-50%) scale(0.75) rotate(338.458deg)" }}>
-                  <path id="circlePath1" d="M100,100 m-100,0 a100,100 0 1,0 200,0 a100,100 0 1,0 -200,0" fill="none"></path>
-                  <text>
-                    <textPath href="#circlePath1" fill="black" className="fill-black text-2xl font-black uppercase opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                      LEARN MORE • LEARN MORE • LEARN MORE • LEARN MORE •
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
-            </div>
-          </div>
-          {/* Card 2 */}
-          <div className="group w-full border-2 border-black bg-indigo-300 sm:-translate-y-6">
-            <div className="-m-0.5 border-2 border-black bg-indigo-300 sm:-translate-y-6" style={{ transform: "none" }}>
-              <div className="relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 border-black p-8 bg-indigo-300 sm:-translate-y-6" style={{ transform: "none" }}>
-                <p className="flex items-center text-2xl font-medium uppercase text-black">
-                  <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="-ml-8 mr-2 opacity-0 transition-all duration-300 ease-in-out group-hover:ml-0 group-hover:opacity-100" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                  Data Driven
-                </p>
-                <div>
-                  <p className="transition-[margin] duration-300 ease-in-out group-hover:mb-10 text-black">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima.
-                  </p>
-                  <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 font-bold">
-                    LET'S GO
-                  </button>
-                </div>
-                <svg width="200" height="200" className="pointer-events-none absolute z-10 rounded-full" style={{ top: "0px", right: "0px", transform: "translateX(50%) translateY(-50%) scale(0.75) rotate(338.458deg)" }}>
-                  <path id="circlePath2" d="M100,100 m-100,0 a100,100 0 1,0 200,0 a100,100 0 1,0 -200,0" fill="none"></path>
-                  <text>
-                    <textPath href="#circlePath2" fill="black" className="fill-black text-2xl font-black uppercase opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                      LEARN MORE • LEARN MORE • LEARN MORE • LEARN MORE •
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
-            </div>
-          </div>
-          {/* Card 3 */}
-          <div className="group w-full border-2 border-black bg-red-300">
-            <div className="-m-0.5 border-2 border-black bg-red-300" style={{ transform: "none" }}>
-              <div className="relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 border-black p-8 bg-red-300" style={{ transform: "none" }}>
-                <p className="flex items-center text-2xl font-medium uppercase text-black">
-                  <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="-ml-8 mr-2 opacity-0 transition-all duration-300 ease-in-out group-hover:ml-0 group-hover:opacity-100" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                  Dutiful
-                </p>
-                <div>
-                  <p className="transition-[margin] duration-300 ease-in-out group-hover:mb-10 text-black">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima.
-                  </p>
-                  <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 font-bold">
-                    LET'S GO
-                  </button>
-                </div>
-                <svg width="200" height="200" className="pointer-events-none absolute z-10 rounded-full" style={{ top: "0px", right: "0px", transform: "translateX(50%) translateY(-50%) scale(0.75) rotate(338.458deg)" }}>
-                  <path id="circlePath3" d="M100,100 m-100,0 a100,100 0 1,0 200,0 a100,100 0 1,0 -200,0" fill="none"></path>
-                  <text>
-                    <textPath href="#circlePath3" fill="black" className="fill-black text-2xl font-black uppercase opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                      LEARN MORE • LEARN MORE • LEARN MORE • LEARN MORE •
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
-            </div>
-          </div>
-          {/* Card 4 */}
-          <div className="group w-full border-2 border-black bg-yellow-300 sm:-translate-y-6">
-            <div className="-m-0.5 border-2 border-black bg-yellow-300 sm:-translate-y-6" style={{ transform: "none" }}>
-              <div className="relative -m-0.5 flex h-72 flex-col justify-between overflow-hidden border-2 border-black p-8 bg-yellow-300 sm:-translate-y-6" style={{ transform: "none" }}>
-                <p className="flex items-center text-2xl font-medium uppercase text-black">
-                  <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="-ml-8 mr-2 opacity-0 transition-all duration-300 ease-in-out group-hover:ml-0 group-hover:opacity-100" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                  Demure
-                </p>
-                <div>
-                  <p className="transition-[margin] duration-300 ease-in-out group-hover:mb-10 text-black">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima.
-                  </p>
-                  <button className="absolute bottom-2 left-2 right-2 translate-y-full border-2 border-black bg-white px-4 py-2 text-black opacity-0 transition-all duration-300 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 font-bold">
-                    LET'S GO
-                  </button>
-                </div>
-                <svg width="200" height="200" className="pointer-events-none absolute z-10 rounded-full" style={{ top: "0px", right: "0px", transform: "translateX(50%) translateY(-50%) scale(0.75) rotate(338.458deg)" }}>
-                  <path id="circlePath4" d="M100,100 m-100,0 a100,100 0 1,0 200,0 a100,100 0 1,0 -200,0" fill="none"></path>
-                  <text>
-                    <textPath href="#circlePath4" fill="black" className="fill-black text-2xl font-black uppercase opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-                      LEARN MORE • LEARN MORE • LEARN MORE • LEARN MORE •
-                    </textPath>
-                  </text>
-                </svg>
-              </div>
-            </div>
-          </div>
+          <FeatureCard
+            title="Dynamic"
+            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima."
+            bg="bg-emerald-300"
+            pathId="featureCircle1"
+          />
+          <FeatureCard
+            title="Data Driven"
+            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima."
+            bg="bg-indigo-300"
+            pathId="featureCircle2"
+            offset="sm:-translate-y-6"
+          />
+          <FeatureCard
+            title="Dutiful"
+            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima."
+            bg="bg-red-300"
+            pathId="featureCircle3"
+          />
+          <FeatureCard
+            title="Demure"
+            description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem doloremque vitae minima."
+            bg="bg-yellow-300"
+            pathId="featureCircle4"
+            offset="sm:-translate-y-6"
+          />
         </div>
       </section>
     </div>
   </Block>
 );
+
