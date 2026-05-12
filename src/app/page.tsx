@@ -270,6 +270,20 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── PORTFOLIO LOOP SECTION ───────────────────────────── */}
+      <section className="w-full bg-[#f4f0eb] flex justify-center items-center pb-24 md:pb-32 px-6 relative z-20">
+        <Link 
+          href="/portfolio"
+          className="block w-full max-w-[280px] md:max-w-[400px] lg:max-w-[500px] hover:scale-105 transition-transform duration-500 ease-out"
+        >
+          <img 
+            src="/svghere/Portfolio-loop.svg" 
+            alt="View Portfolio" 
+            className="w-full h-auto object-contain"
+          />
+        </Link>
+      </section>
+
       </ClickSpark>
     </main>
   );
