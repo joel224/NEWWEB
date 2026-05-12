@@ -165,7 +165,7 @@ export default function Home() {
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
-          <Link href="/portfolio" className="tracking-wide"><BubbleText text="Portfolio" /></Link>
+          <Link href="/portfolio" className="tracking-[0.2em]"><BubbleText text="Portfolio" /></Link>
           <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
               onClick={() => setMobileMenuOpen(false)} 
