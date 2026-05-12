@@ -4,7 +4,7 @@ import React from "react";
 import { MotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { FiArrowRight, FiMail, FiMapPin } from "react-icons/fi";
-import { SiGithub, SiTiktok, SiTwitter, SiYoutube } from "react-icons/si";
+import { SiGithub, SiTiktok, SiX, SiYoutube } from "react-icons/si";
 
 export default function RevealBento() {
   return (
@@ -146,7 +146,7 @@ const SocialsBlock = () => (
         href="#"
         className="grid h-full place-content-center text-3xl text-white"
       >
-        <SiTwitter />
+        <SiX />
       </a>
     </Block>
   </>
