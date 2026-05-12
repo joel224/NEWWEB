@@ -42,7 +42,14 @@
   @apply scale-105 shadow-xl;
   box-shadow: 0 0 25px rgba(255, 240, 200, 0.6);
 }
+@keyframes border-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
+.animate-border-spin {
+  animation: border-spin 4s linear infinite;
+}
 /* Hide scrollbar (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   display: none;
