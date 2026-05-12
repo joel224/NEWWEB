@@ -64,27 +64,13 @@ export default function Home() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-10 h-10 md:w-20 md:h-20 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
+            className="w-10 h-10 md:w-24 md:h-24 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
           >
             <LiquidFragRenderer 
               imageSrc={CIRCLE_MASK} 
               className="w-full h-full " 
             />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="flex items-center gap-1 text-white font-black text-[10px] md:text-sm tracking-tight">
-                <span className="drop-shadow-md">NEXT</span>
-                <motion.div
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <FiArrowRight className="text-sm md:text-lg drop-shadow-md" />
-                </motion.div>
-              </div>
-            </div>
+           
           </motion.div>
         </Link>
 
