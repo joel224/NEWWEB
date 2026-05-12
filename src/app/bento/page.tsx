@@ -5,10 +5,24 @@ import { MotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { FiArrowRight, FiMail, FiMapPin } from "react-icons/fi";
 import { SiGithub, SiTiktok, SiX, SiYoutube } from "react-icons/si";
+import Beams from "@/components/Beams";
 
 export default function RevealBento() {
   return (
-    <div className="min-h-screen bg-zinc-900 px-4 py-12 text-zinc-50">
+    <div className="relative min-h-screen px-4 py-12 text-zinc-50">
+      {/* Beams background — fixed, full screen, behind everything */}
+      <div className="fixed inset-0 -z-10">
+        <Beams
+          beamWidth={2}
+          beamHeight={15}
+          beamNumber={10}
+          lightColor="#a78bfa"
+          speed={2}
+          noiseIntensity={1.75}
+          scale={0.2}
+          rotation={0}
+        />
+      </div>
       <Logo />
       <motion.div
         initial="initial"
