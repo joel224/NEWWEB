@@ -6,13 +6,12 @@ import ClickSpark from "@/components/clicki";
 import MuxPlayer from "@mux/mux-player-react";
 import { motion } from "framer-motion";
 import BubbleText from "@/components/BubbleText";
-import SnakeLine from "@/components/SnakeLine";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (   
-    <main className="relative w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
+    <main className="w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
       <ClickSpark
         sparkColor="#d47d5aff"
         sparkSize={10}
@@ -166,7 +165,7 @@ export default function Home() {
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
-          <Link href="/portfolio" className="tracking-[0.2em]"><BubbleText text="Portfolio" /></Link>
+          <Link href="/portfolio" className="tracking-wide"><BubbleText text="Portfolio" /></Link>
           <Link 
               href="https://www.linkedin.com/in/joel-j-824099264/'" 
               onClick={() => setMobileMenuOpen(false)} 
@@ -178,9 +177,6 @@ export default function Home() {
             </Link>
         </nav>
       </section>
-
-      {/* ─── RIBBON SNAKE: starts after the video wave ─────── */}
-      <SnakeLine />
 
       {/* ─── ABOUT SECTION ────────────────────────────────────── */}
       <section id="about" className="w-full bg-[#f4f0eb] flex flex-col items-center px-6 md:px-8 py-18 md:py-32 relative z-20 overflow-hidden">
