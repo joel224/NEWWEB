@@ -269,6 +269,13 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+      {/* PRELOAD PORTFOLIO IMAGES */}
+      <div className="hidden" aria-hidden="true">
+        {['/heropro/1.webp', '/heropro/2.webp', '/heropro/3.webp', '/heropro/4.webp', '/heropro/5.webp', '/heropro/6.webp', '/heropro/7.webp', '/heropro/8.webp', '/heropro/bg6.webp'].map((src) => (
+          <img key={src} src={src} alt="" />
+        ))}
+      </div>
 
       </ClickSpark>
     </main>

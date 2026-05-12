@@ -37,11 +37,15 @@ export default function PortfolioHero() {
   ];
 
   useEffect(() => {
-    // Wait for the first 2 loader images to be decoded before starting
-    const imgElements = Array.from(document.querySelectorAll('.loader-img')) as HTMLImageElement[];
-    const waitTargets = imgElements.slice(0, 2).map(img =>
-      img.complete ? Promise.resolve() : img.decode().catch(() => { })
-    );
+    // Wait for all loader images to be decoded before starting
+    const imgElements = Array.from(document.querySelectorAll('.loader-img, .hero-25 img')) as HTMLImageElement[];
+    const waitTargets = imgElements.map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    });
 
     let ctx: gsap.Context;
 
@@ -160,14 +164,11 @@ export default function PortfolioHero() {
         >
           <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent   pointer-events-none">
             {loaderImages.map((src, index) => (
-              <Image
+              <img
                 key={index}
                 src={src}
-                fill
-                sizes="300px"
-                priority={index < 2}
                 alt={`Loader image ${index + 1}`}
-                className="loader-img h-full w-full object-cover"
+                className="loader-img absolute inset-0 h-full w-full object-cover"
               />
             ))}
           </div>
