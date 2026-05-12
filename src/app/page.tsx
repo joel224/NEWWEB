@@ -50,24 +50,27 @@ export default function Home() {
         {/* Subtle dark overlay so text stays legible */}
         <div className="absolute inset-0 bg-black/10" />
 
-        {/* Floating Liquid Ball */}
-        <motion.div
-          animate={{
-            y: [0, -30, 0],
-            rotate: [0, 5, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-[20%] right-[10%] w-32 h-32 md:w-48 md:h-48 z-10 pointer-events-none opacity-80"
-        >
-          <LiquidFragRenderer 
-            imageSrc={CIRCLE_MASK} 
-            className="w-full h-full drop-shadow-2xl" 
-          />
-        </motion.div>
+        {/* Floating Liquid Ball (Shortcut to Bento) */}
+        <Link href="/bento" className="fixed bottom-8 right-8 z-50">
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            animate={{
+              y: [0, -15, 0],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="w-20 h-20 md:w-28 md:h-28 cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+          >
+            <LiquidFragRenderer 
+              imageSrc={CIRCLE_MASK} 
+              className="w-full h-full drop-shadow-xl" 
+            />
+          </motion.div>
+        </Link>
 
         {/* ── DESKTOP NAV (center-top) ── */}
         <nav className="hidden md:flex absolute top-13 left-0 right-0 flex-col items-center z-20 gap-2">
