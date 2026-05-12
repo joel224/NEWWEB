@@ -553,7 +553,7 @@ const LoadingScreenBlock = () => (
       className="no-scrollbar relative w-full h-full overflow-hidden border border-neutral-300 bg-white"
       style={{ display: "block" }}
     >
-      <div className="grid h-full min-h-[288px] place-content-center bg-neutral-950 p-4">
+      <div className="grid h-full min-h-[288px] place-content-center p-4">
         <div className="flex divide-x divide-neutral-950">
           <motion.div
             animate={{ y: [-32, 0, -32] }}

@@ -180,14 +180,14 @@ interface BeamsProps {
 }
 
 const Beams: FC<BeamsProps> = ({
-  beamWidth = 2,
-  beamHeight = 15,
-  beamNumber = 12,
+  beamWidth = 3, 
+  beamHeight = 16,
+  beamNumber = 20,
   lightColor = '#ffffff',
   speed = 2,
   noiseIntensity = 1.75,
   scale = 0.2,
-  rotation = 0
+  rotation = 30
 }) => {
   const meshRef = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>>(null!);
 
