@@ -21,9 +21,6 @@ export default function Home() {
         duration={400}
       >
 
-      {/* Snake line drawn as the user scrolls */}
-      <SnakeLine />
-
       {/* ─── VIDEO HERO SECTION ───────────────────────────────── */}
       <section className="relative w-full h-[90dvh] md:h-[96.2dvh] overflow-hidden">
 
@@ -181,6 +178,9 @@ export default function Home() {
             </Link>
         </nav>
       </section>
+
+      {/* ─── RIBBON SNAKE: starts after the video wave ─────── */}
+      <SnakeLine />
 
       {/* ─── ABOUT SECTION ────────────────────────────────────── */}
       <section id="about" className="w-full bg-[#f4f0eb] flex flex-col items-center px-6 md:px-8 py-18 md:py-32 relative z-20 overflow-hidden">
