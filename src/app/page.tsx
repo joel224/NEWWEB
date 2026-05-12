@@ -277,7 +277,7 @@ export default function Home() {
           className="block w-full max-w-[280px] md:max-w-[400px] lg:max-w-[500px] hover:scale-105 transition-transform duration-500 ease-out"
         >
           <img 
-            src="/svghere/Portfolio-loop.svg" 
+            src="/svghere/Portfolio.svg" 
             alt="View Portfolio" 
             className="w-full h-auto object-contain"
           />
