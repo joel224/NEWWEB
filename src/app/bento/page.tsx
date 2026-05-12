@@ -251,13 +251,11 @@ const HoverButtonBlock = () => (
 
 const WaitlistBlock = () => (
   <Block className="col-span-12 md:col-span-9 p-0 overflow-hidden">
-    <div className="no-scrollbar relative w-full h-full overflow-hidden border border-neutral-300 bg-white">
+    <div className="no-scrollbar relative w-full h-full overflow-hidden overflow-y-scroll border border-neutral-300 bg-white" style={{ display: "block" }}>
       <div className="flex h-full min-h-[200px] items-center justify-center bg-black px-4">
-        
-        {/* THE FORM CONTAINER */}
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="group relative flex w-full max-w-md items-center gap-2 rounded-full border border-white/10 bg-zinc-950 py-1.5 pl-6 pr-1.5 transition-shadow duration-500 hover:shadow-[0_0_20px_-5px_rgba(167,139,250,0.3)]"
+          className="relative flex w-full max-w-md items-center gap-2 rounded-full border border-white/20 bg-gradient-to-br from-white/20 to-white/5 py-1.5 pl-6 pr-1.5"
         >
           {/* 
             ANIMATED LIGHT BORDER 
@@ -270,34 +268,39 @@ const WaitlistBlock = () => (
 
           {/* INNER MASK (To keep the center clean) */}
           <div className="absolute inset-[1px] rounded-full bg-zinc-950 z-0" />
-
           <input
             type="email"
             placeholder="Enter your email"
-            className="relative z-10 w-full bg-transparent text-sm text-white placeholder-white/40 focus:outline-0"
+            className="w-full bg-transparent text-sm text-white placeholder-white/80 focus:outline-0"
           />
-          
           <button
             type="submit"
-            className="group relative z-10 flex shrink-0 items-center gap-1.5 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 px-4 py-3 text-sm font-medium text-white transition-transform active:scale-95"
+            className="group flex shrink-0 items-center gap-1.5 rounded-full bg-gradient-to-br from-gray-50 to-gray-400 px-4 py-3 text-sm font-medium text-gray-900 transition-transform active:scale-[0.985]"
           >
             <span>Join Waitlist</span>
             <svg
               stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24"
               strokeLinecap="round" strokeLinejoin="round"
-              className="-mr-4 opacity-0 transition-all group-hover:-mr-0 group-hover:opacity-100"
+              className="-mr-4 opacity-0 transition-all group-hover:-mr-0 group-hover:opacity-100 group-active:-rotate-45"
               height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
             >
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
+          {/* Animated gradient border overlay */}
+          <div className="pointer-events-none absolute inset-0 z-10 rounded-full">
+            <div
+              className="absolute -inset-[1px] rounded-full border border-transparent bg-origin-border"
+              style={{ backgroundImage: "conic-gradient(from 0.438turn, rgba(167, 139, 250, 0) 75%, rgb(167, 139, 250) 100%)" }}
+            />
+          </div>
         </form>
-
       </div>
     </div>
   </Block>
 );
+
 
 const MenuBlock = () => (
   <Block className="col-span-12 p-0 overflow-hidden relative min-h-[500px]">
