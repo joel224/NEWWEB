@@ -9,18 +9,18 @@ import Beams from "@/components/Beams";
 
 export default function RevealBento() {
   return (
-    <div className="relative min-h-screen px-4 py-12 text-zinc-50">
+    <div className="relative min-h-screen w-full px-4 py-12 text-zinc-50 overflow-x-hidden">
       {/* Beams background — fixed, full screen, behind everything */}
-      <div className="fixed inset-0 -z-10">
+      <div className="fixed inset-0 w-screen h-screen -z-10 pointer-events-none">
         <Beams
-          beamWidth={2}
-          beamHeight={15}
-          beamNumber={10}
+          beamWidth={3}
+          beamHeight={16}
+          beamNumber={20}
           lightColor="#a78bfa"
           speed={2}
           noiseIntensity={1.75}
           scale={0.2}
-          rotation={0}
+          rotation={30}
         />
       </div>
       <Logo />
