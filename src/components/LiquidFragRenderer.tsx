@@ -23,7 +23,7 @@ export default function LiquidFragRenderer({ imageSrc, className }: LiquidFragRe
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext("webgl2", { antialias: true, alpha: true });
+    const gl = canvas.getContext("webgl2", { antialias: true, alpha: true, premultipliedAlpha: false });
     if (!gl) {
       console.warn("WebGL2 not supported");
       return;

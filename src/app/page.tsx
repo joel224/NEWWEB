@@ -63,11 +63,11 @@ export default function Home() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="w-20 h-20 md:w-28 md:h-28 cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+            className="w-20 h-20 md:w-28 md:h-28 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
           >
             <LiquidFragRenderer 
               imageSrc={CIRCLE_MASK} 
-              className="w-full h-full drop-shadow-xl" 
+              className="w-full h-full " 
             />
           </motion.div>
         </Link>
