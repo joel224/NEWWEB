@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import ClickSpark from "@/components/clicki";
 import MuxPlayer from "@mux/mux-player-react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const svgRef = useRef(null);
-  const isSvgInView = useInView(svgRef, { once: true, margin: "0px 0px -50px 0px" });
 
   return (   
     <main className="w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
@@ -270,23 +268,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* ─── PORTFOLIO LOOP SECTION ───────────────────────────── */}
-      <section className="w-full bg-[#f4f0eb] flex justify-center items-center pb-24 md:pb-32 px-6 relative z-20">
-        <Link 
-          href="/portfolio"
-          ref={svgRef}
-          className="block w-full max-w-[250px] md:max-w-[230px] lg:max-w-[300px] min-h-[150px] hover:scale-105 transition-transform duration-500 ease-out flex justify-center items-center"
-        >
-          {isSvgInView && (
-            <img 
-              src="/svghere/Portfolio (2).svg" 
-              alt="View Portfolio" 
-              className="w-full h-auto object-contain opacity-80" 
-            />
-          )}
-        </Link>
       </section>
 
       </ClickSpark>
