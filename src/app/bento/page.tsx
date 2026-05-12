@@ -278,7 +278,7 @@ const WaitlistBlock = () => (
         >
           <input
             type="email"
-            placeholder="Enter your email"
+            placeholder="Exg2@...."
             className="w-full bg-transparent text-sm text-white placeholder-white/80 focus:outline-0"
           />
           <button
