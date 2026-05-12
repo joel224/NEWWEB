@@ -511,10 +511,12 @@ const ProjectTabsBlock = () => (
             </button>
           </div>
           <div className="rounded-lg transition-colors bg-zinc-900">
+          <a href="/portfolio" className="block">
             <button className="w-full origin-top-left rounded-lg border py-3 text-xs font-medium transition-all md:text-base border-zinc-900 bg-white text-zinc-900 hover:-rotate-2 hover:bg-zinc-100">
               Projects
             </button>
-          </div>
+          </a>
+        </div>
           <div className="rounded-lg transition-colors bg-zinc-900">
             <button className="w-full origin-top-left rounded-lg border py-3 text-xs font-medium transition-all md:text-base border-zinc-900 bg-white text-zinc-900 hover:-rotate-2 hover:bg-zinc-100">
               Gantt
