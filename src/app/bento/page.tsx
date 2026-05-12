@@ -5,7 +5,11 @@ import { MotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { FiArrowRight, FiMail, FiMapPin } from "react-icons/fi";
 import { SiGithub, SiTiktok, SiX, SiYoutube } from "react-icons/si";
+import Link from "next/link";
 import Beams from "@/components/Beams";
+import LiquidFragRenderer from "@/components/LiquidFragRenderer";
+
+const CIRCLE_MASK = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0id2hpdGUiIC8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDAiIGZpbGw9ImJsYWNrIiAvPjwvc3ZnPg==`;
 
 export default function RevealBento() {
   return (
@@ -45,6 +49,27 @@ export default function RevealBento() {
         <FeaturesBlock />
       </motion.div>
       <Footer />
+      {/* Floating Liquid Ball (Shortcut to Portfolio) */}
+      <Link href="/portfolio" className="fixed bottom-8 right-8 z-50">
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          animate={{
+            y: [0, -15, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="w-10 h-10 md:w-20 md:h-20 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
+        >
+          <LiquidFragRenderer 
+            imageSrc={CIRCLE_MASK} 
+            className="w-full h-full " 
+          />
+        </motion.div>
+      </Link>
     </div>
   );
 };
