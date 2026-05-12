@@ -40,7 +40,7 @@ const BubbleText = ({ text }: { text: string }) => {
         }
 
         currentIndex++;
-      }, 100); // Speed of the wave across letters
+      }, 150); // Speed of the wave across letters
 
     }, 800); // Delay after page load
 
