@@ -19,7 +19,7 @@ export default function RevealBento() {
           lightColor="#a78bfa"
           speed={2}
           noiseIntensity={1.75}
-          scale={0.2}
+          scale={1.2}
           rotation={30}
         />
       </div>
