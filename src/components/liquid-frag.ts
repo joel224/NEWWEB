@@ -105,7 +105,7 @@ void main() {
 
     float diagonal = uv.x - uv.y;
 
-    float t = .001 * u_time;
+    float t = u_time;
 
     vec2 img_uv = get_img_uv();
     vec4 img = texture(u_image_texture, img_uv);

@@ -116,7 +116,7 @@ export default function LiquidFragRenderer({ imageSrc, className }: LiquidFragRe
 
     const render = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const width = rect.width * dpr;
       const height = rect.height * dpr;
 
@@ -126,8 +126,8 @@ export default function LiquidFragRenderer({ imageSrc, className }: LiquidFragRe
         gl.viewport(0, 0, width, height);
       }
 
-      gl.uniform1f(locs.ratio, width / height);
-      gl.uniform1f(locs.time, performance.now() - startTime);
+      gl.uniform1f(locs.ratio, height > 0 ? width / height : 1);
+      gl.uniform1f(locs.time, (performance.now() - startTime) * 0.001);
 
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
