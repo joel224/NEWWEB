@@ -184,7 +184,7 @@ const LocationBlock = () => (
 
 const EmailListBlock = () => (
   <Block className="col-span-12 md:col-span-9">
-    <p className="mb-3 text-lg">Drop your wprk </p>
+    <p className="mb-3 text-lg">Drop your work </p>
     <form
       onSubmit={(e) => e.preventDefault()}
       className="flex items-center gap-2"
@@ -266,18 +266,16 @@ const WaitlistBlock = () => (
         <form
           onSubmit={(e) => e.preventDefault()}
           className="relative flex w-full max-w-md items-center gap-2 rounded-full border border-white/20 bg-gradient-to-br from-white/20 to-white/5 py-1.5 pl-6 pr-1.5"
+          style={{
+            // The magic: conic gradient that rotates, masked to show only the border
+            background: `
+              linear-gradient(#171717, #171717) padding-box,
+              conic-gradient(from var(--angle), transparent 70%, #a78bfa, #60a5fa, transparent) border-box
+            `,
+            border: '1px solid transparent',
+            animation: '8s rotate linear infinite',
+          }}
         >
-          {/* 
-            ANIMATED LIGHT BORDER 
-            We use a parent with overflow-hidden and a child that is larger than the container.
-            Rotating the child creates the traveling light effect.
-          */}
-          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-full">
-            <div className="animate-border-spin absolute aspect-square w-[200%] left-[-50%] top-[-50%] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_300deg,rgb(167,139,250)_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          </div>
-
-          {/* INNER MASK (To keep the center clean) */}
-          <div className="absolute inset-[1px] rounded-full bg-zinc-950 z-0" />
           <input
             type="email"
             placeholder="Enter your email"
@@ -298,19 +296,23 @@ const WaitlistBlock = () => (
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
-          {/* Animated gradient border overlay */}
-          <div className="pointer-events-none absolute inset-0 z-10 rounded-full">
-            <div
-              className="absolute -inset-[1px] rounded-full border border-transparent bg-origin-border"
-              style={{ backgroundImage: "conic-gradient(from 0.438turn, rgba(167, 139, 250, 0) 75%, rgb(167, 139, 250) 100%)" }}
-            />
-          </div>
         </form>
       </div>
     </div>
+
+    {/* Put this in your global CSS or Tailwind config */}
+    <style>{`
+      @property --angle {
+        syntax: '<angle>';
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @keyframes rotate {
+        to { --angle: 360deg; }
+      }
+    `}</style>
   </Block>
 );
-
 
 const MenuBlock = () => (
   <Block className="col-span-12 p-0 overflow-hidden relative min-h-[500px]">
