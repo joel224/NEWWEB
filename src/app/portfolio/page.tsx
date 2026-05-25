@@ -239,6 +239,27 @@ dream stand tall and stay bright."
           /></div>
       </section>
       <PhilosophyCircles />
+      
+      {/* PRETEXT-J LAB PROMO BANNER */}
+      <section className="w-full bg-[#0a0a0a] py-24 px-6 border-y border-white/5 relative overflow-hidden flex flex-col items-center">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.01] rounded-full blur-[100px] pointer-events-none" />
+        <div className="max-w-4xl w-full text-center relative z-10 flex flex-col items-center">
+          <span className="text-[10px] tracking-[0.4em] uppercase text-white/40 font-bold mb-4 block">Interactive R&D Showcase</span>
+          <h2 className="text-3xl md:text-5xl font-light tracking-tight text-white mb-6 uppercase" style={{ fontFamily: 'var(--font-montserrat)' }}>
+            The Pretext-J Particle Playground
+          </h2>
+          <p className="text-sm md:text-base text-neutral-400 max-w-xl mx-auto mb-10 leading-relaxed font-light">
+            Experience our high-performance canvas particle engine. Using offline multiline measuring logic, a beautiful italic &lsquo;J&rsquo; shape is constructed entirely out of dynamic, interactive philosophy phrases.
+          </p>
+          <button 
+            onClick={() => router.push('/pretext-j')}
+            className="px-8 py-3.5 rounded-full bg-white text-black font-semibold text-xs tracking-widest uppercase hover:bg-neutral-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300 cursor-pointer"
+          >
+            Launch Particle Playground
+          </button>
+        </div>
+      </section>
+
       <TextMarquee />
       <ExperienceList />
       <ProjectShowcase />

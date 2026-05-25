@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 import BubbleText from "@/components/BubbleText";
 import LiquidFragRenderer from "@/components/LiquidFragRenderer";
+import WeddingInvitation from "@/components/continue";
 
 const CIRCLE_MASK = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0id2hpdGUiIC8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDAiIGZpbGw9ImJsYWNrIiAvPjwvc3ZnPg==`;
 
@@ -297,6 +298,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <WeddingInvitation />
       
       {/* PRELOAD PORTFOLIO IMAGES */}
       <div className="hidden" aria-hidden="true">
