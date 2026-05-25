@@ -96,7 +96,7 @@ export default function WeddingInvitation() {
             <div className="absolute inset-2 border border-white/10 rounded-[22px] pointer-events-none" />
             
             <span className="text-[7.5px] tracking-[0.3em] font-semibold uppercase text-white/70 mt-2">
-              Experience  
+              My Experience  
             </span>
 
             <div className="flex flex-col my-auto gap-0.5">
@@ -325,7 +325,7 @@ export default function WeddingInvitation() {
                   alt="Hexagonal Green Velvet Ring Box" 
                   className="w-full h-full object-cover select-none"
                 />
-                
+
               </div> 
               <div className="text-center font-['Playwrite_AT'] text-xs text-[#a2b0a6] select-none italic font-semibold">
                 the vows
