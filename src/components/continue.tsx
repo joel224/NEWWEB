@@ -325,7 +325,8 @@ export default function WeddingInvitation() {
                   alt="Hexagonal Green Velvet Ring Box" 
                   className="w-full h-full object-cover select-none"
                 />
-              </div>
+                
+              </div> 
               <div className="text-center font-['Playwrite_AT'] text-xs text-[#a2b0a6] select-none italic font-semibold">
                 the vows
               </div>
