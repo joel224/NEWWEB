@@ -18,7 +18,7 @@ export default function Home() {
   return (   
     <main className="w-full min-h-screen bg-[#f4f0eb] font-sans overflow-x-hidden">
       <ClickSpark
-        sparkColor="#d47d5aff"
+        sparkColor="#ff6145ff"
         sparkSize={10}
         sparkRadius={15}
         sparkCount={8}

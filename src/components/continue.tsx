@@ -90,7 +90,7 @@ export default function WeddingInvitation() {
             initial={{ opacity: 0, x: -60, rotate: -4 }}
             animate={{ opacity: 1, x: 0, rotate: -4 }}
             transition={{ duration: 1.0, delay: 0.3, ease: 'easeOut' }}
-            className="absolute left-2 top-0 w-[240px] aspect-[3/4] bg-[#67826e] text-white p-6 rounded-[28px] shadow-[0_15px_35px_rgba(103,130,110,0.3)] flex flex-col items-center justify-between text-center border-4 border-white/15"
+            className="absolute left-2 top-0 md:w-[240px] w-[200px] aspect-[3/4] bg-[#67826e] text-white p-6 rounded-[28px] shadow-[0_15px_35px_rgba(103,130,110,0.3)] flex flex-col items-center justify-between text-center border-4 border-white/15"
           >
             {/* Elegant double scallop border effect */}
             <div className="absolute inset-2 border border-white/10 rounded-[22px] pointer-events-none" />
@@ -116,10 +116,10 @@ export default function WeddingInvitation() {
                 open to collab for  
               </span>
               <span className="text-[8.5px] tracking-[0.15em] font-bold uppercase text-white/95 border-b border-white/20 pb-0.5">
-                web Development
+                Web Development
               </span>
               <span className="text-[7px] tracking-[0.25em] font-semibold uppercase text-white/80">
-                wedding
+                Design
               </span>
             </div>
           </motion.div>
@@ -129,7 +129,7 @@ export default function WeddingInvitation() {
             initial={{ opacity: 0, x: 60, rotate: 3 }}
             animate={{ opacity: 1, x: 0, rotate: 3 }}
             transition={{ duration: 1.0, delay: 0.5, ease: 'easeOut' }}
-            className="absolute right-2 top-10 w-[240px] aspect-[3/4] bg-white text-[#4a584d] p-6 rounded-[28px] shadow-[0_15px_35px_rgba(0,0,0,0.06)] border border-[#e8e4db] flex flex-col items-center justify-between text-center"
+            className="absolute md:right-2 right-0 top-10 md:w-[240px] w-[180px] aspect-[3/4] bg-white text-[#4a584d] p-6 rounded-[28px] shadow-[0_15px_35px_rgba(0,0,0,0.06)] border border-[#e8e4db] flex flex-col items-center justify-between text-center"
           >
             {/* Elegant thin pink ribbon border */}
             <div className="absolute inset-3 border border-[#f3dada] rounded-[20px] pointer-events-none" />
@@ -171,7 +171,7 @@ export default function WeddingInvitation() {
             transition={{ type: 'spring', stiffness: 120, delay: 0.8 }}
             whileHover={{ scale: 1.05, rotate: -5 }}
             onClick={() => setShowRsvpModal(true)}
-            className="absolute left-[34%] top-[175px] w-[130px] h-[75px] bg-[#e9dc9d] hover:bg-[#ebd88d] text-[#5e532b] rounded-[50px] shadow-[0_8px_20px_rgba(233,220,157,0.45)] border-2 border-white flex flex-col items-center justify-center text-center cursor-pointer select-none z-10 transition-colors duration-300"
+            className="absolute left-[34%] top-[175px] md:w-[130px] w-[98px]    h-[75px] bg-[#e9dc9d] hover:bg-[#ebd88d] text-[#5e532b] rounded-[50px] shadow-[0_8px_20px_rgba(233,220,157,0.45)] border-2 border-white flex flex-col items-center justify-center text-center cursor-pointer select-none z-10 transition-colors duration-300"
           >
             <span className="text-[7.5px] tracking-[0.25em] font-bold uppercase text-[#7d703e]">Kindly</span>
             <span className="font-['Playwrite_AT'] text-[20px] font-semibold text-[#5a4f27] my-[-1px] select-none italic">
@@ -200,7 +200,7 @@ export default function WeddingInvitation() {
             initial={{ opacity: 0, y: 50, rotate: -2 }}
             animate={{ opacity: 1, y: 0, rotate: -2 }}
             transition={{ duration: 1.0, delay: 0.7 }}
-            className="absolute left-6 top-[280px] w-[150px] aspect-[2/3] bg-white border border-[#ebd8d8] p-3 rounded-[16px] shadow-[0_10px_25px_rgba(0,0,0,0.03)] flex flex-col items-center justify-between"
+            className="absolute left-6 top-[233px]  md:top-[280px] w-[150px] aspect-[2/3] bg-white border border-[#ebd8d8] p-3 rounded-[16px] shadow-[0_10px_25px_rgba(0,0,0,0.03)] flex flex-col items-center justify-between"
           >
             <div className="w-full h-[82%] bg-[#faf9f6] rounded-[10px] overflow-hidden border border-[#eae6dd] flex items-center justify-center p-1.5">
               <img 
@@ -285,7 +285,7 @@ export default function WeddingInvitation() {
                 />
               </div>
               <div className="text-center font-['Playwrite_AT'] text-xs text-[#a2b0a6] select-none italic font-semibold">
-                summer breeze
+                Air breeze
               </div>
             </motion.div>
           </Link>
@@ -339,7 +339,7 @@ export default function WeddingInvitation() {
         <div className="mt-12 text-center flex flex-col items-center gap-2">
           <FiHeart className="text-pink-300 w-4 h-4 fill-pink-100 animate-pulse" />
           <span className="text-[9px] uppercase tracking-[0.3em] text-[#a4b2a8] font-bold">
-            Joel JOshy • 12.03.2027
+            Joel Joshy • 12.03.2027
           </span>
         </div>
 
