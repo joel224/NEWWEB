@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 // The text characters that form the shape of the J
 const PHRASES = [
-  "S ", "C ", "F ", "D ", "A ", "I .", "C ", "P ", "D ", "M ", "A ", "C ", "T ", "E ", "S ", "T ", "1 ", "1 ", "1 ", "1 ", "1 ", "1 ", "1 ", "1 ", "1 ", "1 "
+  "L ", "O ", "V ", "E ", "A ", "N ", "D ", 
 ];
 
 export default function PretextJ() {
