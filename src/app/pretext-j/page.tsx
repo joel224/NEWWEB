@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+ 
 import Link from 'next/link';
 import { FiArrowLeft, FiHeart } from 'react-icons/fi';
 import PretextJ from '@/components/PretextJ';
-import Dance from '@/components/Dance';
+ 
 
 export default function PretextJShowcase() {
   return (
