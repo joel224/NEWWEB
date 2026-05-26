@@ -102,11 +102,11 @@ export default function PretextJ() {
       offscreenCtx.fillStyle = 'black';
       offscreenCtx.fillRect(0, 0, offscreen.width, offscreen.height);
 
-      offscreenCtx.font = 'italic 500px "Playwrite AT", cursive';
+      offscreenCtx.font = '  500px "Playwrite AT", cursive';
       offscreenCtx.fillStyle = 'white';
       offscreenCtx.textAlign = 'center';
       offscreenCtx.textBaseline = 'middle';
-      offscreenCtx.fillText('j.', offscreen.width / 2, offscreen.height / 2);
+      offscreenCtx.fillText('♡', offscreen.width / 2, offscreen.height / 2);
 
       // Get image data to analyze filled pixels
       const imgData = offscreenCtx.getImageData(0, 0, offscreen.width, offscreen.height);
@@ -257,7 +257,7 @@ export default function PretextJ() {
 
     const draw = () => {
       const rect = canvas.getBoundingClientRect();
-      ctx.fillStyle = '#000000ff'; // Pure solid black background
+      ctx.fillStyle = '#460a0aff'; // Pure solid black background
       ctx.fillRect(0, 0, rect.width, rect.height);
 
       let allFinished = true;
