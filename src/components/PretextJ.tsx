@@ -228,6 +228,14 @@ export default function PretextJ() {
       mouse.active = false;
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!containerRef.current || !e.touches[0]) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      mouse.x = e.touches[0].clientX - rect.left;
+      mouse.y = e.touches[0].clientY - rect.top;
+      mouse.active = true;
+    };
+
     // Clicking the container re-triggers the cinematic tunnel fly-through!
     const handleCanvasClick = () => {
       if (!containerRef.current) return;
@@ -259,7 +267,10 @@ export default function PretextJ() {
 
     // Listen on window so hovering outside the container still interacts with flying particles!
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('touchend', handleMouseLeave);
     
     // Only click the container to restart
     const currentContainer = containerRef.current;    // Only click the container to restart
@@ -411,7 +422,10 @@ export default function PretextJ() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('touchend', handleMouseLeave);
       if (currentContainer) {
         currentContainer.removeEventListener('click', handleCanvasClick);
       }
