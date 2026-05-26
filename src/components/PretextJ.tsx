@@ -260,10 +260,13 @@ export default function PretextJ() {
     document.addEventListener('mouseleave', handleMouseLeave);
     
     // Only click the container to restart
-    const currentContainer = containerRef.current;
+    const currentContainer = containerRef.current;    // Only click the container to restart
+    
     if (currentContainer) {
-      currentContainer.addEventListener('click', handleCanvasClick);
+      // currentContainer.addEventListener('click', handleCanvasClick);
     }
+
+     
 
     let isAnimationFinished = false;
     let animationFinishedTime = 0;
@@ -286,7 +289,8 @@ export default function PretextJ() {
       let currentMouseY = mouse.y;
       let currentMouseActive = mouse.active;
 
-      if (isAnimationFinished && !mouse.active) {
+      if (isAnimationFinished) {
+
         const timeSinceFinish = performance.now() - animationFinishedTime;
         const delay = 300; // Start tracing 300ms after the intro animation completes
         const duration = 2000; // Trace duration of 2 seconds
