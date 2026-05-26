@@ -88,7 +88,7 @@ export default function Home() {
               className="text-[12px] tracking-[1.85em] text-[#5c5045] mt-1.5"
               style={{ fontFamily: "var(--font-montserrat)", fontWeight: 600 }}
             >
-              Fullstack Dev
+              Feel it
             </p>
           </div>
           <div className="flex gap-10 mt-5 text-xl   text-[#3a2f25]"
@@ -189,7 +189,7 @@ export default function Home() {
           className="text-[9px] tracking-[0.5em] text-[#5c5045] mt-1 mb-8"
           style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
         >
-          Engineer
+          Feel it 
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
