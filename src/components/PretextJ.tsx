@@ -179,10 +179,10 @@ export default function PretextJ() {
             const initialZ = 20 + Math.random() * 10;
 
             // Staggered entry progress so they cascade smoothly into place
-            const progress = -Math.random() * 0.35;
+            const progress = -Math.random() * 0.30;
 
             // Faster overall speed, with a highly varied individual spectrum
-            const speed = 0.009 + Math.random() * 0.016;
+            const speed = 0.009 + Math.random() * 0.16;
 
             particles.push({
               x: centerX + Math.cos(tunnelAngle) * tunnelRadius,
