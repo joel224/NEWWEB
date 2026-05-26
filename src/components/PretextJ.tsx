@@ -9,6 +9,7 @@ const PHRASES = [
 
 export default function PretextJ() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -74,13 +75,16 @@ export default function PretextJ() {
     const friction = 0.85;
 
     const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
+      if (!containerRef.current || !canvas) return;
+      const rect = containerRef.current.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
 
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      // Full-screen transparent canvas dimensions
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
 
       ctx.scale(dpr, dpr);
+      // Generate layout relative to the inner container size
       generateJLayout(rect.width, rect.height);
     };
 
@@ -151,11 +155,12 @@ export default function PretextJ() {
             ctx.font = `italic 600 ${fontSize}px "Playwrite AT", "Inter", -apple-system, sans-serif`;
             const textWidth = ctx.measureText(phrase).width;
 
-            const scaleX = width / offscreen.width;
-            const scaleY = height / offscreen.height;
+            // Calculate a uniform scale factor based on the smaller viewport dimension to lock a perfect 1:1 aspect ratio!
+            const uniformScale = Math.min(width, height) / 800;
 
-            const mainX = x * scaleX;
-            const mainY = y * scaleY;
+            // Project coordinates uniformly relative to the center of the canvas
+            const mainX = centerX + (x - 400) * uniformScale;
+            const mainY = centerY + (y - 400) * uniformScale;
 
             // 3D Circular Tunnel starting coordinates
             const tunnelAngle = Math.random() * Math.PI * 2;
@@ -210,7 +215,8 @@ export default function PretextJ() {
     window.addEventListener('resize', resizeCanvas);
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
       mouse.active = true;
@@ -220,9 +226,10 @@ export default function PretextJ() {
       mouse.active = false;
     };
 
-    // Clicking the canvas re-triggers the cinematic tunnel fly-through!
+    // Clicking the container re-triggers the cinematic tunnel fly-through!
     const handleCanvasClick = () => {
-      const rect = canvas.getBoundingClientRect();
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
@@ -248,17 +255,29 @@ export default function PretextJ() {
       isAnimationFinished = false;
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-    canvas.addEventListener('click', handleCanvasClick);
+    // Listen on window so hovering outside the container still interacts with flying particles!
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Only click the container to restart
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      currentContainer.addEventListener('click', handleCanvasClick);
+    }
 
     let isAnimationFinished = false;
     let animationFinishedTime = 0;
 
     const draw = () => {
-      const rect = canvas.getBoundingClientRect();
-      ctx.fillStyle = '#460a0aff'; // Pure solid black background
-      ctx.fillRect(0, 0, rect.width, rect.height);
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      
+      // Clear the full-screen transparent overlay
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      ctx.save();
+      // Translate all coordinates to perfectly match the colored container's position on screen
+      ctx.translate(rect.left, rect.top);
 
       let allFinished = true;
 
@@ -367,6 +386,9 @@ export default function PretextJ() {
         ctx.restore();
       }
 
+      // Restore the full screen translation matrix
+      ctx.restore();
+
       if (allFinished && !isAnimationFinished) {
         isAnimationFinished = true;
         animationFinishedTime = performance.now();
@@ -380,18 +402,26 @@ export default function PretextJ() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resizeCanvas);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
-      canvas.removeEventListener('click', handleCanvasClick);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      if (currentContainer) {
+        currentContainer.removeEventListener('click', handleCanvasClick);
+      }
     };
   }, []);
 
   return (
-    <div className="relative w-full h-[850px]  overflow-hidden select-none">
+    <>
+      {/* The colored background box */}
+      <div 
+        ref={containerRef} 
+        className="relative w-full h-[850px] bg-[#460a0aff] overflow-hidden select-none"
+      />
+      {/* The full-screen transparent particle canvas overlay */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full block"
+        className="fixed inset-0 w-screen h-screen pointer-events-none z-50 block"
       />
-    </div>
+    </>
   );
 }

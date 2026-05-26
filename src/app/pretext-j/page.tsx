@@ -21,7 +21,7 @@ export default function PretextJShowcase() {
       </div>
 
       {/* Main Showcase Section */}
-      <div className="w-full max-w-4xl z-10">
+      <div className="w-full   max-w-4xl  max-h-2xl  z-10">
         <PretextJ />
       </div>
 
@@ -31,7 +31,7 @@ export default function PretextJShowcase() {
       `}} />
 
       {/* Centered Flex Container at top-[78%] containing all requested font variants side-by-side for perfect comparison */}
-      <div className="absolute top-[78%] z-30 flex flex-wrap justify-center gap-3 max-w-5xl px-6">
+      <div className="absolute top-[76%] z-30 flex flex-wrap justify-center gap-3 max-w-5xl px-6">
         
         
 
@@ -52,10 +52,7 @@ export default function PretextJShowcase() {
         </Link>
       </div>
 
-      {/* Floating MJ Dancer */}
-      <div className="fixed bottom-6 right-6 z-30 md:bottom-8 md:right-8 animate-fade-in">
-        <Dance />
-      </div>
+      
 
     </main>
   );
