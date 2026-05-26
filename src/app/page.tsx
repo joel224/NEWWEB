@@ -189,7 +189,7 @@ export default function Home() {
           className="text-[9px] tracking-[0.5em] text-[#5c5045] mt-1 mb-8"
           style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
         >
-          Feel it 
+          Engineer
         </p>
         <nav className="flex gap-10 text-sm text-[#3a2f25]"
              style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}>
