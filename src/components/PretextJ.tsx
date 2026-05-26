@@ -362,7 +362,7 @@ export default function PretextJ() {
         p.alpha = ease;
 
         ctx.font = `  900 ${currentFontSize}px "Playwrite AT", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+        ctx.fillStyle = `rgba(244, 143, 177, ${p.alpha})`;
         ctx.fillText(p.text, p.x, p.y);
         ctx.restore();
       }
@@ -387,7 +387,7 @@ export default function PretextJ() {
   }, []);
 
   return (
-    <div className="relative w-full h-[850px] bg-black overflow-hidden select-none">
+    <div className="relative w-full h-[850px]  overflow-hidden select-none">
       <canvas
         ref={canvasRef}
         className="w-full h-full block"

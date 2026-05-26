@@ -8,7 +8,7 @@ import Dance from '@/components/Dance';
 
 export default function PretextJShowcase() {
   return (
-    <main className="w-full min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 md:p-12 relative">
+    <main className="w-full min-h-screen bg-[#ffff] text-white flex flex-col items-center justify-center p-6 md:p-12 relative">
       
       {/* Back Button */}
       <div className="absolute top-6 left-6 z-20">
