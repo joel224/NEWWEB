@@ -106,7 +106,7 @@ export default function PretextJ() {
       offscreenCtx.fillStyle = 'white';
       offscreenCtx.textAlign = 'center';
       offscreenCtx.textBaseline = 'middle';
-      offscreenCtx.fillText('j', offscreen.width / 2, offscreen.height / 2);
+      offscreenCtx.fillText('j & j', offscreen.width / 2, offscreen.height / 2);
 
       // Get image data to analyze filled pixels
       const imgData = offscreenCtx.getImageData(0, 0, offscreen.width, offscreen.height);
