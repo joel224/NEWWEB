@@ -61,16 +61,18 @@ export default function PretextJ() {
       alpha: number;
     }> = [];
 
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
     // Mouse tracking
     const mouse = {
       x: 0,
       y: 0,
       active: false,
-      radius: 100
+      radius: window.innerWidth < 768 ? 24 : 100 // Tiny 30 scatter radius on mobile, 100 on desktop
     };
 
     // Hardcoded layout & physics constants
-    const fontSize = 7;
+    const fontSize = window.innerWidth < 768 ? 5 : 7; // Smaller text on mobile
     const springStrength = 0.02;
     const friction = 0.85;
 
@@ -117,7 +119,7 @@ export default function PretextJ() {
       const pixels = imgData.data;
 
       // 2. Sample the offscreen canvas randomly (Rejection Sampling) to perfectly fill the curves
-      const targetParticles = 160; // Maximum number of particles to draw
+      const targetParticles = window.innerWidth < 768 ? 90 : 160; // Maximum number of particles to draw (less for mobile)
       const minDistance = 10; // Minimum distance to prevent exact overlaps, controlling density
       const minDistanceSq = minDistance * minDistance;
        
@@ -288,6 +290,7 @@ export default function PretextJ() {
       let currentMouseX = mouse.x;
       let currentMouseY = mouse.y;
       let currentMouseActive = mouse.active;
+      let currentMouseRadius = mouse.radius; // Default to the actual mouse radius
 
       if (isAnimationFinished) {
 
@@ -298,6 +301,7 @@ export default function PretextJ() {
         if (timeSinceFinish > delay && timeSinceFinish < delay + duration) {
            const traceProgress = (timeSinceFinish - delay) / duration;
            currentMouseActive = true;
+           currentMouseRadius = window.innerWidth < 768 ? 50 : 100; // Scale down the cinematic sweep radius on mobile!
            
            // Trace down the center of the canvas where the 'j' stem is
            // Using an eased sine curve could be nice, but linear top-to-bottom looks like a precise trace
@@ -360,8 +364,8 @@ export default function PretextJ() {
             const dyMouse = p.y - currentMouseY;
             const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-            if (distMouse < mouse.radius) {
-              const force = (mouse.radius - distMouse) / mouse.radius;
+            if (distMouse < currentMouseRadius) {
+              const force = (currentMouseRadius - distMouse) / currentMouseRadius;
               const angle = Math.atan2(dyMouse, dxMouse);
               const push = force * 5.5;
               p.vx += Math.cos(angle) * push;
@@ -419,12 +423,12 @@ export default function PretextJ() {
       {/* The colored background box */}
       <div 
         ref={containerRef} 
-        className="relative w-full h-[850px] bg-[#460a0aff] overflow-hidden select-none"
+        className="relative w-full h-[450px] md:h-[850px] bg-[#460a0aff] overflow-hidden select-none"
       />
       {/* The full-screen transparent particle canvas overlay */}
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 w-screen h-screen pointer-events-none z-50 block"
+        className="fixed inset-0 w-screen h-full pointer-events-none z-50 block"
       />
     </>
   );
