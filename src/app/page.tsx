@@ -85,7 +85,7 @@ export default function Home() {
               JOEL JOSHY
             </h1> 
             <p
-              className="text-[12px] tracking-[1.10em] text-[#5c5045] mt-1.5"
+              className="text-[12px] tracking-[1.30em] text-[#5c5045] mt-1.5"
               style={{ fontFamily: "var(--font-montserrat)", fontWeight: 600 }}
             >
               Feel it
