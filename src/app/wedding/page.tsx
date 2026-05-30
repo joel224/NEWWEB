@@ -338,7 +338,7 @@ export default function WeddingInvitation() {
         <div className="mt-12 text-center flex flex-col items-center gap-2">
           <FiHeart className="text-pink-300 w-4 h-4 fill-pink-100 animate-pulse" />
           <span className="text-[9px] uppercase tracking-[0.3em] text-[#a4b2a8] font-bold">
-            Joel JOshy • 12.03.2027
+            Joel JOshy • 12.03.2026
           </span>
         </div>
 
