@@ -45,6 +45,8 @@ export default function GlitterBanner() {
 
   // Convective airflow simulation state
   const draftIntensityRef = useRef<number>(1.0);
+  const widthRef = useRef<number>(0);
+  const heightRef = useRef<number>(0);
   const mouseAirRef = useRef<{
     x: number;
     y: number;
@@ -62,9 +64,6 @@ export default function GlitterBanner() {
     lastY: 0,
     active: false,
   });
-
-  const [isRevealed, setIsRevealed] = useState<boolean>(true);
-  const [openingKey, setOpeningKey] = useState<number>(0);
 
   // Cosmetic Gold & Platinum palette (RGB triples for additive specular math)
   const PALETTE = [
@@ -151,16 +150,12 @@ export default function GlitterBanner() {
     };
   }, []);
 
-  // Spawn a microscopic cosmetic glitter particle
+  // Spawn a microscopic cosmetic glitter particle evenly across the full atmosphere
   const createParticle = useCallback(
-    (width: number, height: number, forceCenter = false): GlitterDust => {
-      const cx = width / 2;
-      const cy = height / 2;
-
-      // Spawn distribution: biased towards lower-middle convective column when drafting
-      const spreadX = forceCenter ? width * 0.3 : width * 0.9;
-      const x = cx + (Math.random() - 0.5) * spreadX;
-      const y = forceCenter ? cy + (Math.random() - 0.1) * (height * 0.45) : Math.random() * height;
+    (width: number, height: number): GlitterDust => {
+      // Natural organic distribution across the whole canvas space - ZERO RECTANGLE CLUSTERS!
+      const x = Math.random() * width;
+      const y = Math.random() * height;
 
       const rand = Math.random();
       let tier: 'micro' | 'flake' | 'bokeh' = 'micro';
@@ -185,8 +180,8 @@ export default function GlitterBanner() {
       return {
         x,
         y,
-        vx: (Math.random() - 0.5) * 6,
-        vy: -8 - Math.random() * 16, // gentle upward buoyant start
+        vx: (Math.random() - 0.5) * 8,
+        vy: -4 - Math.random() * 12, // gentle natural buoyancy
         mass,
         drag,
         baseSize,
@@ -204,15 +199,22 @@ export default function GlitterBanner() {
     []
   );
 
-  // Initialize atmospheric glitter field
+  // Initialize atmospheric glitter field once
   const initGlitterField = useCallback(
     (width: number, height: number) => {
-      // Density: 700 to 900 particles for rich cosmetic glitter depth
+      if (width <= 0 || height <= 0) return;
+      widthRef.current = width;
+      heightRef.current = height;
+
+      // Never wipe or reset existing particles on scroll or resize!
+      if (particlesRef.current.length > 0) return;
+
       const count = Math.min(850, Math.max(450, Math.floor((width * height) / 1400)));
       const list: GlitterDust[] = [];
       for (let i = 0; i < count; i++) {
-        const p = createParticle(width, height, true);
-        p.life = Math.random() * p.maxLife * 0.8; // Stagger initial life
+        const p = createParticle(width, height);
+        // Stagger lifecycles evenly so the glitter is immediately glowing & alive across the whole canvas
+        p.life = Math.random() * p.maxLife;
         list.push(p);
       }
       particlesRef.current = list;
@@ -220,17 +222,22 @@ export default function GlitterBanner() {
     [createParticle]
   );
 
-  // Trigger convective airflow updraft plume
+  // Stir Updraft Draft: accelerates air velocity on existing particles naturally (NO RECTANGLE RESPAWN)
   const triggerUpdraft = useCallback(() => {
-    draftIntensityRef.current = 1.35;
-    setOpeningKey((k) => k + 1);
+    draftIntensityRef.current = 1.45;
+    const w = widthRef.current || 900;
+    const cx = w / 2;
 
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const rect = canvas.getBoundingClientRect();
-      initGlitterField(rect.width, rect.height);
-    }
-  }, [initGlitterField]);
+    // Impart natural aerodynamic convective lift & swirl to all active particles
+    particlesRef.current.forEach((p) => {
+      const normX = (p.x - cx) / (w * 0.5 || 1);
+      const lift = 20 + Math.random() * 28;
+      p.vy -= lift * (1.15 - 0.35 * Math.abs(normX));
+      p.vx += normX * (10 + Math.random() * 16);
+      p.omegaX += (Math.random() - 0.5) * 7.0;
+      p.omegaY += (Math.random() - 0.5) * 7.0;
+    });
+  }, []);
 
   // Mouse interaction: stirs airflow vector field
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -311,10 +318,21 @@ export default function GlitterBanner() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = rect.width;
       height = rect.height;
+      widthRef.current = width;
+      heightRef.current = height;
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      initGlitterField(width, height);
+
+      if (particlesRef.current.length === 0) {
+        initGlitterField(width, height);
+      } else {
+        // Adjust particles that are out of bounds on resize without re-spawning
+        particlesRef.current.forEach((p) => {
+          if (p.x > width) p.x = Math.random() * width;
+          if (p.y > height) p.y = Math.random() * height;
+        });
+      }
     };
 
     handleResize();
@@ -441,7 +459,7 @@ export default function GlitterBanner() {
           p.y > height + 70 ||
           baseAlpha <= 0.002
         ) {
-          particles[i] = createParticle(width, height, false);
+          particles[i] = createParticle(width, height);
           continue;
         }
 
@@ -536,11 +554,7 @@ export default function GlitterBanner() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleCanvasClick}
-      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none"
-      style={{
-        // Zero red/burgundy tint: Pure luxury deep obsidian matching #0a0a0a
-        background: 'radial-gradient(ellipse at 50% 40%, #131316 0%, #0a0a0a 60%, #050505 100%)',
-      }}
+      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none bg-[#0a0a0a]"
     >
       {/* Subtle warm champagne center lighting (No red tint) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-amber-400/[0.035] rounded-full blur-[140px] pointer-events-none" />
@@ -552,12 +566,7 @@ export default function GlitterBanner() {
       />
 
       {/* TYPOGRAPHY: Revealed through ambient glowing gold currents */}
-      <div
-        key={openingKey}
-        className={`relative z-30 max-w-3xl w-full text-center flex flex-col items-center transition-all duration-1000 ease-out ${
-          isRevealed ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'
-        }`}
-      >
+      <div className="relative z-30 max-w-3xl w-full text-center flex flex-col items-center">
         {/* Subtle HUD tag */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
           <FiWind className="w-3 h-3 text-amber-300" />
