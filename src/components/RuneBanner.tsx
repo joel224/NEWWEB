@@ -626,7 +626,7 @@ export default function GlitterBanner() {
       {/* TYPOGRAPHY: Revealed through ambient glowing gold currents */}
       <div className="relative z-30 max-w-3xl w-full text-center flex flex-col items-center">
         {/* Subtle HUD tag */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em]  font-mono mb-6">
           <FiWind className="w-3 h-3 text-amber-300" />
           <span>Aerodynamic Airflow Draft</span>
         </div>

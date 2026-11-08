@@ -53,89 +53,113 @@ useEffect(() => {
         },
       });
 
-      // 4. Calculate flight paths and animate
+      // 4. Calculate continuous perspective flight paths (Zero brakes, unified flow: slow -> cruise -> rush)
+      const flightDuration = 2.8;
+
       gsap.utils.toArray('.floating-img').forEach((img, i) => {
-        const groupIndex = i % 3;
-        const direction = i % 4; 
-    const EXITS = [
-  { tx: gsap.utils.random(-110, -90), ty: gsap.utils.random(-90, -60)  }, // ↖ top-left
-  { tx: gsap.utils.random(90,   110), ty: gsap.utils.random(-90, -60)  }, // ↗ top-right
-  { tx: gsap.utils.random(-110, -90), ty: gsap.utils.random(60,   90)  }, // ↙ bottom-left
-  { tx: gsap.utils.random(90,   110), ty: gsap.utils.random(60,   90)  }, // ↘ bottom-right
-];
+        // Natural 4-quadrant dispersal (top-left, top-right, bottom-left, bottom-right)
+        const QUADRANTS = [
+          { angle: -135, distMin: 105, distMax: 125 }, // ↖ top-left
+          { angle: -45,  distMin: 105, distMax: 125 }, // ↗ top-right
+          { angle: 135,  distMin: 105, distMax: 125 }, // ↙ bottom-left
+          { angle: 45,   distMin: 105, distMax: 125 }, // ↘ bottom-right
+        ];
 
-const exit = EXITS[i % 4];
-const baseY = exit.ty;
-const targetY = !(i % 2 === 0) ? -baseY : baseY;
-const targetX = -exit.tx;
+        const q = QUADRANTS[i % 4];
+        const spreadAngle = ((q.angle + gsap.utils.random(-14, 14)) * Math.PI) / 180;
+        const dist = gsap.utils.random(q.distMin, q.distMax);
 
-// Spawn origin: 8–15% of the way toward the exit already
-// This makes A→B feel like ONE curve, not a pivot
-const spawnX = targetX * gsap.utils.random(0.06, 0.12);
-const spawnY = targetY * gsap.utils.random(0.06, 0.12);
+        // Final exit coordinates in viewport units
+        const targetX = Math.cos(spreadAngle) * dist;
+        const targetY = Math.sin(spreadAngle) * (dist * 0.72); // Screen aspect ratio compensation
 
-// burstX/burstY: 18–25% of the way — gently drifting, never hard-center
-const burstX = targetX * gsap.utils.random(0.18, 0.25);
-const burstY = targetY * gsap.utils.random(0.18, 0.25);
-// optional: bias upward/downward flow
+        // Emergence origin: Starts near center with gentle offset so images don't block center headline
+        const spawnRatio = gsap.utils.random(0.05, 0.10);
+        const spawnX = targetX * spawnRatio;
+        const spawnY = targetY * spawnRatio;
 
-       
-        let depth = { scale: 1.2, opacity: 1, z: -10 };
+        // Subtle 3D aerodynamic rotation & final scale variance
+        const startRot = gsap.utils.random(-3, 3);
+        const endRot = (i % 2 === 0 ? 1 : -1) * gsap.utils.random(6, 14);
+        const finalScale = 5.8 + gsap.utils.random(0, 1.2);
 
-        if (groupIndex === 0) {
-          depth = { scale: 1.6, opacity: 1, z: -10 }; 
-        } else if (groupIndex === 1) {
-          depth = { scale: 1.6, opacity: 1, z: -10 }; 
-        } else {
-          depth = { scale: 1.5, opacity: 1, z: -10 }; 
-        }
-
-        
-
-        // ==========================================
-        // THE BURST LOGIC
-        // Calculate a point 20% of the way to the final target
-        // ==========================================
-        
-
+        // =========================================================================
+        // UNIFIED CONTINUOUS FLOW (No intermediate waypoints that slam brakes!)
+        // Single continuous Power2.in curve:
+        // - Small slow flow: Gentle distant float during emergence (t = 0 to 0.3)
+        // - Normal flow: Steady, readable cruising through mid-field (t = 0.3 to 0.7)
+        // - Fast flow: Exponential perspective fly-by rush (t = 0.7 to 1.0)
+        // =========================================================================
         const imgTl = gsap.timeline();
 
-        imgTl
-          // Step A: THE BURST
-          // Shoot from center (0,0) to the burst point very quickly.
-          // expo.out makes it explode outward then rapidly slow down.
-          .fromTo(img as Element, 
-            { 
-              x: 0, 
-              y: 0, 
-              opacity: 0, 
-                ease: 'power2.out',
-              scale: 0.05 // Start tiny so it doesn't block the center
-            },
-            { 
-              x: burstX + 'vw', 
-              y: burstY + 'vh', 
-              opacity: depth.opacity, 
-              scale: depth.scale,
-              duration: 0.9, // Very fast burst
-              ease: 'none', // 🔥 important
-            }
-          )
-         .to(img as Element, {
+        // 1. Continuous X displacement
+        imgTl.fromTo(
+          img as Element,
+          { x: spawnX + 'vw' },
+          {
             x: targetX + 'vw',
-            y: targetY + 'vh',
-            scale: 6.5, 
-            opacity: 0,
-            duration: 1.8,
-            ease: 'power1.inOut'
-            })
-        // ==========================================
-        // TRAFFIC CONTROL (2 Exit / 1 Enter Rule)
-        const staggerDelay = 1.25; 
-        
-       const baseSpacing = 0.3; // smaller = smoother stream
+            duration: flightDuration,
+            ease: 'power2.in',
+          },
+          0
+        );
 
-tl.add(imgTl, i * baseSpacing);
+        // 2. Continuous Y displacement (Alternating power eases create a gentle aerodynamic arc)
+        imgTl.fromTo(
+          img as Element,
+          { y: spawnY + 'vh' },
+          {
+            y: targetY + 'vh',
+            duration: flightDuration,
+            ease: (i % 2 === 0) ? 'power1.in' : 'power2.in',
+          },
+          0
+        );
+
+        // 3. Continuous 3D Scale & Rotation
+        imgTl.fromTo(
+          img as Element,
+          {
+            scale: 0.05,
+            rotation: startRot,
+          },
+          {
+            scale: finalScale,
+            rotation: endRot,
+            duration: flightDuration,
+            ease: 'power2.in',
+          },
+          0
+        );
+
+        // 4. Smooth Opacity Lifecycle:
+        // - Fades in gently during the small slow flow (first 25% of flight)
+        // - Stays crystal clear at 1.0 throughout the entire normal cruising phase
+        // - Dissolves seamlessly only in the final flyby rush as it passes the screen border
+        imgTl.fromTo(
+          img as Element,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: flightDuration * 0.25,
+            ease: 'power1.out',
+          },
+          0
+        );
+
+        imgTl.to(
+          img as Element,
+          {
+            opacity: 0,
+            duration: flightDuration * 0.28,
+            ease: 'power1.in',
+          },
+          flightDuration * 0.72
+        );
+
+        // Seamless staggered stream
+        const baseSpacing = 0.32;
+        tl.add(imgTl, i * baseSpacing);
       });
 
       tl.to({}, { duration: 0.5 }); // Buffer at the end
