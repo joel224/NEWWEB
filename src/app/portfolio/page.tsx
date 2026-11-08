@@ -241,7 +241,7 @@ dream stand tall and stay bright."
       </section>
       <PhilosophyCircles />
       
-      {/* RUNE GPU ARCHITECTURE BANNER */}
+      {/* DREAMY GLITTER CURTAIN BANNER */}
       <RuneBanner />
 
       <TextMarquee />
