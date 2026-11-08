@@ -56,6 +56,14 @@ useEffect(() => {
       // 4. Calculate continuous perspective flight paths (Zero brakes, unified flow: slow -> cruise -> rush)
       const flightDuration = 2.8;
 
+      // =========================================================================
+      // 🎛️ INNER RADIUS CONTROLLER (Controls where images emerge from):
+      // • 0 = EXACT DEAD CENTER (0, 0)
+      // • Adjust (e.g. 0 to 2, or 0 to 5) to control how wide the inner emergence circle is (in vw)
+      // =========================================================================
+      const innerRadiusMin = 0; // Minimum inner radius (0 = dead center)
+      const innerRadiusMax = 3; // Maximum inner radius (0 = dead center; set e.g. 3 for a subtle ring)
+
       gsap.utils.toArray('.floating-img').forEach((img, i) => {
         // Natural 4-quadrant dispersal (top-left, top-right, bottom-left, bottom-right)
         const QUADRANTS = [
@@ -73,10 +81,10 @@ useEffect(() => {
         const targetX = Math.cos(spreadAngle) * dist;
         const targetY = Math.sin(spreadAngle) * (dist * 0.72); // Screen aspect ratio compensation
 
-        // Emergence origin: Starts near center with gentle offset so images don't block center headline
-        const spawnRatio = gsap.utils.random(0.05, 0.10);
-        const spawnX = targetX * spawnRatio;
-        const spawnY = targetY * spawnRatio;
+        // Emergence origin: controlled by innerRadius (0 = exact dead center)
+        const spawnRadius = gsap.utils.random(innerRadiusMin, innerRadiusMax);
+        const spawnX = Math.cos(spreadAngle) * spawnRadius;
+        const spawnY = Math.sin(spreadAngle) * (spawnRadius * 0.72);
 
         // Subtle 3D aerodynamic rotation & final scale variance
         const startRot = gsap.utils.random(-3, 3);
