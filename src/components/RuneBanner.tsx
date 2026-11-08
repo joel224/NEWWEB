@@ -2,28 +2,27 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiHeart, FiWind } from 'react-icons/fi';
+import { FiHeart, FiWind, FiRotateCcw } from 'react-icons/fi';
 
 interface GlitterDust {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  // Natural physical properties
-  mass: number;     // 0.4 (light micro-dust) to 2.2 (heavier flake)
-  drag: number;     // Aerodynamic coupling coefficient
-  baseSize: number; // 0.6px to 2.0px (microscopic grit)
-  tier: 'grit' | 'flake' | 'bokeh';
+  mass: number;      // 0.45 (micro-dust) to 2.2 (medium flake)
+  drag: number;      // Aerodynamic coupling coefficient
+  baseSize: number;  // 0.75px to 2.8px
+  tier: 'micro' | 'flake' | 'bokeh';
   // 3D Facet Tumbling
-  angleX: number;
-  angleY: number;
-  rotSpeedX: number;
-  rotSpeedY: number;
-  // Color palette
-  baseColor: string; // Warm champagne, pale gold, diamond silver
-  alpha: number;
+  thetaX: number;
+  thetaY: number;
+  omegaX: number;    // Tumbling rotation speed X
+  omegaY: number;    // Tumbling rotation speed Y
+  // Photometric properties
+  baseColor: string; // Warm champagne, 24k gold, diamond platinum
   life: number;
   maxLife: number;
+  glintPhase: number;// High-frequency specular oscillation
 }
 
 export default function GlitterBanner() {
@@ -33,10 +32,28 @@ export default function GlitterBanner() {
   const animationFrameRef = useRef<number | null>(null);
   const particlesRef = useRef<GlitterDust[]>([]);
 
-  // Airflow impulse states
-  const draftProgressRef = useRef<number>(1.0); // 1 = full draft parting, decays to ambient
-  const isDraftingRef = useRef<boolean>(true);
-  const mouseAirRef = useRef<{ x: number; y: number; vx: number; vy: number; lastX: number; lastY: number; active: boolean }>({
+  // Cached pre-rendered optical glare sprites for 120 FPS performance
+  const spritesRef = useRef<{
+    specularBloom: HTMLCanvasElement | null;
+    diamondGlint: HTMLCanvasElement | null;
+    softBokeh: HTMLCanvasElement | null;
+  }>({
+    specularBloom: null,
+    diamondGlint: null,
+    softBokeh: null,
+  });
+
+  // Convective airflow simulation state
+  const draftIntensityRef = useRef<number>(1.0);
+  const mouseAirRef = useRef<{
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    lastX: number;
+    lastY: number;
+    active: boolean;
+  }>({
     x: -9999,
     y: -9999,
     vx: 0,
@@ -46,67 +63,142 @@ export default function GlitterBanner() {
     active: false,
   });
 
-  const [isRevealed, setIsRevealed] = useState<boolean>(false);
+  const [isRevealed, setIsRevealed] = useState<boolean>(true);
   const [openingKey, setOpeningKey] = useState<number>(0);
 
-  // Elegant cosmetic glitter color palettes (RGB triples for additive specular math)
-  const TIER_COLORS = [
-    '235, 215, 175', // Warm Champagne Gold
-    '255, 248, 230', // Diamond Platinum
-    '220, 190, 140', // Pale Amber Dust
-    '245, 235, 220', // Pearlescent Ivory
-    '180, 160, 135', // Deep Antique Bronze (Low-specular grit)
+  // Cosmetic Gold & Platinum palette (RGB triples for additive specular math)
+  const PALETTE = [
+    '255, 235, 180', // Radiant Champagne Gold
+    '255, 248, 225', // Diamond Platinum
+    '250, 215, 140', // 24k Pure Gold
+    '240, 225, 200', // Pearlescent Ivory
+    '215, 185, 130', // Deep Warm Amber Dust
   ];
 
-  // Spawn a microscopic cosmetic glitter speck
-  const createSpeck = useCallback(
+  // Pre-render optical flare & bloom sprites for photorealistic HDR glare
+  const initSprites = useCallback(() => {
+    // 1. Specular Bloom Sprite (Radial halo around flashing glints)
+    const bloomCanvas = document.createElement('canvas');
+    bloomCanvas.width = 48;
+    bloomCanvas.height = 48;
+    const bCtx = bloomCanvas.getContext('2d');
+    if (bCtx) {
+      const grad = bCtx.createRadialGradient(24, 24, 0, 24, 24, 22);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+      grad.addColorStop(0.18, 'rgba(255, 240, 190, 0.85)');
+      grad.addColorStop(0.45, 'rgba(255, 210, 120, 0.35)');
+      grad.addColorStop(0.8, 'rgba(250, 180, 80, 0.08)');
+      grad.addColorStop(1, 'rgba(250, 180, 80, 0)');
+      bCtx.fillStyle = grad;
+      bCtx.beginPath();
+      bCtx.arc(24, 24, 22, 0, Math.PI * 2);
+      bCtx.fill();
+    }
+
+    // 2. Diamond Anamorphic Glint Sprite (Razor-sharp optical diffraction streaks)
+    const glintCanvas = document.createElement('canvas');
+    glintCanvas.width = 64;
+    glintCanvas.height = 64;
+    const gCtx = glintCanvas.getContext('2d');
+    if (gCtx) {
+      // Horizontal flare streak
+      const hGrad = gCtx.createLinearGradient(0, 32, 64, 32);
+      hGrad.addColorStop(0, 'rgba(255, 245, 210, 0)');
+      hGrad.addColorStop(0.4, 'rgba(255, 245, 210, 0.6)');
+      hGrad.addColorStop(0.5, 'rgba(255, 255, 255, 1.0)');
+      hGrad.addColorStop(0.6, 'rgba(255, 245, 210, 0.6)');
+      hGrad.addColorStop(1, 'rgba(255, 245, 210, 0)');
+      gCtx.fillStyle = hGrad;
+      gCtx.fillRect(0, 31, 64, 2);
+
+      // Vertical micro-spike
+      const vGrad = gCtx.createLinearGradient(32, 8, 32, 56);
+      vGrad.addColorStop(0, 'rgba(255, 245, 210, 0)');
+      vGrad.addColorStop(0.4, 'rgba(255, 245, 210, 0.45)');
+      vGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.95)');
+      vGrad.addColorStop(0.6, 'rgba(255, 245, 210, 0.45)');
+      vGrad.addColorStop(1, 'rgba(255, 245, 210, 0)');
+      gCtx.fillStyle = vGrad;
+      gCtx.fillRect(31, 8, 2, 48);
+
+      // Pure white brilliant center diamond
+      gCtx.fillStyle = '#ffffff';
+      gCtx.beginPath();
+      gCtx.arc(32, 32, 2.2, 0, Math.PI * 2);
+      gCtx.fill();
+    }
+
+    // 3. Soft Bokeh Disc Sprite (Out-of-focus background disc)
+    const bokehCanvas = document.createElement('canvas');
+    bokehCanvas.width = 32;
+    bokehCanvas.height = 32;
+    const boCtx = bokehCanvas.getContext('2d');
+    if (boCtx) {
+      const bGrad = boCtx.createRadialGradient(16, 16, 0, 16, 16, 14);
+      bGrad.addColorStop(0, 'rgba(255, 235, 185, 0.55)');
+      bGrad.addColorStop(0.6, 'rgba(240, 200, 130, 0.2)');
+      bGrad.addColorStop(1, 'rgba(240, 200, 130, 0)');
+      boCtx.fillStyle = bGrad;
+      boCtx.beginPath();
+      boCtx.arc(16, 16, 14, 0, Math.PI * 2);
+      boCtx.fill();
+    }
+
+    spritesRef.current = {
+      specularBloom: bloomCanvas,
+      diamondGlint: glintCanvas,
+      softBokeh: bokehCanvas,
+    };
+  }, []);
+
+  // Spawn a microscopic cosmetic glitter particle
+  const createParticle = useCallback(
     (width: number, height: number, forceCenter = false): GlitterDust => {
       const cx = width / 2;
       const cy = height / 2;
 
-      // Spawn concentrated around central convective chimney
-      const spreadX = forceCenter ? width * 0.18 : width * 0.45;
-      const x = cx + (Math.random() - 0.5) * spreadX * 2;
-      // Start biased toward lower-middle for convective updraft
-      const y = forceCenter ? cy + (Math.random() - 0.1) * (height * 0.4) : Math.random() * height;
+      // Spawn distribution: biased towards lower-middle convective column when drafting
+      const spreadX = forceCenter ? width * 0.3 : width * 0.9;
+      const x = cx + (Math.random() - 0.5) * spreadX;
+      const y = forceCenter ? cy + (Math.random() - 0.1) * (height * 0.45) : Math.random() * height;
 
       const rand = Math.random();
-      let tier: 'grit' | 'flake' | 'bokeh' = 'grit';
-      let baseSize = 0.65 + Math.random() * 0.55; // 75% are microscopic non-blinking dots (0.65px - 1.2px)
-      let mass = 0.5 + Math.random() * 0.7;
-      let drag = 0.055 + Math.random() * 0.035;
+      let tier: 'micro' | 'flake' | 'bokeh' = 'micro';
+      let baseSize = 0.85 + Math.random() * 0.7; // 70% micro-grit (0.85px - 1.55px)
+      let mass = 0.5 + Math.random() * 0.6;
+      let drag = 0.05 + Math.random() * 0.04;
 
       if (rand > 0.88) {
-        // Soft out-of-focus background bokeh (5%)
+        // 12% Foreground Bokeh
         tier = 'bokeh';
-        baseSize = 2.2 + Math.random() * 1.6;
-        mass = 1.4 + Math.random() * 0.8;
+        baseSize = 2.6 + Math.random() * 2.2;
+        mass = 1.3 + Math.random() * 0.8;
         drag = 0.025 + Math.random() * 0.02;
-      } else if (rand > 0.72) {
-        // Specular medium flake (17%)
+      } else if (rand > 0.68) {
+        // 20% Specular Flakes
         tier = 'flake';
-        baseSize = 1.25 + Math.random() * 0.75;
-        mass = 1.0 + Math.random() * 0.8;
-        drag = 0.04 + Math.random() * 0.025;
+        baseSize = 1.6 + Math.random() * 1.1;
+        mass = 0.9 + Math.random() * 0.7;
+        drag = 0.04 + Math.random() * 0.03;
       }
 
       return {
         x,
         y,
-        vx: (Math.random() - 0.5) * 8,
-        vy: -5 - Math.random() * 15, // initial upward air buoyant lift
+        vx: (Math.random() - 0.5) * 6,
+        vy: -8 - Math.random() * 16, // gentle upward buoyant start
         mass,
         drag,
         baseSize,
         tier,
-        angleX: Math.random() * Math.PI * 2,
-        angleY: Math.random() * Math.PI * 2,
-        rotSpeedX: (Math.random() - 0.5) * 4.5,
-        rotSpeedY: (Math.random() - 0.5) * 4.5,
-        baseColor: TIER_COLORS[Math.floor(Math.random() * TIER_COLORS.length)],
-        alpha: 0,
+        thetaX: Math.random() * Math.PI * 2,
+        thetaY: Math.random() * Math.PI * 2,
+        omegaX: (Math.random() - 0.5) * 5.5,
+        omegaY: (Math.random() - 0.5) * 5.5,
+        baseColor: PALETTE[Math.floor(Math.random() * PALETTE.length)],
         life: 0,
-        maxLife: 280 + Math.random() * 220,
+        maxLife: 320 + Math.random() * 260,
+        glintPhase: Math.random() * Math.PI * 2,
       };
     },
     []
@@ -115,24 +207,22 @@ export default function GlitterBanner() {
   // Initialize atmospheric glitter field
   const initGlitterField = useCallback(
     (width: number, height: number) => {
-      // Density: ~550 particles for rich cosmetic texture without framerate drop
-      const count = Math.min(600, Math.max(300, Math.floor((width * height) / 1900)));
+      // Density: 700 to 900 particles for rich cosmetic glitter depth
+      const count = Math.min(850, Math.max(450, Math.floor((width * height) / 1400)));
       const list: GlitterDust[] = [];
       for (let i = 0; i < count; i++) {
-        const p = createSpeck(width, height, true);
-        p.life = Math.random() * p.maxLife * 0.75; // Stagger initial life
+        const p = createParticle(width, height, true);
+        p.life = Math.random() * p.maxLife * 0.8; // Stagger initial life
         list.push(p);
       }
       particlesRef.current = list;
     },
-    [createSpeck]
+    [createParticle]
   );
 
-  // Trigger convective updraft plume (air draft pushes upward and parts outward)
+  // Trigger convective airflow updraft plume
   const triggerUpdraft = useCallback(() => {
-    draftProgressRef.current = 1.25;
-    isDraftingRef.current = true;
-    setIsRevealed(false);
+    draftIntensityRef.current = 1.35;
     setOpeningKey((k) => k + 1);
 
     const canvas = canvasRef.current;
@@ -140,13 +230,9 @@ export default function GlitterBanner() {
       const rect = canvas.getBoundingClientRect();
       initGlitterField(rect.width, rect.height);
     }
-
-    setTimeout(() => {
-      setIsRevealed(true);
-    }, 1100);
   }, [initGlitterField]);
 
-  // Mouse interaction: stirs airflow in the vector field
+  // Mouse interaction: stirs airflow vector field
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -157,8 +243,8 @@ export default function GlitterBanner() {
 
     const mouse = mouseAirRef.current;
     if (mouse.active) {
-      mouse.vx = (curX - mouse.lastX) * 0.45;
-      mouse.vy = (curY - mouse.lastY) * 0.45;
+      mouse.vx = (curX - mouse.lastX) * 0.5;
+      mouse.vy = (curY - mouse.lastY) * 0.5;
     }
 
     mouse.x = curX;
@@ -180,29 +266,29 @@ export default function GlitterBanner() {
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
 
-    // Inject air vortex puff at click point
-    const burstCount = 55;
+    // Inject air vortex puff with sparkling specks at cursor
+    const burstCount = 65;
     const newDust: GlitterDust[] = [];
     for (let i = 0; i < burstCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 15 + Math.random() * 45;
+      const speed = 12 + Math.random() * 40;
       newDust.push({
-        x: clickX + (Math.random() - 0.5) * 15,
-        y: clickY + (Math.random() - 0.5) * 15,
+        x: clickX + (Math.random() - 0.5) * 16,
+        y: clickY + (Math.random() - 0.5) * 16,
         vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 20, // upward bias
-        mass: 0.6 + Math.random() * 0.8,
+        vy: Math.sin(angle) * speed - 22,
+        mass: 0.5 + Math.random() * 0.7,
         drag: 0.05 + Math.random() * 0.03,
-        baseSize: 0.7 + Math.random() * 0.9,
-        tier: Math.random() > 0.75 ? 'flake' : 'grit',
-        angleX: Math.random() * Math.PI * 2,
-        angleY: Math.random() * Math.PI * 2,
-        rotSpeedX: (Math.random() - 0.5) * 8.0,
-        rotSpeedY: (Math.random() - 0.5) * 8.0,
-        baseColor: TIER_COLORS[Math.floor(Math.random() * TIER_COLORS.length)],
-        alpha: 0,
+        baseSize: 0.9 + Math.random() * 1.1,
+        tier: Math.random() > 0.65 ? 'flake' : 'micro',
+        thetaX: Math.random() * Math.PI * 2,
+        thetaY: Math.random() * Math.PI * 2,
+        omegaX: (Math.random() - 0.5) * 8.0,
+        omegaY: (Math.random() - 0.5) * 8.0,
+        baseColor: PALETTE[Math.floor(Math.random() * PALETTE.length)],
         life: 0,
-        maxLife: 240 + Math.random() * 180,
+        maxLife: 260 + Math.random() * 200,
+        glintPhase: Math.random() * Math.PI * 2,
       });
     }
     particlesRef.current.push(...newDust);
@@ -214,6 +300,8 @@ export default function GlitterBanner() {
 
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
+
+    initSprites();
 
     let width = 0;
     let height = 0;
@@ -234,20 +322,32 @@ export default function GlitterBanner() {
 
     let lastTime = performance.now();
 
-    // MAIN RENDER LOOP: 2D Curl Noise Aerodynamics + 3D Facet Specular Tumbling
+    // Key studio light vector for specular reflection calculation
+    const lightX = 0.22;
+    const lightY = -0.58;
+    const lightZ = 0.78;
+
+    // Camera view direction
+    const viewZ = 1.0;
+
+    // Half-vector H = normalize(L + V)
+    const lenHV = Math.hypot(lightX, lightY, lightZ + viewZ);
+    const hx = lightX / lenHV;
+    const hy = lightY / lenHV;
+    const hz = (lightZ + viewZ) / lenHV;
+
     const render = (time: number) => {
       const now = time * 0.001; // seconds
       const dt = Math.min((time - lastTime) / 1000, 0.033);
       lastTime = time;
 
-      // Soft decay of the updraft draft impulse toward natural hovering ambient state
-      if (draftProgressRef.current > 0.05) {
-        draftProgressRef.current -= dt * 0.28;
+      // Soft decay of the updraft impulse to steady breathing ambient airflow
+      if (draftIntensityRef.current > 0.08) {
+        draftIntensityRef.current -= dt * 0.22;
       } else {
-        draftProgressRef.current = 0.05; // residual subtle breathing airflow
+        draftIntensityRef.current = 0.08;
       }
 
-      // Decay mouse air momentum
       const mouse = mouseAirRef.current;
       mouse.vx *= 0.88;
       mouse.vy *= 0.88;
@@ -255,60 +355,64 @@ export default function GlitterBanner() {
       ctx.clearRect(0, 0, width, height);
 
       const cx = width / 2;
-      const draft = draftProgressRef.current;
+      const draft = draftIntensityRef.current;
       const particles = particlesRef.current;
+      const sprites = spritesRef.current;
+
+      // ====================================================================
+      // 1. ADVANCED DIVERGENT FLUID AIRFLOW FIELD + CURL NOISE
+      // Rather than particles pushing themselves apart artificially, a continuous
+      // aerodynamic fluid field circulates air: rising in chimney plume and
+      // naturally diverging/fanning outward as it hits upper levels.
+      // ====================================================================
+      const scaleL = 0.0022; // Low frequency ambient roll
+      const scaleH = 0.0055; // Micro-eddy frequency
+      const tFlow = now * 0.42;
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.life += 1;
 
-        // ========================================================
-        // 1. INCOMPRESSIBLE 2D CURL NOISE AIRFLOW DYNAMICS
-        // ========================================================
-        const scale1 = 0.0028;
-        const scale2 = 0.0065;
-        const tOffset = now * 0.35;
+        // Incompressible 2D Curl Noise stream function derivatives
+        const curlVx =
+          Math.cos(p.y * scaleL + tFlow) * Math.sin(p.x * scaleL * 0.8) * 26 +
+          Math.cos(p.y * scaleH - tFlow * 1.3) * 16;
 
-        // Stream function derivatives for micro-eddies and vortices
-        const curlU =
-          Math.cos(p.y * scale1 + tOffset) * Math.sin(p.x * scale1) * 22 +
-          Math.cos(p.y * scale2 - tOffset * 1.2) * 14;
+        const curlVy =
+          -Math.sin(p.y * scaleL + tFlow) * Math.cos(p.x * scaleL * 0.8) * 26 -
+          Math.sin(p.x * scaleH + tFlow * 0.9) * 16;
 
-        const curlV =
-          -Math.sin(p.y * scale1 + tOffset) * Math.cos(p.x * scale1) * 22 -
-          Math.sin(p.x * scale2 + tOffset * 0.8) * 14;
+        // Convective chimney updraft physics
+        const normX = (p.x - cx) / (width * 0.5); // -1.0 to +1.0
+        const normY = Math.max(0, Math.min(1, p.y / height)); // 0 (top) to 1 (bottom)
 
-        // Convective Chimney Updraft (sweeps from center bottom, fanning outward)
-        const relX = (p.x - cx) / (width * 0.5); // -1.0 (left edge) to +1.0 (right edge)
-        const relY = Math.max(0, Math.min(1, p.y / height));
+        // Fluid continuity: Rising air in center must diverge horizontally to both sides as it ascends
+        // Divergence is zero at bottom, peaks in mid-to-top as plume fans outward gracefully
+        const plumeExpansion = Math.sin((1 - normY) * Math.PI * 0.85);
+        const airOutward = normX * (80 * draft) * plumeExpansion;
 
-        // Lateral air expansion: air fans outward left (<0) and right (>0)
-        // Strongest in middle-to-upper half as draft billows out like a plume
-        const airOutward = relX * (75 * draft) * (1.15 - Math.min(1, Math.abs(relX)));
+        // Central chimney upward velocity (concentrated in center column, decaying radially)
+        const chimneyCore = Math.exp(-Math.pow(normX * 2.2, 2));
+        const airUpward = -125 * draft * chimneyCore * (0.45 + 0.55 * normY);
 
-        // Upward chimney draft: concentrated at center seam
-        const centerBell = Math.exp(-Math.pow(relX * 2.4, 2));
-        const airUpward = -110 * draft * centerBell * (0.5 + 0.5 * relY);
+        // Net air velocity vector at (p.x, p.y)
+        let airVx = curlVx + airOutward;
+        let airVy = curlVy + airUpward - 6.0; // slight thermal buoyancy
 
-        // Combined air velocity vector at this point in space
-        let airVx = curlU + airOutward;
-        let airVy = curlV + airUpward - 7.0; // slight thermal buoyancy so it never drops like stone
-
-        // Mouse wake injection (user stirs the air)
+        // User mouse wake injection
         if (mouse.active) {
           const mdx = p.x - mouse.x;
           const mdy = p.y - mouse.y;
           const distSq = mdx * mdx + mdy * mdy;
-          if (distSq < 110 * 110 && distSq > 1) {
+          if (distSq < 130 * 130 && distSq > 1) {
             const dist = Math.sqrt(distSq);
-            const influence = (1 - dist / 110);
-            airVx += mouse.vx * influence * 1.8;
-            airVy += mouse.vy * influence * 1.8;
+            const inf = 1 - dist / 130;
+            airVx += mouse.vx * inf * 2.2;
+            airVy += mouse.vy * inf * 2.2;
           }
         }
 
-        // Aerodynamic Drag Force: F = drag * (v_air - v_particle)
-        // High drag micro-dust matches air immediately; heavier flakes have momentum
+        // Aerodynamic Drag Coupling: Acceleration a = (V_air - V_p) * (drag / mass)
         const ax = (airVx - p.vx) * (p.drag * 60);
         const ay = (airVy - p.vy) * (p.drag * 60);
 
@@ -318,79 +422,96 @@ export default function GlitterBanner() {
         p.x += p.vx * dt;
         p.y += p.vy * dt;
 
-        // 3D Facet Tumbling
-        p.angleX += p.rotSpeedX * dt;
-        p.angleY += p.rotSpeedY * dt;
+        // 3D Facet Tumbling in Air Stream
+        p.thetaX += p.omegaX * dt;
+        p.thetaY += p.omegaY * dt;
 
-        // ========================================================
-        // 2. LIFECYCLE & NATURAL DISSIPATION
-        // ========================================================
-        const fadeIn = Math.min(1, p.life / 20);
+        // Lifecycle & graceful fade curves
+        const fadeIn = Math.min(1, p.life / 22);
         const fadeOut = Math.max(0, 1 - p.life / p.maxLife);
+        const edgeFade = Math.max(0, 1 - Math.pow(Math.abs(normX), 2.2));
+        const baseAlpha = fadeIn * fadeOut * edgeFade;
 
-        // Natural edge dispersion: as particles fan out to lateral margins, fade gracefully
-        const lateralFade = Math.max(0, 1 - Math.pow(Math.abs(relX), 1.9));
-        const baseAlpha = fadeIn * fadeOut * lateralFade;
-
-        // Respawn if drifted off-screen or decayed
-        if (p.life >= p.maxLife || p.x < -60 || p.x > width + 60 || p.y < -60 || p.y > height + 60 || baseAlpha <= 0.002) {
-          particles[i] = createSpeck(width, height, false);
+        // Respawn if decayed or drifted outside boundary
+        if (
+          p.life >= p.maxLife ||
+          p.x < -70 ||
+          p.x > width + 70 ||
+          p.y < -70 ||
+          p.y > height + 70 ||
+          baseAlpha <= 0.002
+        ) {
+          particles[i] = createParticle(width, height, false);
           continue;
         }
 
-        // ========================================================
-        // 3. 3D FACET SPECULAR FLASH OPTICS (1-3 Frame Glints)
-        // ========================================================
-        // Surface normal of micro-platelet in 3D
-        const nz = Math.cos(p.angleX) * Math.cos(p.angleY);
-        const ny = Math.sin(p.angleY);
+        // ====================================================================
+        // 2. 3D FACET TUMBLING & SPECULAR REFLECTION OPTICS
+        // Real glitter is flat micro-mirrors. When normal aligns with half-vector,
+        // it reflects high-intensity specular flash for 1-3 frames.
+        // ====================================================================
+        // Normal vector in 3D:
+        const nx = Math.sin(p.thetaX) * Math.cos(p.thetaY);
+        const ny = Math.sin(p.thetaY);
+        const nz = Math.cos(p.thetaX) * Math.cos(p.thetaY);
 
-        // Specular reflection toward viewer/overhead spotlight
-        const specDot = Math.max(0, nz * 0.88 - ny * 0.35);
+        // Specular dot product: N dot H
+        const specDot = Math.max(0, nx * hx + ny * hy + nz * hz);
 
-        // Very high specular exponent: only flashes when facet aligns with light!
-        // 85% of particles stay low-key grit; 10-15% flash brilliant white/gold
-        const specularPower = Math.pow(specDot, 28);
-        const isSpecularGlint = specularPower > 0.45 && p.tier !== 'bokeh';
+        // High specular exponent simulates polished metallic facet
+        const specularFactor = Math.pow(specDot, 24);
 
-        // ========================================================
-        // 4. PHOTOREALISTIC RENDERING (No cartoon crosses/stars!)
-        // ========================================================
+        // High-frequency facet oscillation (twinkle)
+        const microFlicker = Math.sin(now * 12 + p.glintPhase);
+        const isGlinting = specularFactor > 0.35 && microFlicker > -0.2 && p.tier !== 'bokeh';
+
+        // ====================================================================
+        // 3. PHOTOREALISTIC RENDERING & OPTICAL BLOOM GLARE
+        // ====================================================================
         ctx.save();
         ctx.translate(p.x, p.y);
 
         if (p.tier === 'bokeh') {
-          // BOKEH LAYER: Soft, low-contrast out-of-focus background disc
-          const bAlpha = baseAlpha * 0.22;
-          ctx.beginPath();
-          ctx.arc(0, 0, p.baseSize, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${p.baseColor}, ${bAlpha})`;
-          ctx.fill();
-        } else if (!isSpecularGlint) {
-          // COSMETIC MICRO-GRIT (The non-blinking dots are made microscopic: sub-pixel to 1.1px)
-          const gAlpha = baseAlpha * 0.65;
-          const s = p.baseSize; // 0.65px - 1.2px
+          // BOKEH LAYER: Soft out-of-focus background disc
+          if (sprites.softBokeh) {
+            const bAlpha = baseAlpha * 0.32;
+            ctx.globalAlpha = bAlpha;
+            const bR = p.baseSize * 4.0;
+            ctx.drawImage(sprites.softBokeh, -bR, -bR, bR * 2, bR * 2);
+          }
+        } else if (!isGlinting) {
+          // COSMETIC MICRO-GRIT (Warm champagne/gold granular pigment)
+          const gAlpha = baseAlpha * 0.85;
+          const s = p.baseSize; // 0.85px - 2.0px
           ctx.fillStyle = `rgba(${p.baseColor}, ${gAlpha})`;
-          // Render as microscopic granular speck
           ctx.fillRect(-s / 2, -s / 2, s, s);
         } else {
-          // TRANSIENT SPECULAR GLINT: 1-3 frame explosive highlight
-          const glintIntensity = Math.min(1, specularPower * 1.5);
-          const flashAlpha = Math.min(1, baseAlpha * (0.8 + 0.2 * glintIntensity));
-          const coreSize = p.baseSize * (1.1 + 0.5 * glintIntensity);
+          // SPECULAR GLINT BURST (High-intensity radiant flash with optical bloom & diffraction glint)
+          const glintPower = Math.min(1.0, specularFactor * 1.8);
+          const flashAlpha = Math.min(1.0, baseAlpha * (0.85 + 0.15 * glintPower));
 
-          // Additive luminance blending for hot specular core
+          // Switch to additive luminance blending for glowing core accumulation
           ctx.globalCompositeOperation = 'lighter';
 
-          // 1. Radiant specular core (blows out to pure white/platinum)
-          ctx.fillStyle = `rgba(255, 255, 255, ${flashAlpha})`;
-          ctx.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
+          // 1. Golden Optical Bloom Halo
+          if (sprites.specularBloom) {
+            const bloomRadius = p.baseSize * (5.5 + 4.5 * glintPower);
+            ctx.globalAlpha = flashAlpha * 0.8;
+            ctx.drawImage(sprites.specularBloom, -bloomRadius, -bloomRadius, bloomRadius * 2, bloomRadius * 2);
+          }
 
-          // 2. Microscopic optical bloom halo (soft lens bleeding)
-          ctx.beginPath();
-          ctx.arc(0, 0, coreSize * 2.2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${p.baseColor}, ${flashAlpha * 0.38})`;
-          ctx.fill();
+          // 2. Anamorphic Diffraction Star-Glint Streak (Only when peak specular alignment)
+          if (sprites.diamondGlint && specularFactor > 0.55) {
+            const streakScale = p.baseSize * (4.0 + 3.0 * glintPower);
+            ctx.globalAlpha = flashAlpha * 0.95;
+            ctx.drawImage(sprites.diamondGlint, -streakScale, -streakScale, streakScale * 2, streakScale * 2);
+          }
+
+          // 3. Blinding Pure White / Diamond Specular Core
+          const coreSize = p.baseSize * 1.35;
+          ctx.globalAlpha = flashAlpha;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
         }
 
         ctx.restore();
@@ -407,7 +528,7 @@ export default function GlitterBanner() {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [initGlitterField, createSpeck]);
+  }, [initGlitterField, createParticle, initSprites]);
 
   return (
     <section
@@ -415,14 +536,14 @@ export default function GlitterBanner() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleCanvasClick}
-      className="w-full min-h-[560px] sm:min-h-[620px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none border-y border-white/10"
+      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none border-y border-white/10"
       style={{
-        // Deep obsidian showroom dark background matching #0a0a0a (Zero red background)
-        background: 'radial-gradient(ellipse at 50% 45%, #131316 0%, #0a0a0a 65%, #050505 100%)',
+        // Zero red/burgundy tint: Pure luxury deep obsidian matching #0a0a0a
+        background: 'radial-gradient(ellipse at 50% 40%, #131316 0%, #0a0a0a 60%, #050505 100%)',
       }}
     >
-      {/* Subtle atmospheric center luminance beam */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-amber-500/[0.035] rounded-full blur-[140px] pointer-events-none" />
+      {/* Subtle warm champagne center lighting (No red tint) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-amber-400/[0.035] rounded-full blur-[140px] pointer-events-none" />
 
       {/* NATURAL FLUID GLITTER CANVAS (Curl noise updraft, micro-grit, specular flashes) */}
       <canvas
@@ -430,7 +551,7 @@ export default function GlitterBanner() {
         className="absolute inset-0 w-full h-full block z-20 pointer-events-none"
       />
 
-      {/* TYPOGRAPHY: Revealed softly through the parting air currents */}
+      {/* TYPOGRAPHY: Revealed through ambient glowing gold currents */}
       <div
         key={openingKey}
         className={`relative z-30 max-w-3xl w-full text-center flex flex-col items-center transition-all duration-1000 ease-out ${
@@ -469,7 +590,7 @@ export default function GlitterBanner() {
             }}
             className="flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-black font-semibold text-xs tracking-[0.2em] uppercase hover:bg-neutral-200 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300 cursor-pointer"
           >
-            <FiWind className="w-3.5 h-3.5" />
+            <FiRotateCcw className="w-3.5 h-3.5" />
             <span>Stir Updraft Draft</span>
           </button>
 
