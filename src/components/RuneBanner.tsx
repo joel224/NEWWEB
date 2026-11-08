@@ -649,21 +649,12 @@ export default function GlitterBanner() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              triggerUpdraft();
-            }}
-            className="flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-black font-semibold text-xs tracking-[0.2em] uppercase hover:bg-neutral-200 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300 cursor-pointer"
-          >
-            <FiRotateCcw className="w-3.5 h-3.5" />
-            <span>Stir Updraft Draft</span>
-          </button>
+         
 
           <button
             onClick={(e) => {
               e.stopPropagation();
-              router.push('/wedding');
+              router.push('/');
             }}
             className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-neutral-200 font-medium text-xs tracking-[0.2em] uppercase backdrop-blur-md transition-all duration-300 cursor-pointer hover:border-white/30"
           >
