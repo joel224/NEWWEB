@@ -36,6 +36,9 @@ interface GlitterDust {
   life: number;
   maxLife: number;
   glintPhase: number;// High-frequency specular oscillation
+  // Very few razor-sharp specks with zero blur
+  isCrisp?: boolean;
+  crispType?: 'silver' | 'gold';
 }
 
 export default function GlitterBanner() {
@@ -190,6 +193,13 @@ export default function GlitterBanner() {
         drag = 0.04 + Math.random() * 0.03;
       }
 
+      // Very few (only ~4.5%) are designated as unblurred, razor-sharp silver & gold crystalline specks
+      const isCrisp = Math.random() < 0.045 && tier !== 'bokeh';
+      const crispType: 'silver' | 'gold' = Math.random() > 0.45 ? 'gold' : 'silver';
+      const baseColor = isCrisp
+        ? (crispType === 'silver' ? '240, 246, 255' : '255, 215, 0')
+        : PALETTE[Math.floor(Math.random() * PALETTE.length)];
+
       return {
         x,
         y,
@@ -203,10 +213,12 @@ export default function GlitterBanner() {
         thetaY: Math.random() * Math.PI * 2,
         omegaX: (Math.random() - 0.5) * 5.5,
         omegaY: (Math.random() - 0.5) * 5.5,
-        baseColor: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        baseColor,
         life: 0,
         maxLife: 320 + Math.random() * 260,
         glintPhase: Math.random() * Math.PI * 2,
+        isCrisp,
+        crispType,
       };
     },
     []
@@ -292,6 +304,8 @@ export default function GlitterBanner() {
     for (let i = 0; i < burstCount; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 12 + Math.random() * 40;
+      const isCrisp = Math.random() < 0.045;
+      const crispType: 'silver' | 'gold' = Math.random() > 0.45 ? 'gold' : 'silver';
       newDust.push({
         x: clickX + (Math.random() - 0.5) * 16,
         y: clickY + (Math.random() - 0.5) * 16,
@@ -305,10 +319,14 @@ export default function GlitterBanner() {
         thetaY: Math.random() * Math.PI * 2,
         omegaX: (Math.random() - 0.5) * 8.0,
         omegaY: (Math.random() - 0.5) * 8.0,
-        baseColor: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        baseColor: isCrisp
+          ? (crispType === 'silver' ? '240, 246, 255' : '255, 215, 0')
+          : PALETTE[Math.floor(Math.random() * PALETTE.length)],
         life: 0,
         maxLife: 260 + Math.random() * 200,
         glintPhase: Math.random() * Math.PI * 2,
+        isCrisp,
+        crispType,
       });
     }
     particlesRef.current.push(...newDust);
@@ -517,32 +535,51 @@ export default function GlitterBanner() {
           ctx.fillStyle = `rgba(${p.baseColor}, ${gAlpha})`;
           ctx.fillRect(-s / 2, -s / 2, s, s);
         } else {
-          // SPECULAR GLINT BURST (High-intensity radiant flash with optical bloom & diffraction glint)
+          // SPECULAR GLINT BURST (High-intensity radiant flash)
           const glintPower = Math.min(1.0, specularFactor * 1.8);
           const flashAlpha = Math.min(1.0, baseAlpha * (0.85 + 0.15 * glintPower));
 
           // Switch to additive luminance blending for glowing core accumulation
           ctx.globalCompositeOperation = 'lighter';
 
-          // 1. Golden Optical Bloom Halo
-          if (sprites.specularBloom) {
-            const bloomRadius = p.baseSize * (5.5 + 4.5 * glintPower);
-            ctx.globalAlpha = flashAlpha * 0.8;
-            ctx.drawImage(sprites.specularBloom, -bloomRadius, -bloomRadius, bloomRadius * 2, bloomRadius * 2);
-          }
+          if (p.isCrisp) {
+            // ==========================================================
+            // SURGICALLY UNBLURRED: ZERO BLOOM HALO, ZERO BLUR!
+            // Sharp, crystalline needle-prick in pure platinum silver or 24k gold
+            // ==========================================================
+            ctx.globalAlpha = flashAlpha;
+            const coreSize = p.baseSize * (1.2 + 0.3 * glintPower);
 
-          // 2. Anamorphic Diffraction Star-Glint Streak (Only when peak specular alignment)
-          if (sprites.diamondGlint && specularFactor > 0.55) {
-            const streakScale = p.baseSize * (4.0 + 3.0 * glintPower);
-            ctx.globalAlpha = flashAlpha * 0.95;
-            ctx.drawImage(sprites.diamondGlint, -streakScale, -streakScale, streakScale * 2, streakScale * 2);
-          }
+            // 1. Unblurred crisp metallic facet body (sharp geometry, zero blur)
+            ctx.fillStyle = p.crispType === 'silver' ? '#f0f6ff' : '#ffd700';
+            ctx.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
 
-          // 3. Blinding Pure White / Diamond Specular Core
-          const coreSize = p.baseSize * 1.35;
-          ctx.globalAlpha = flashAlpha;
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
+            // 2. Pure diamond specular white-hot needle center
+            ctx.fillStyle = '#ffffff';
+            const needleSize = Math.max(0.75, coreSize * 0.42);
+            ctx.fillRect(-needleSize / 2, -needleSize / 2, needleSize, needleSize);
+          } else {
+            // Standard particles with soft optical bloom halo
+            // 1. Golden Optical Bloom Halo
+            if (sprites.specularBloom) {
+              const bloomRadius = p.baseSize * (5.5 + 4.5 * glintPower);
+              ctx.globalAlpha = flashAlpha * 0.8;
+              ctx.drawImage(sprites.specularBloom, -bloomRadius, -bloomRadius, bloomRadius * 2, bloomRadius * 2);
+            }
+
+            // 2. Anamorphic Diffraction Star-Glint Streak (Only when peak specular alignment)
+            if (sprites.diamondGlint && specularFactor > 0.55) {
+              const streakScale = p.baseSize * (4.0 + 3.0 * glintPower);
+              ctx.globalAlpha = flashAlpha * 0.95;
+              ctx.drawImage(sprites.diamondGlint, -streakScale, -streakScale, streakScale * 2, streakScale * 2);
+            }
+
+            // 3. Blinding Pure White / Diamond Specular Core
+            const coreSize = p.baseSize * 1.35;
+            ctx.globalAlpha = flashAlpha;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
+          }
         }
 
         ctx.restore();
@@ -588,11 +625,9 @@ export default function GlitterBanner() {
 
         {/* Elegant British Heritage Holiday Headline */}
         <h2
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[-0.015em] mb-4 leading-[1.05] drop-shadow-[0_4px_35px_rgba(0,0,0,0.95)]"
-          style={{
-            fontFamily: 'var(--font-timesnewroman), "EB Garamond", "Cormorant Garamond", Georgia, serif',
-            fontStyle: 'italic',
-          }}
+          className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#f5f5f7] mb-6 uppercase leading-[1.1] drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]"
+          style={{ fontFamily: 'var(--font-timesnewroman), "EB Garamond", serif' }}
+
         >
           <span className="bg-gradient-to-b from-[#ffffff] via-[#fef9f0] to-[#dfc08a] bg-clip-text text-transparent">
             Merry Christmas
