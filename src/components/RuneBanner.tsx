@@ -193,9 +193,9 @@ export default function GlitterBanner() {
         drag = 0.04 + Math.random() * 0.03;
       }
 
-      // Very few (only ~4.5%) are designated as unblurred, razor-sharp silver & gold crystalline specks
-      const isCrisp = Math.random() < 0.045 && tier !== 'bokeh';
-      const crispType: 'silver' | 'gold' = Math.random() > 0.45 ? 'gold' : 'silver';
+      // Very few (only ~3.5%) are designated as unblurred, razor-sharp silver & gold crystalline specks
+      const isCrisp = Math.random() < 0.035 && tier !== 'bokeh';
+      const crispType: 'silver' | 'gold' = Math.random() > 0.5 ? 'gold' : 'silver';
       const baseColor = isCrisp
         ? (crispType === 'silver' ? '240, 246, 255' : '255, 215, 0')
         : PALETTE[Math.floor(Math.random() * PALETTE.length)];
@@ -304,8 +304,8 @@ export default function GlitterBanner() {
     for (let i = 0; i < burstCount; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 12 + Math.random() * 40;
-      const isCrisp = Math.random() < 0.045;
-      const crispType: 'silver' | 'gold' = Math.random() > 0.45 ? 'gold' : 'silver';
+      const isCrisp = Math.random() < 0.035;
+      const crispType: 'silver' | 'gold' = Math.random() > 0.5 ? 'gold' : 'silver';
       newDust.push({
         x: clickX + (Math.random() - 0.5) * 16,
         y: clickY + (Math.random() - 0.5) * 16,
@@ -548,15 +548,23 @@ export default function GlitterBanner() {
             // Sharp, crystalline needle-prick in pure platinum silver or 24k gold
             // ==========================================================
             ctx.globalAlpha = flashAlpha;
-            const coreSize = p.baseSize * (1.2 + 0.3 * glintPower);
+            const coreSize = p.baseSize * (1.15 + 0.35 * glintPower);
 
             // 1. Unblurred crisp metallic facet body (sharp geometry, zero blur)
             ctx.fillStyle = p.crispType === 'silver' ? '#f0f6ff' : '#ffd700';
             ctx.fillRect(-coreSize / 2, -coreSize / 2, coreSize, coreSize);
 
-            // 2. Pure diamond specular white-hot needle center
+            // 2. Pure needle spikes along axes (razor 1px lines, zero blur, diamond sparkle)
+            if (specularFactor > 0.48) {
+              const spikeLen = coreSize * (1.8 + glintPower);
+              ctx.fillStyle = p.crispType === 'silver' ? '#ffffff' : '#ffe57f';
+              ctx.fillRect(-spikeLen / 2, -0.5, spikeLen, 1);
+              ctx.fillRect(-0.5, -spikeLen / 2, 1, spikeLen);
+            }
+
+            // 3. Pure diamond specular white-hot needle center
             ctx.fillStyle = '#ffffff';
-            const needleSize = Math.max(0.75, coreSize * 0.42);
+            const needleSize = Math.max(0.75, coreSize * 0.45);
             ctx.fillRect(-needleSize / 2, -needleSize / 2, needleSize, needleSize);
           } else {
             // Standard particles with soft optical bloom halo
@@ -618,25 +626,22 @@ export default function GlitterBanner() {
       {/* TYPOGRAPHY: Revealed through ambient glowing gold currents */}
       <div className="relative z-30 max-w-3xl w-full text-center flex flex-col items-center">
         {/* Subtle HUD tag */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-amber-200/20 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
-          <SparkleIcon className="w-3 h-3 text-amber-300 animate-pulse" />
-          <span>The Holiday Atelier</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
+          <FiWind className="w-3 h-3 text-amber-300" />
+          <span>Aerodynamic Airflow Draft</span>
         </div>
 
-        {/* Elegant British Heritage Holiday Headline */}
+        {/* Elegant Luxury Headline */}
         <h2
           className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#f5f5f7] mb-6 uppercase leading-[1.1] drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]"
           style={{ fontFamily: 'var(--font-timesnewroman), "EB Garamond", serif' }}
-
         >
-          <span className="bg-gradient-to-b from-[#ffffff] via-[#fef9f0] to-[#dfc08a] bg-clip-text text-transparent">
-            Merry Christmas
-          </span>
+          Merry Christmas
         </h2>
 
         {/* Poetic description */}
         <p
-          className="text-xs sm:text-sm text-[#e2d3b3]/85 max-w-xl mx-auto mb-10 tracking-[0.32em] uppercase font-light drop-shadow-md"
+          className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto mb-10 leading-relaxed font-light tracking-wide drop-shadow-md"
           style={{ fontFamily: 'var(--font-montserrat), sans-serif' }}
         >
           Moments Suspended in Gold
