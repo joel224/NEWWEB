@@ -81,7 +81,7 @@ useEffect(() => {
         // Subtle 3D aerodynamic rotation & final scale variance
         const startRot = gsap.utils.random(-3, 3);
         const endRot = (i % 2 === 0 ? 1 : -1) * gsap.utils.random(6, 14);
-        const finalScale = 5.8 + gsap.utils.random(0, 1.2);
+        const finalScale = 5.0 + gsap.utils.random(0, 1.2);
 
         // =========================================================================
         // UNIFIED CONTINUOUS FLOW (No intermediate waypoints that slam brakes!)
@@ -120,7 +120,7 @@ useEffect(() => {
         imgTl.fromTo(
           img as Element,
           {
-            scale: 0.05,
+            scale: 0.03,
             rotation: startRot,
           },
           {
@@ -151,7 +151,7 @@ useEffect(() => {
           img as Element,
           {
             opacity: 0,
-            duration: flightDuration * 0.28,
+            duration: flightDuration * 0.29,
             ease: 'power1.in',
           },
           flightDuration * 0.72
