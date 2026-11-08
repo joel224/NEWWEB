@@ -2,7 +2,20 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiSparkles, FiHeart, FiRotateCcw } from 'react-icons/fi';
+import { FiHeart, FiRotateCcw } from 'react-icons/fi';
+
+function SparkleIcon({ className = 'w-3 h-3' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+    </svg>
+  );
+}
 
 interface GlitterParticle {
   x: number;
@@ -350,7 +363,7 @@ export default function GlitterBanner() {
       >
         {/* Subtle decorative crest */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-amber-200/20 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.35em] uppercase font-mono mb-6 shadow-[0_0_20px_rgba(251,191,36,0.15)]">
-          <FiSparkles className="w-3 h-3 text-amber-300 animate-pulse" />
+          <SparkleIcon className="w-3 h-3 text-amber-300 animate-pulse" />
           <span>A Dreamy Invitation</span>
         </div>
 
