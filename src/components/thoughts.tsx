@@ -26,8 +26,8 @@ useEffect(() => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top bottom',   
-          end: '+=2500', 
-          scrub: 1.2,
+          end: '+=12000', 
+          scrub: 1.5,
         },
       });
 
@@ -46,11 +46,10 @@ useEffect(() => {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: '+=2200', // Surgically tuned down from 7000px to eliminate the giant empty box
+          end: '+=7000', // Increased to give plenty of room for spacing out traffic
           pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          scrub: 1.2, 
+          scrub: 1.5, 
+        //   anticipatePin: 1, // 🔥 smooths entry/exit but did not work 
         },
       });
 

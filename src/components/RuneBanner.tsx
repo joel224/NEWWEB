@@ -4,6 +4,19 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiHeart, FiWind, FiRotateCcw } from 'react-icons/fi';
 
+function SparkleIcon({ className = 'w-3 h-3' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+    </svg>
+  );
+}
+
 interface GlitterDust {
   x: number;
   y: number;
@@ -568,26 +581,30 @@ export default function GlitterBanner() {
       {/* TYPOGRAPHY: Revealed through ambient glowing gold currents */}
       <div className="relative z-30 max-w-3xl w-full text-center flex flex-col items-center">
         {/* Subtle HUD tag */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
-          <FiWind className="w-3 h-3 text-amber-300" />
-          <span>Aerodynamic Airflow Draft</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-amber-200/20 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
+          <SparkleIcon className="w-3 h-3 text-amber-300 animate-pulse" />
+          <span>The Holiday Atelier</span>
         </div>
 
-        {/* Elegant Luxury Headline */}
+        {/* Elegant British Heritage Holiday Headline */}
         <h2
-          className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#f5f5f7] mb-6 uppercase leading-[1.1] drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]"
-          style={{ fontFamily: 'var(--font-timesnewroman), "EB Garamond", serif' }}
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[-0.015em] mb-4 leading-[1.05] drop-shadow-[0_4px_35px_rgba(0,0,0,0.95)]"
+          style={{
+            fontFamily: 'var(--font-timesnewroman), "EB Garamond", "Cormorant Garamond", Georgia, serif',
+            fontStyle: 'italic',
+          }}
         >
-          Moments Suspended in Gold
+          <span className="bg-gradient-to-b from-[#ffffff] via-[#fef9f0] to-[#dfc08a] bg-clip-text text-transparent">
+            Merry Christmas
+          </span>
         </h2>
 
         {/* Poetic description */}
         <p
-          className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto mb-10 leading-relaxed font-light tracking-wide drop-shadow-md"
+          className="text-xs sm:text-sm text-[#e2d3b3]/85 max-w-xl mx-auto mb-10 tracking-[0.32em] uppercase font-light drop-shadow-md"
           style={{ fontFamily: 'var(--font-montserrat), sans-serif' }}
         >
-          Driven by curl-noise fluid dynamics and 3D facet tumbling, microscopic cosmetic grit lingers weightlessly in
-          curling air currents—billowing upward and fanning outward into quiet ambient space.
+          Moments Suspended in Gold
         </p>
 
         {/* Action Buttons */}
