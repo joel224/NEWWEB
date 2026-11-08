@@ -76,46 +76,34 @@ export default function PortfolioHero() {
           );
         });
 
-        // Remove the images and show the hero background immediately so they switch places before expansion
-        tl.set('.loader-img-wrapper', { autoAlpha: 0 })
-          .set('.hero-25', { autoAlpha: 1 });
+        // =========================================================================
+        // UNIFIED FLUID TRANSITION: Card seamlessly expands & cross-fades into hero
+        // (Zero hard cuts, zero artificial blur lags, zero conflicting layers)
+        // =========================================================================
 
-        // 1. The Expansion
+        // 1. Fluid Expansion of the card to full viewport
         tl.to(loaderBoxRef.current, {
           width: '100vw',
           height: '100vh',
-          duration: 1.2,
-          ease: 'expo.inOut',
-          delay: 0.2
+          duration: 1.15,
+          ease: 'power3.inOut',
         })
-          // 2. Blur UP (Starts exactly when expansion starts)
-          .to(loaderBoxRef.current, {
-            filter: 'blur(15px)',
-            duration: 1,
-            ease: 'power2.in'
-          }, '<')
-          // 3. Blur DOWN (Starts right after Blur UP finishes, making it sharp at the end)
-          .to(loaderBoxRef.current, {
-            filter: 'blur(0px)',
-            duration: 0.6,
-            ease: 'power2.out'
-          }, '>')
-
-          // The rest of your timeline animations...
+          // 2. Smoothly cross-fade the final loader image into the hero background
           .to('.loader-img-wrapper', {
             autoAlpha: 0,
-            duration: 0.3,
-            ease: 'power2.out'
-          }, '<')
+            duration: 0.75,
+            ease: 'power2.out',
+          }, '<+=0.25')
           .fromTo('.hero-25',
-            { autoAlpha: 0, scale: 1.15, filter: 'blur(12px)' },
-            { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 2, ease: 'power3.out' },
+            { autoAlpha: 0, scale: 1.06 },
+            { autoAlpha: 1, scale: 1, duration: 0.95, ease: 'power2.out' },
             '<'
           )
+          // 3. Navigation items and overlay telemetry glide in gracefully as expansion settles
           .fromTo(['.nav-item', '.ui-overlay .text-block'],
-            { autoAlpha: 0, scale: 1.1, filter: 'blur(4px)' },
-            { autoAlpha: 1, scale: 1, filter: 'blur(0px)', duration: 1.2, stagger: 0.08, ease: 'power3.out' },
-            '-=1.5'
+            { autoAlpha: 0, y: 8 },
+            { autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.05, ease: 'power2.out' },
+            '-=0.5'
           );
 
         // ==========================================
@@ -144,7 +132,7 @@ export default function PortfolioHero() {
 
       {/* HERO SECTION: Locked to exactly one screen height (h-screen) with overflow hidden for the animation */}
       {/* Add: flex items-center justify-center */}
-      <section ref={containerRef} className="relative  w-full h-screen flex items-center justify-center overflow-hidden bg-gray-100">
+      <section ref={containerRef} className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
 
         <div className="name-logo-wrap absolute inset-0 z-[60] flex items-center justify-center pointer-events-none">
           <img
@@ -154,8 +142,8 @@ export default function PortfolioHero() {
           />   
         </div>
 
-        {/* Hero background — lives OUTSIDE loaderBox so expansion/blur don't affect it */}
-        <div className="hero-25   opacity-0 absolute inset-0 z-[15] flex items-center justify-center mix-blend-screen pointer-events-none">
+        {/* Hero background */}
+        <div className="hero-25 opacity-0 absolute inset-0 z-[15] flex items-center justify-center mix-blend-screen pointer-events-none">
           <img src="/heropro/bg6.webp" alt="Background" className="w-[90%] h-[80vh] object-contain opacity-70" />
         </div>
 
@@ -163,7 +151,7 @@ export default function PortfolioHero() {
           ref={loaderBoxRef}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-[#0a0a0a] overflow-hidden flex items-center justify-center text-white z-10"
         >
-          <div className="loader-img-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[400px] bg-transparent   pointer-events-none">
+          <div className="loader-img-wrapper absolute inset-0 w-full h-full bg-transparent pointer-events-none">
             {loaderImages.map((src, index) => (
               <img
                 key={index}
