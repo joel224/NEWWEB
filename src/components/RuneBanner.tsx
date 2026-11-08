@@ -128,15 +128,15 @@ export default function GlitterBanner() {
       gCtx.fill();
     }
 
-    // 3. Soft Bokeh Disc Sprite (Out-of-focus background disc)
+    // 3. Soft Bokeh Disc Sprite (Out-of-focus subtle background disc)
     const bokehCanvas = document.createElement('canvas');
     bokehCanvas.width = 32;
     bokehCanvas.height = 32;
     const boCtx = bokehCanvas.getContext('2d');
     if (boCtx) {
       const bGrad = boCtx.createRadialGradient(16, 16, 0, 16, 16, 14);
-      bGrad.addColorStop(0, 'rgba(255, 235, 185, 0.55)');
-      bGrad.addColorStop(0.6, 'rgba(240, 200, 130, 0.2)');
+      bGrad.addColorStop(0, 'rgba(255, 235, 185, 0.35)');
+      bGrad.addColorStop(0.5, 'rgba(240, 200, 130, 0.12)');
       bGrad.addColorStop(1, 'rgba(240, 200, 130, 0)');
       boCtx.fillStyle = bGrad;
       boCtx.beginPath();
@@ -164,20 +164,20 @@ export default function GlitterBanner() {
 
       const rand = Math.random();
       let tier: 'micro' | 'flake' | 'bokeh' = 'micro';
-      let baseSize = 0.85 + Math.random() * 0.7; // 70% micro-grit (0.85px - 1.55px)
+      let baseSize = 0.85 + Math.random() * 0.7; // ~75% micro-grit (0.85px - 1.55px)
       let mass = 0.5 + Math.random() * 0.6;
       let drag = 0.05 + Math.random() * 0.04;
 
-      if (rand > 0.88) {
-        // 12% Foreground Bokeh
+      if (rand > 0.975) {
+        // Only ~2.5% subtle background bokeh (much rarer and smaller to avoid big blurry blobs)
         tier = 'bokeh';
-        baseSize = 2.6 + Math.random() * 2.2;
-        mass = 1.3 + Math.random() * 0.8;
-        drag = 0.025 + Math.random() * 0.02;
-      } else if (rand > 0.68) {
-        // 20% Specular Flakes
+        baseSize = 1.3 + Math.random() * 0.7;
+        mass = 1.1 + Math.random() * 0.5;
+        drag = 0.03 + Math.random() * 0.02;
+      } else if (rand > 0.72) {
+        // ~25% Specular Flakes
         tier = 'flake';
-        baseSize = 1.6 + Math.random() * 1.1;
+        baseSize = 1.5 + Math.random() * 0.9;
         mass = 0.9 + Math.random() * 0.7;
         drag = 0.04 + Math.random() * 0.03;
       }
@@ -472,11 +472,11 @@ export default function GlitterBanner() {
         ctx.translate(p.x, p.y);
 
         if (p.tier === 'bokeh') {
-          // BOKEH LAYER: Soft out-of-focus background disc
+          // BOKEH LAYER: Subtle, faint out-of-focus background disc (scaled down & reduced)
           if (sprites.softBokeh) {
-            const bAlpha = baseAlpha * 0.32;
+            const bAlpha = baseAlpha * 0.16;
             ctx.globalAlpha = bAlpha;
-            const bR = p.baseSize * 4.0;
+            const bR = p.baseSize * 2.0;
             ctx.drawImage(sprites.softBokeh, -bR, -bR, bR * 2, bR * 2);
           }
         } else if (!isGlinting) {
@@ -536,7 +536,7 @@ export default function GlitterBanner() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleCanvasClick}
-      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none border-y border-white/10"
+      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none"
       style={{
         // Zero red/burgundy tint: Pure luxury deep obsidian matching #0a0a0a
         background: 'radial-gradient(ellipse at 50% 40%, #131316 0%, #0a0a0a 60%, #050505 100%)',
