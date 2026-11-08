@@ -370,7 +370,7 @@ export default function GlitterBanner() {
         {/* Elegant Headline in serif / luxury typography */}
         <h2
           className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#fffaf0] mb-6 uppercase leading-[1.1] drop-shadow-[0_4px_25px_rgba(0,0,0,0.8)]"
-          style={{ fontFamily: 'var(--font-timesnewroman), serif' }}
+          style={{ fontFamily: 'var(--font-timesnewroman), "EB Garamond", serif' }}
         >
           Moments Suspended in Gold & Velvet
         </h2>
@@ -378,7 +378,7 @@ export default function GlitterBanner() {
         {/* Poetic description */}
         <p
           className="text-sm sm:text-base text-neutral-300/90 max-w-xl mx-auto mb-10 leading-relaxed font-light tracking-wide drop-shadow-md"
-          style={{ fontFamily: 'var(--font-montserrat)' }}
+          style={{ fontFamily: 'var(--font-montserrat), sans-serif' }}
         >
           Free from gravity, micro-specks of champagne light drift weightlessly across rich ruby folds—parting
           gracefully to both horizons like a slow-motion curtain opening to reveal the celebration within.

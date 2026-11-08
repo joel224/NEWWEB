@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -9,6 +10,7 @@
   --font-serif: var(--font-times), "Times New Roman", serif;
   --font-sans: var(--font-geist-sans);
   --font-timesnewroman: var(--font-timesnewroman), "Times New Roman", serif;
+  --font-montserrat: "Montserrat", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-heading: var(--font-geist-sans);
@@ -89,6 +91,7 @@ html {
 }
 
 :root {
+  --font-montserrat: "Montserrat", sans-serif;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
