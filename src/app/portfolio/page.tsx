@@ -232,7 +232,7 @@ each small slip and just kept moving. Uniqueness, It wasn't
 about the look, but the life inside. The multiple quiet
 gears, the rhythm and the simple rules that let a
 dream stand tall and stay bright."
-            baseColor="#333333"
+            baseColor="#b8b8b8ff"
             spotlightColor="#ffffff"
             enableGlow={true}
 
