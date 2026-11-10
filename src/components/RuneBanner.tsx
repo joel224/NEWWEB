@@ -264,7 +264,7 @@ export default function GlitterBanner() {
     });
   }, []);
 
-  // Mouse interaction: stirs airflow vector field
+  // Mouse interaction: stirs airflow vector field & draws sparkling glitters along cursor
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -274,6 +274,8 @@ export default function GlitterBanner() {
     const curY = e.clientY - rect.top;
 
     const mouse = mouseAirRef.current;
+    const distMoved = mouse.active ? Math.hypot(curX - mouse.lastX, curY - mouse.lastY) : 0;
+
     if (mouse.active) {
       mouse.vx = (curX - mouse.lastX) * 0.5;
       mouse.vy = (curY - mouse.lastY) * 0.5;
@@ -284,6 +286,47 @@ export default function GlitterBanner() {
     mouse.lastX = curX;
     mouse.lastY = curY;
     mouse.active = true;
+
+    // Draw sparkling glitters wherever the mouse moves (without clicking!)
+    if (distMoved > 2.5) {
+      const spawnCount = Math.min(5, Math.max(2, Math.floor(distMoved / 8) + 1));
+      const trailSpecks: GlitterDust[] = [];
+
+      for (let i = 0; i < spawnCount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 6 + Math.random() * 22;
+        const isCrisp = Math.random() < 0.035;
+        const crispType: 'silver' | 'gold' = Math.random() > 0.5 ? 'gold' : 'silver';
+
+        trailSpecks.push({
+          x: curX + (Math.random() - 0.5) * 12,
+          y: curY + (Math.random() - 0.5) * 12,
+          vx: mouse.vx * 0.2 + Math.cos(angle) * speed,
+          vy: mouse.vy * 0.2 + Math.sin(angle) * speed - 12 - Math.random() * 8, // buoyant upward drift
+          mass: 0.5 + Math.random() * 0.7,
+          drag: 0.045 + Math.random() * 0.025,
+          baseSize: 0.85 + Math.random() * 1.1,
+          tier: Math.random() > 0.65 ? 'flake' : 'micro',
+          thetaX: Math.random() * Math.PI * 2,
+          thetaY: Math.random() * Math.PI * 2,
+          omegaX: (Math.random() - 0.5) * 8.0,
+          omegaY: (Math.random() - 0.5) * 8.0,
+          baseColor: isCrisp
+            ? (crispType === 'silver' ? '240, 246, 255' : '255, 215, 0')
+            : PALETTE[Math.floor(Math.random() * PALETTE.length)],
+          life: 0,
+          maxLife: 200 + Math.random() * 160,
+          glintPhase: Math.random() * Math.PI * 2,
+          isCrisp,
+          crispType,
+        });
+      }
+
+      particlesRef.current.push(...trailSpecks);
+      if (particlesRef.current.length > 1200) {
+        particlesRef.current.splice(0, particlesRef.current.length - 1200);
+      }
+    }
   };
 
   const handleMouseLeave = () => {
@@ -612,7 +655,7 @@ export default function GlitterBanner() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleCanvasClick}
-      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 cursor-crosshair select-none bg-[#0a0a0a]"
+      className="w-full min-h-[560px] sm:min-h-[640px] relative overflow-hidden flex flex-col items-center justify-center py-20 px-6 select-none bg-[#0a0a0a]"
     >
       {/* Subtle warm champagne center lighting (No red tint) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-amber-400/[0.035] rounded-full blur-[140px] pointer-events-none" />
