@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -21,39 +21,79 @@ export default function TextMarquee() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Create a ScrollTrigger timeline tied to the container for opposing motion
+      // 1. ScrollTrigger timeline for opposing kinetic motion
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top bottom', // Starts when the top of the section hits the bottom of the viewport
-          end: 'bottom top',   // Ends when the bottom of the section hits the top of the viewport
-          scrub: 1.2,          // Smooth scrubbing effect
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.2,
         },
       });
 
-      // Row 1 moves to the Left (-x)
+      // Row 1 drifts Left (-x)
       tl.to(
         row1Ref.current,
         {
-          xPercent: -35,
+          xPercent: -32,
           ease: 'none',
         },
         0
       );
 
-      // Row 2 moves to the Right (+x) in opposing motion
+      // Row 2 drifts Right (+x) in opposing motion
       tl.to(
         row2Ref.current,
         {
-          xPercent: 28,
+          xPercent: 26,
           ease: 'none',
         },
         0
       );
+
+      // 2. Character-splitting stagger entrance on scroll
+      gsap.from('.kinetic-char', {
+        y: 60,
+        opacity: 0,
+        stagger: 0.02,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%',
+        },
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
+
+  // Helper: Character Splitting with interactive dual-slot roll
+  const renderSplitText = (word: string, highlightColor = '#00eb8f') => {
+    return (
+      <span className="inline-flex group/word cursor-pointer">
+        {word.split('').map((char, i) => (
+          <span
+            key={i}
+            className="kinetic-char relative inline-block overflow-hidden transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]"
+            style={{
+              transitionDelay: `${i * 18}ms`,
+            }}
+          >
+            <span className="block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full">
+              {char}
+            </span>
+            <span
+              className="absolute top-full left-0 block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full font-semibold"
+              style={{ color: highlightColor }}
+            >
+              {char}
+            </span>
+          </span>
+        ))}
+      </span>
+    );
+  };
 
   return (
     <section
@@ -81,36 +121,36 @@ export default function TextMarquee() {
         }
       `}</style>
 
-      {/* ROW 1: Selected Work + Inline Graphic Anchors (Moves Left on scroll) */}
+      {/* ROW 1: "Work" + Inline Graphic Anchors (Opposing Motion: Moves Left) */}
       <div
         ref={row1Ref}
         className="flex items-center whitespace-nowrap -ml-[15vw] will-change-transform"
       >
         <div className="flex items-center gap-6 md:gap-12 text-[18vw] leading-[0.85] tracking-tighter text-white font-medium">
-          <span>Work</span>
-          <ShapeClover className="w-[8vw] h-[8vw] text-[#00eb8f] animate-spin-anchor" />
-          <span>Work</span>
-          <ShapeStarburst className="w-[8vw] h-[8vw] text-white animate-spin-anchor-rev" />
-          <span>Work</span>
-          <ShapeGear className="w-[8vw] h-[8vw] text-[#a0ec06] animate-spin-anchor" />
-          <span>Work</span>
-          <ShapePinwheel className="w-[8vw] h-[8vw] text-[#00eb8f] animate-spin-anchor-rev" />
+          {renderSplitText('Work', '#00eb8f')}
+          <ShapeClover className="w-[8vw] h-[8vw] text-[#00eb8f] animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Work', '#a0ec06')}
+          <ShapeStarburst className="w-[8vw] h-[8vw] text-white animate-spin-anchor-rev flex-shrink-0" />
+          {renderSplitText('Work', '#00eb8f')}
+          <ShapeGear className="w-[8vw] h-[8vw] text-[#a0ec06] animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Work', '#ffffff')}
+          <ShapePinwheel className="w-[8vw] h-[8vw] text-[#00eb8f] animate-spin-anchor-rev flex-shrink-0" />
         </div>
       </div>
 
-      {/* ROW 2: Experiences + Inline Graphic Anchors (Moves Right on scroll — Opposing Motion) */}
+      {/* ROW 2: "Experiences" + Inline Graphic Anchors (Opposing Motion: Moves Right) */}
       <div
         ref={row2Ref}
         className="flex items-center whitespace-nowrap -ml-[35vw] mt-6 will-change-transform"
       >
-        <div className="flex items-center gap-6 md:gap-12 text-[18vw] leading-[0.85] tracking-tighter text-[#2a2a2a] hover:text-[#444] transition-colors duration-500 font-medium">
-          <span>Experiences</span>
-          <ShapeRings className="w-[8vw] h-[8vw] text-white/20 animate-spin-anchor" />
-          <span>Experiences</span>
-          <ShapeGradientFlower className="w-[8vw] h-[8vw] animate-spin-anchor-rev" />
-          <span>Experiences</span>
-          <ShapeClover className="w-[8vw] h-[8vw] text-white/25 animate-spin-anchor" />
-          <span>Experiences</span>
+        <div className="flex items-center gap-6 md:gap-12 text-[18vw] leading-[0.85] tracking-tighter text-[#2a2a2a] hover:text-[#555] transition-colors duration-500 font-medium">
+          {renderSplitText('Experiences', '#00eb8f')}
+          <ShapeRings className="w-[8vw] h-[8vw] text-white/20 animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Experiences', '#a0ec06')}
+          <ShapeGradientFlower className="w-[8vw] h-[8vw] animate-spin-anchor-rev flex-shrink-0" />
+          {renderSplitText('Experiences', '#00eb8f')}
+          <ShapeClover className="w-[8vw] h-[8vw] text-white/25 animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Experiences', '#ffffff')}
         </div>
       </div>
     </section>
