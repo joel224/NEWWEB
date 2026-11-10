@@ -68,8 +68,8 @@ export default function TextMarquee() {
     return () => ctx.revert();
   }, []);
 
-  // Helper: Character Splitting with interactive dual-slot roll
-  const renderSplitText = (word: string, highlightColor = '#00eb8f') => {
+  // Helper: Character Splitting preserving exact original color
+  const renderSplitText = (word: string, textColor: string) => {
     return (
       <span className="inline-flex group/word cursor-pointer">
         {word.split('').map((char, i) => (
@@ -80,12 +80,15 @@ export default function TextMarquee() {
               transitionDelay: `${i * 18}ms`,
             }}
           >
-            <span className="block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full">
+            <span
+              className="block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full"
+              style={{ color: textColor }}
+            >
               {char}
             </span>
             <span
-              className="absolute top-full left-0 block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full font-semibold"
-              style={{ color: highlightColor }}
+              className="absolute top-full left-0 block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full font-medium"
+              style={{ color: textColor }}
             >
               {char}
             </span>
@@ -121,36 +124,36 @@ export default function TextMarquee() {
         }
       `}</style>
 
-      {/* ROW 1: "Work" + Inline Graphic Anchors (Opposing Motion: Moves Left) */}
+      {/* ROW 1: "Work" + Inline Graphic Anchors (Original text-white, Opposing Motion: Moves Left) */}
       <div
         ref={row1Ref}
         className="flex items-center whitespace-nowrap -ml-[15vw] will-change-transform"
       >
         <div className="flex items-center gap-6 md:gap-12 text-[18vw] leading-[0.85] tracking-tighter text-white font-medium">
-          {renderSplitText('Work', '#00eb8f')}
-          <ShapeClover className="w-[8vw] h-[8vw] text-[#00eb8f] animate-spin-anchor flex-shrink-0" />
-          {renderSplitText('Work', '#a0ec06')}
-          <ShapeStarburst className="w-[8vw] h-[8vw] text-white animate-spin-anchor-rev flex-shrink-0" />
-          {renderSplitText('Work', '#00eb8f')}
-          <ShapeGear className="w-[8vw] h-[8vw] text-[#a0ec06] animate-spin-anchor flex-shrink-0" />
           {renderSplitText('Work', '#ffffff')}
-          <ShapePinwheel className="w-[8vw] h-[8vw] text-[#00eb8f] animate-spin-anchor-rev flex-shrink-0" />
+          <ShapeClover className="w-[8vw] h-[8vw] text-white animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Work', '#ffffff')}
+          <ShapeStarburst className="w-[8vw] h-[8vw] text-white animate-spin-anchor-rev flex-shrink-0" />
+          {renderSplitText('Work', '#ffffff')}
+          <ShapeGear className="w-[8vw] h-[8vw] text-white animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Work', '#ffffff')}
+          <ShapePinwheel className="w-[8vw] h-[8vw] text-white animate-spin-anchor-rev flex-shrink-0" />
         </div>
       </div>
 
-      {/* ROW 2: "Experiences" + Inline Graphic Anchors (Opposing Motion: Moves Right) */}
+      {/* ROW 2: "Experiences" + Inline Graphic Anchors (Original text-[#222222], Opposing Motion: Moves Right) */}
       <div
         ref={row2Ref}
         className="flex items-center whitespace-nowrap -ml-[35vw] mt-6 will-change-transform"
       >
-        <div className="flex items-center gap-6 md:gap-12 text-[18vw] leading-[0.85] tracking-tighter text-[#2a2a2a] hover:text-[#555] transition-colors duration-500 font-medium">
-          {renderSplitText('Experiences', '#00eb8f')}
-          <ShapeRings className="w-[8vw] h-[8vw] text-white/20 animate-spin-anchor flex-shrink-0" />
-          {renderSplitText('Experiences', '#a0ec06')}
-          <ShapeGradientFlower className="w-[8vw] h-[8vw] animate-spin-anchor-rev flex-shrink-0" />
-          {renderSplitText('Experiences', '#00eb8f')}
-          <ShapeClover className="w-[8vw] h-[8vw] text-white/25 animate-spin-anchor flex-shrink-0" />
-          {renderSplitText('Experiences', '#ffffff')}
+        <div className="flex items-center gap-6 md:gap-12 text-[18vw] leading-[0.85] tracking-tighter text-[#222222] font-medium">
+          {renderSplitText('Experiences', '#222222')}
+          <ShapeRings className="w-[8vw] h-[8vw] text-[#222222] animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Experiences', '#222222')}
+          <ShapeGradientFlower className="w-[8vw] h-[8vw] opacity-25 animate-spin-anchor-rev flex-shrink-0" />
+          {renderSplitText('Experiences', '#222222')}
+          <ShapeClover className="w-[8vw] h-[8vw] text-[#222222] animate-spin-anchor flex-shrink-0" />
+          {renderSplitText('Experiences', '#222222')}
         </div>
       </div>
     </section>
