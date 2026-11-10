@@ -11,7 +11,6 @@ gsap.registerPlugin(ScrollTrigger);
 const SpotlightText = dynamic(() => import('@/components/SpotlightText'), { ssr: false });
 const GlitterBackground = dynamic(() => import('@/components/GlitterBackground'), { ssr: false });
 const PhilosophyCircles = dynamic(() => import('@/components/thoughts'), { ssr: false });
-const RuneBanner = dynamic(() => import('@/components/RuneBanner'), { ssr: false });
 const TextMarquee = dynamic(() => import('@/components/Magazine'), { ssr: false });
 const ExperienceList = dynamic(() => import('@/components/Marquee'), { ssr: false });
 const ProjectShowcase = dynamic(() => import('@/components/glass'), { ssr: false });
@@ -241,9 +240,6 @@ dream stand tall and stay bright."
           /></div>
       </GlitterBackground>
       <PhilosophyCircles />
-      
-      {/* DREAMY GLITTER CURTAIN BANNER */}
-      <RuneBanner />
 
       <TextMarquee />
       <ExperienceList />

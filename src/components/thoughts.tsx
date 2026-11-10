@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { FiHeart } from 'react-icons/fi';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
  
@@ -8,6 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PhilosophyCircles() {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Array of 20 dummy images
@@ -39,6 +42,12 @@ useEffect(() => {
         left: '50%',
         scale: 0, 
         opacity: 0,
+      });
+
+      gsap.set('.invitation-btn-wrapper', {
+        opacity: 0,
+        y: 16,
+        scale: 0.95,
       });
 
       // 3. ScrollTrigger Setup
@@ -170,8 +179,16 @@ useEffect(() => {
         tl.add(imgTl, i * baseSpacing);
       });
 
-      tl.to({}, { duration: 0.5 }); // Buffer at the end
-      //tl.to({}, { duration: 1.5 }); // did not make any diffrnce
+      // Reveal Invitation Button as the last thing rendered after all images
+      tl.to('.invitation-btn-wrapper', {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+
+      tl.to({}, { duration: 0.8 }); // Buffer at the end
 
     }, containerRef);
 
@@ -183,12 +200,26 @@ useEffect(() => {
       ref={containerRef} 
       className="relative w-full h-screen bg-[#0a0a0a] flex items-center justify-center overflow-hidden font-sans"
     >
-      {/* TEXT LAYER */}
-      <div className="relative z-30 text-center pointer-events-none px-4">
-        <h2 className="text-white text-4xl  min-[320px]:text-2xl min-[484px]:text-3xl   md:text-5xl lg:text-3xl font-medium tracking-tight leading-[1.1] drop-shadow-2xl">
+      {/* TEXT & ACTION LAYER */}
+      <div className="relative z-30 text-center pointer-events-none px-4 flex flex-col items-center">
+        <h2 className="text-white text-4xl  min-[320px]:text-2xl min-[484px]:text-3xl   md:text-5xl lg:text-3xl font-medium tracking-tight leading-[1.1] drop-shadow-2xl mb-8">
           Creativity is intelligence having fun:<br />
           The machinery of my design
         </h2>
+
+        {/* View Invitation Button (revealed as the last thing rendered after all images fly past) */}
+        <div className="invitation-btn-wrapper opacity-0 pointer-events-auto flex items-center justify-center">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push('/');
+            }}
+            className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-neutral-200 font-medium text-xs tracking-[0.2em] uppercase backdrop-blur-md transition-all duration-300 cursor-pointer hover:border-white/30"
+          >
+            <FiHeart className="w-3.5 h-3.5 text-neutral-300 fill-neutral-300/30" />
+            <span>View Invitation</span>
+          </button>
+        </div>
       </div>
 
       {/* IMAGES LAYER */}
