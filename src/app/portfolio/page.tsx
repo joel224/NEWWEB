@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Below-fold components — loaded only when needed, not in the initial bundle
 const SpotlightText = dynamic(() => import('@/components/SpotlightText'), { ssr: false });
+const GlitterBackground = dynamic(() => import('@/components/GlitterBackground'), { ssr: false });
 const PhilosophyCircles = dynamic(() => import('@/components/thoughts'), { ssr: false });
 const RuneBanner = dynamic(() => import('@/components/RuneBanner'), { ssr: false });
 const TextMarquee = dynamic(() => import('@/components/Magazine'), { ssr: false });
@@ -223,7 +224,7 @@ export default function PortfolioHero() {
 
       {/* SCROLLABLE CONTENT AREA */}
       {/* This section sits below the hero and will become visible as you scroll down */}
-      <section className="w-full min-h-screen flex items-center bg-[#0a0a0a] px-6 -pt-20">
+      <GlitterBackground className="w-full min-h-screen flex items-center px-6 -pt-20">
         <div className="max-w-full mx-auto w-full">
           <SpotlightText
             content="I found my way by chasing every spark. I fixed
@@ -238,7 +239,7 @@ dream stand tall and stay bright."
             className="max-w-[84ch]   min-[375px]:indent-10 min-[425px]:indent-20 xl:indent-40 md:indent-40 text-3xl md:text-5xl font-medium leading-[1.1] tracking-tight"
 
           /></div>
-      </section>
+      </GlitterBackground>
       <PhilosophyCircles />
       
       {/* DREAMY GLITTER CURTAIN BANNER */}

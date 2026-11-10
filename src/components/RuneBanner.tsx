@@ -677,12 +677,7 @@ export default function GlitterBanner() {
         </h2>
 
         {/* Poetic description */}
-        <p
-          className="text-xs sm:text-sm text-neutral-400 max-w-xl mx-auto mb-8 font-light tracking-wide"
-          style={{ fontFamily: 'var(--font-montserrat), sans-serif' }}
-        >
-          Moments Suspended in Gold
-        </p>
+        
 
         {/* Action Button */}
         <div className="flex items-center justify-center">
