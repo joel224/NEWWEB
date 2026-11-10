@@ -1,15 +1,9 @@
 "use client";
 
-import { Cormorant_Garamond } from "next/font/google";
 import { motion } from "framer-motion";
 import GlassGradientButton from "@/components/GlassButton";
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  style: ["normal"],
-  variable: "--font-cormorant",
-});
+const cormorant = { className: "font-['Cormorant_Garamond',serif]" };
 
 export default function ColgatePage() {
   const onceTransition = {

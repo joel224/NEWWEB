@@ -1,7 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -11,6 +11,7 @@
   --font-sans: var(--font-geist-sans);
   --font-timesnewroman: var(--font-timesnewroman), "Times New Roman", serif;
   --font-montserrat: "Montserrat", sans-serif;
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-heading: var(--font-geist-sans);
