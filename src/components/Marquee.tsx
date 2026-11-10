@@ -1,325 +1,412 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {
+  ShapeClover,
+  ShapeGear,
+  ShapeRings,
+  ShapeStarburst,
+  ShapePinwheel,
+  ShapeChevron,
+  ShapeGradientFlower,
+} from './GSAPShapes';
+
+gsap.registerPlugin(ScrollTrigger);
+
+interface ExperienceItem {
+  id: number;
+  index: string;
+  category: string;
+  role: string;
+  name: string;
+  timeline: string;
+  description: string;
+  marqueeImages: string[];
+  shape: React.ComponentType<{ className?: string }>;
+  accentColor: string;
+}
 
 export default function ExperienceList() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
 
-  const experiences = [
+  const experiences: ExperienceItem[] = [
     {
       id: 1,
-      category: 'Fitness Platform',
+      index: '01',
+      category: 'Fitness Coaching',
+      role: 'Core Systems & Motion',
       name: 'Everfit',
-      role: 'Creative UI & Interactive Architecture',
-      timeline: '(22) — (Present)',
-      // SVG from public/shapes/actualyshapes
-      shape: '/shapes/actualyshapes/shape-pinwheel.svg',
-      glowColor: 'rgba(0, 235, 143, 0.45)',
-      accentColor: '#00eb8f',
+      timeline: '2022 — Present',
+      description: 'End-to-end client training ecosystem & automated scaling architectures.',
       marqueeImages: ['/marquee/gym.png', '/marquee/gym.png'],
-      badgePill1: {
-        text: 'HIGH PERFORMANCE',
-        style: 'bg-[#00eb8f] text-black font-bold tracking-wider',
-      },
-      badgePill2: {
-        text: 'MOBILE ECOSYSTEM',
-        style: 'bg-white/10 text-neutral-200 border border-white/20 backdrop-blur-md',
-      },
+      shape: ShapeClover,
+      accentColor: '#00eb8f',
     },
     {
       id: 2,
+      index: '02',
       category: 'Digital Agency',
+      role: 'Creative Engineering',
       name: 'Sumenki',
-      role: 'Design Systems & Motion Direction',
-      timeline: '(23) — (24)',
-      shape: '/shapes/actualyshapes/shape-gradient-flower.svg',
-      glowColor: 'rgba(204, 129, 244, 0.45)',
-      accentColor: '#CC81F4',
+      timeline: '2023 — 2024',
+      description: 'Bespoke high-performance digital experiences and interactive brand systems.',
       marqueeImages: ['/marquee/map.png', '/marquee/map1.png'],
-      badgePill1: {
-        text: 'MOTION SYSTEMS',
-        style: 'bg-gradient-to-r from-[#FEC5FB] via-[#CC81F4] to-[#A69EFF] text-black font-bold tracking-wider',
-      },
-      badgePill2: {
-        text: 'EDITORIAL DESIGN',
-        style: 'bg-white/10 text-neutral-200 border border-white/20 backdrop-blur-md',
-      },
+      shape: ShapeStarburst,
+      accentColor: '#a0ec06',
     },
     {
       id: 3,
-      category: 'Blockchain Protocol',
+      index: '03',
+      category: 'Web3 & Blockchain',
+      role: 'Protocol UI & Architecture',
       name: 'Flux Labs',
-      role: 'Decentralized Apps & Visual Engineering',
-      timeline: '(24) — (25)',
-      shape: '/shapes/actualyshapes/shape-starburst.svg',
-      glowColor: 'rgba(160, 236, 6, 0.45)',
-      accentColor: '#a0ec06',
+      timeline: '2024 — 2025',
+      description: 'Decentralized liquidity telemetry and fluid multi-chain interfaces.',
       marqueeImages: ['/marquee/blockchain.png', '/marquee/blockchain.png'],
-      badgePill1: {
-        text: 'WEB3 ARCHITECTURE',
-        style: 'bg-[#a0ec06] text-black font-bold tracking-wider',
-      },
-      badgePill2: {
-        text: 'DECENTRALIZED',
-        style: 'bg-white/10 text-neutral-200 border border-white/20 backdrop-blur-md',
-      },
+      shape: ShapeGear,
+      accentColor: '#00eb8f',
     },
     {
       id: 4,
-      category: 'E-Commerce Engine',
+      index: '04',
+      category: 'E-Commerce Platform',
+      role: 'Merchant Experience',
       name: 'Shopify',
-      role: 'High-Conversion Funnels & Infrastructure',
-      timeline: '(20) — (22)',
-      shape: '/shapes/actualyshapes/shape-chevron.svg',
-      glowColor: 'rgba(255, 135, 9, 0.45)',
-      accentColor: '#FF8709',
+      timeline: '2020 — 2022',
+      description: 'High-conversion checkout touchpoints and modular store components.',
       marqueeImages: ['/marquee/shopi.png', '/marquee/shopi.png'],
-      badgePill1: {
-        text: 'SCALE & CONVERSION',
-        style: 'bg-gradient-to-r from-[#FF8709] to-[#F7BDF8] text-black font-bold tracking-wider',
-      },
-      badgePill2: {
-        text: 'GLOBAL COMMERCE',
-        style: 'bg-white/10 text-neutral-200 border border-white/20 backdrop-blur-md',
-      },
+      shape: ShapePinwheel,
+      accentColor: '#a0ec06',
     },
   ];
 
+  // ScrollTrigger velocity scrub: accelerates the opposing motion on scroll
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to('.opposing-scroll-boost-left', {
+        x: '-=12vw',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.2,
+        },
+      });
+
+      gsap.to('.opposing-scroll-boost-right', {
+        x: '+=12vw',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.2,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Helper: Split text into staggered vertical character slots (SplitText roll-up effect)
+  const renderSplitCharacters = (text: string, isTriggered: boolean) => {
+    return (
+      <span className="inline-flex overflow-hidden">
+        {text.split('').map((char, i) => (
+          <span
+            key={i}
+            className="relative inline-block overflow-hidden transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]"
+            style={{
+              transitionDelay: `${i * 22}ms`,
+              transform: isTriggered ? 'translateY(-100%)' : 'translateY(0%)',
+            }}
+          >
+            {/* Top slot (idle state: pure white) */}
+            <span className="block text-white select-none leading-none">
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+            {/* Bottom slot (hover/active state: GSAP electric green #00eb8f) */}
+            <span className="absolute top-full left-0 block text-[#00eb8f] font-semibold select-none leading-none">
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          </span>
+        ))}
+      </span>
+    );
+  };
+
+  // Helper: Word splitting for category & metadata
+  const renderSplitWords = (text: string) => {
+    return (
+      <span className="inline-flex flex-wrap gap-x-1.5">
+        {text.split(' ').map((word, wIdx) => (
+          <span key={wIdx} className="inline-block transition-transform duration-300">
+            {word}
+          </span>
+        ))}
+      </span>
+    );
+  };
+
   return (
-    <section className="relative w-full min-h-screen bg-[#0a0a0a] text-white font-sans pt-28 pb-20 overflow-hidden select-none">
+    <section
+      ref={containerRef}
+      className="relative w-full min-h-screen bg-[#0a0a0a] text-white font-sans pt-28 pb-20 overflow-hidden border-t border-[#181818]"
+    >
       {/* =========================================
-          CUSTOM GSAP-STYLE KEYFRAME STYLES
+          OPPOSING MOTION KEYFRAME DEFINITIONS
           ========================================= */}
       <style>{`
-        @keyframes marqueeLeft {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
+        @keyframes opposingLeft {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
         }
-        @keyframes spinSlow {
+        @keyframes opposingRight {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0%); }
+        }
+        @keyframes continuousSpin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
-        @keyframes spinReverse {
+        @keyframes continuousSpinReverse {
           0% { transform: rotate(360deg); }
           100% { transform: rotate(0deg); }
         }
-        .animate-marquee-left {
+
+        .animate-opposing-left {
           display: flex;
           width: max-content;
+          animation: opposingLeft 24s linear infinite;
           will-change: transform;
-          animation: marqueeLeft 22s linear infinite;
         }
-        .group:hover .animate-marquee-left {
-          animation-play-state: running;
+        .animate-opposing-right {
+          display: flex;
+          width: max-content;
+          animation: opposingRight 24s linear infinite;
+          will-change: transform;
         }
-        .animate-spin-slow {
-          animation: spinSlow 18s linear infinite;
+        .animate-shape-spin {
+          animation: continuousSpin 14s linear infinite;
+          transform-origin: center;
+          will-change: transform;
         }
-        .animate-spin-reverse {
-          animation: spinReverse 22s linear infinite;
+        .animate-shape-spin-reverse {
+          animation: continuousSpinReverse 16s linear infinite;
+          transform-origin: center;
+          will-change: transform;
+        }
+        .text-outline {
+          color: transparent;
+          -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.45);
         }
       `}</style>
 
       {/* =========================================
-          GSAP-STYLE HEADER SECTION
+          SECTION HEADER: METADATA & PHILOSOPHY
           ========================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-12">
-        {/* Authentic GSAP Bracket Tag */}
-        <div className="flex items-center gap-2 mb-4">
-          <svg
-            className="w-3.5 h-7 text-[#FFFCE1]"
-            viewBox="0 0 27 78"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M26.52 77.21h-5.75c-6.83 0-12.38-5.56-12.38-12.38V48.38C8.39 43.76 4.63 40 .01 40v-4c4.62 0 8.38-3.76 8.38-8.38V12.4C8.38 5.56 13.94 0 20.77 0h5.75v4h-5.75c-4.62 0-8.38 3.76-8.38 8.38V27.6c0 4.34-2.25 8.17-5.64 10.38 3.39 2.21 5.64 6.04 5.64 10.38v16.45c0 4.62 3.76 8.38 8.38 8.38h5.75v4.02Z"
-            />
-          </svg>
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#FFFCE1]">
-            Work Experience
-          </span>
-          <svg
-            className="w-3.5 h-7 text-[#FFFCE1] rotate-180"
-            viewBox="0 0 27 78"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              fill="currentColor"
-              d="M26.52 77.21h-5.75c-6.83 0-12.38-5.56-12.38-12.38V48.38C8.39 43.76 4.63 40 .01 40v-4c4.62 0 8.38-3.76 8.38-8.38V12.4C8.38 5.56 13.94 0 20.77 0h5.75v4h-5.75c-4.62 0-8.38 3.76-8.38 8.38V27.6c0 4.34-2.25 8.17-5.64 10.38 3.39 2.21 5.64 6.04 5.64 10.38v16.45c0 4.62 3.76 8.38 8.38 8.38h5.75v4.02Z"
-            />
-          </svg>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#1f1f1f]">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#00eb8f] animate-pulse" />
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-neutral-400">
+              Work Experience & Systems
+            </span>
+          </div>
+
+          <div className="max-w-md text-xs md:text-sm text-neutral-400 font-light leading-relaxed">
+            Every interface is an aerodynamic lever. We blend high-frequency motion graphics,
+            deterministic layouts, and engineered modularity to turn interaction into living machinery.
+          </div>
+
+          <div className="hidden lg:flex items-center gap-4 text-xs font-mono tracking-widest text-neutral-500 uppercase">
+            <span>[04 Selected Units]</span>
+            <ShapeGradientFlower className="w-5 h-5 animate-shape-spin" />
+          </div>
         </div>
 
-        {/* 3-Column Meta Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-6 border-b border-[#222]">
-          <div className="w-full sm:w-1/4 text-xs font-mono tracking-widest uppercase text-neutral-500">
-            Discipline & Shape
-          </div>
-          <div className="w-full sm:w-2/4 text-neutral-400 text-xs sm:text-sm md:text-base leading-relaxed text-left sm:text-center max-w-md mx-auto">
-            Every decision, every detail is a lever, each one working to make the whole run better than before
-          </div>
-          <div className="w-full sm:w-1/4 text-xs font-mono tracking-widest uppercase text-neutral-500 text-left sm:text-right">
-            Timeline / Interaction
-          </div>
+        {/* Sub-header columns */}
+        <div className="grid grid-cols-12 text-[11px] font-mono tracking-[0.2em] uppercase text-neutral-500 pt-4">
+          <div className="col-span-3 md:col-span-2">Index / Discipline</div>
+          <div className="col-span-6 md:col-span-7">Brand & Inline Anchor</div>
+          <div className="col-span-3 text-right">Period / Mode</div>
         </div>
       </div>
 
       {/* =========================================
-          EXPERIENCE ROWS (GSAP TOOLS ACCORDION STYLE)
+          EXPERIENCE ROWS (GSAP-STYLE INTERACTIVE LIST)
           ========================================= */}
-      <div className="flex flex-col w-full border-t border-[#1c1c1c]">
+      <div className="flex flex-col w-full border-t border-[#1a1a1a]">
         {experiences.map((item) => {
-          const isItemActive = activeId === item.id;
+          const ShapeComponent = item.shape;
+          const isTriggered = hoveredId === item.id || activeId === item.id;
 
           return (
             <div
               key={item.id}
+              onMouseEnter={() => setHoveredId(item.id)}
+              onMouseLeave={() => setHoveredId(null)}
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveId(isItemActive ? null : item.id);
+                setActiveId(activeId === item.id ? null : item.id);
               }}
-              className="group relative w-full border-b border-[#1c1c1c] transition-colors duration-500 hover:bg-[#121212] overflow-hidden flex items-center min-h-[180px] md:min-h-[230px] cursor-pointer"
+              className="group relative w-full border-b border-[#1a1a1a] transition-colors duration-500 hover:bg-[#0f0f0f] overflow-hidden cursor-pointer"
             >
-              {/* ============================================================
-                  1. DEFAULT STATE (GSAP TOOLS ROW) - Fades on hover / active
-                  ============================================================ */}
+              {/* =========================================================
+                  1. DEFAULT SWISS ROW FACE (Fades/collapses smoothly when hovered)
+                  ========================================================= */}
               <div
-                className={`w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-8 flex items-center justify-between transition-all duration-500 z-10 ${
-                  isItemActive ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 group-hover:opacity-0 group-hover:scale-95'
+                className={`relative z-10 w-full px-4 md:px-8 py-10 md:py-14 flex items-center justify-between transition-opacity duration-500 ${
+                  isTriggered ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
                 }`}
               >
-                {/* Left: Interactive Shape Pedestal */}
-                <div className="flex items-center gap-4 md:gap-8 w-1/4 min-w-[120px]">
-                  <div
-                    className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 shrink-0"
-                    style={{
-                      boxShadow: `0 0 25px -5px ${item.glowColor}`,
-                    }}
-                  >
-                    {/* Atmospheric Glow behind shape */}
-                    <div
-                      className="absolute inset-0 rounded-2xl blur-xl opacity-30 group-hover:opacity-80 transition-opacity duration-500"
-                      style={{ background: item.glowColor }}
-                    />
-                    {/* SVG Graphic */}
-                    <img
-                      src={item.shape}
-                      alt={`${item.name} geometric shape`}
-                      className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain animate-spin-slow relative z-10 transition-transform duration-500 group-hover:scale-115"
-                    />
-                  </div>
-
-                  <div className="hidden lg:flex flex-col">
-                    <span className="text-[11px] font-mono tracking-widest uppercase text-neutral-500">
-                      Shape No. 0{item.id}
-                    </span>
-                    <span className="text-xs text-neutral-400 font-medium">
-                      {item.category}
-                    </span>
-                  </div>
+                {/* Left: Index & Category */}
+                <div className="w-1/4 md:w-2/12 flex flex-col gap-1.5">
+                  <span className="font-mono text-xs text-[#00eb8f] tracking-widest">
+                    {item.index}
+                  </span>
+                  <span className="text-xs md:text-sm text-neutral-400 font-normal tracking-wide">
+                    {renderSplitWords(item.category)}
+                  </span>
                 </div>
 
-                {/* Center: Big Title & Subtitle */}
-                <div className="w-2/4 text-center px-2">
-                  <h3 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-white group-hover:text-neutral-200 transition-colors duration-300">
-                    {item.name}
+                {/* Center: Brand Title with Character-Splitting + Inline Graphic Anchor */}
+                <div className="w-2/4 md:w-8/12 flex items-center justify-center gap-4 md:gap-8">
+                  {/* Inline Graphic Anchor: Ambient Spin with Hover Reaction */}
+                  <div className="relative text-neutral-500 group-hover:text-[#00eb8f] transition-colors duration-500">
+                    <div className="w-7 h-7 md:w-10 md:h-10 animate-shape-spin transition-transform duration-500 group-hover:scale-125">
+                      <ShapeComponent className="w-full h-full" />
+                    </div>
+                  </div>
+
+                  {/* Character-Split Brand Name */}
+                  <h3 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-tighter select-none">
+                    {renderSplitCharacters(item.name, isTriggered)}
                   </h3>
-                  <p className="mt-2 text-[11px] sm:text-xs md:text-sm font-mono tracking-wider text-neutral-400 uppercase">
-                    {item.role}
-                  </p>
+
+                  {/* Secondary subtle decorative chevron */}
+                  <div className="hidden sm:block text-neutral-600 group-hover:text-white transition-colors duration-300">
+                    <ShapeChevron className="w-5 h-5 opacity-40 group-hover:opacity-100 transition-opacity" />
+                  </div>
                 </div>
 
-                {/* Right: Timeline & GSAP Arrow Pill */}
-                <div className="flex items-center justify-end gap-3 md:gap-6 w-1/4">
-                  <span className="text-xs sm:text-sm md:text-base font-mono text-neutral-400 whitespace-nowrap">
+                {/* Right: Role & Timeline */}
+                <div className="w-1/4 md:w-2/12 flex flex-col items-end gap-1 text-right">
+                  <span className="font-mono text-[11px] md:text-xs text-neutral-400 tracking-wider">
                     {item.timeline}
                   </span>
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/15 flex items-center justify-center text-white/70 group-hover:text-black group-hover:bg-white group-hover:border-white transition-all duration-300 shadow-sm shrink-0">
-                    <span className="transform text-sm sm:text-base group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300">
-                      ↗
-                    </span>
-                  </div>
+                  <span className="hidden sm:inline-block text-[11px] text-neutral-600 font-mono tracking-tight">
+                    {item.role}
+                  </span>
                 </div>
               </div>
 
-              {/* ============================================================
-                  2. HOVER / ACTIVE STATE: GSAP KINETIC STREAM (MARQUEE)
-                  ============================================================ */}
+              {/* =========================================================
+                  2. HOVER/ACTIVE STATE: OPPOSING MOTION KINETIC MARQUEE
+                  Two counter-flowing ticker streams (Upper Left, Lower Right)
+                  with inline graphic anchors, big typography & image pills
+                  ========================================================= */}
               <div
-                className={`absolute inset-0 flex items-center transition-opacity duration-500 z-0 bg-[#0c0c0c] ${
-                  isItemActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto'
+                className={`absolute inset-0 flex flex-col justify-center py-4 bg-[#080808] transition-opacity duration-500 z-20 ${
+                  isTriggered ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                 }`}
               >
-                <div className="animate-marquee-left">
-                  {/* Two identical loops for seamless infinite scrolling */}
-                  {[...Array(2)].map((_, loopIndex) => (
-                    <div key={loopIndex} className="flex items-center gap-8 md:gap-14 px-4 sm:px-8 shrink-0">
-                      {/* 1. Pill Image Capsule */}
-                      <div className="w-[220px] sm:w-[280px] h-[100px] sm:h-[130px] rounded-full overflow-hidden border border-white/20 bg-neutral-900 shadow-2xl relative shrink-0 group-hover:border-white/40 transition-colors">
-                        <img
-                          src={item.marqueeImages[0]}
-                          alt={`${item.name} showcase`}
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-                        />
-                      </div>
+                {/* ── TRACK 1: Upper Kinetic Stream (Moves LEFT) ── */}
+                <div className="opposing-scroll-boost-left w-full overflow-hidden flex items-center mb-2">
+                  <div className="animate-opposing-left">
+                    {[...Array(3)].map((_, loopIdx) => (
+                      <div key={loopIdx} className="flex items-center gap-8 md:gap-14 px-4">
+                        {/* 1. Project Image Pill */}
+                        <div className="w-[180px] sm:w-[260px] md:w-[320px] h-[80px] sm:h-[110px] md:h-[130px] rounded-full overflow-hidden bg-neutral-900 border border-white/20 shadow-2xl flex-shrink-0 group-hover:border-[#00eb8f]/50 transition-colors">
+                          <img
+                            src={item.marqueeImages[0]}
+                            alt={`${item.name} preview`}
+                            className="w-full h-full object-cover filter brightness-95 contrast-105"
+                          />
+                        </div>
 
-                      {/* 2. Rotating Geometric SVG Shape from actualyshapes */}
-                      <div
-                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/5 border border-white/15 flex items-center justify-center shrink-0 backdrop-blur-sm"
-                        style={{
-                          boxShadow: `0 0 20px -2px ${item.glowColor}`,
-                        }}
-                      >
-                        <img
-                          src={item.shape}
-                          alt="GSAP Shape"
-                          className="w-8 h-8 sm:w-10 sm:h-10 object-contain animate-spin-slow"
-                        />
-                      </div>
+                        {/* 2. Inline Graphic Anchor: Rotating Shape */}
+                        <div className="w-7 h-7 sm:w-10 sm:h-10 text-[#00eb8f] animate-shape-spin flex-shrink-0">
+                          <ShapeComponent className="w-full h-full" />
+                        </div>
 
-                      {/* 3. Huge Kinetic Typography */}
-                      <div className="text-5xl sm:text-7xl md:text-8xl tracking-tighter font-semibold text-white whitespace-nowrap flex items-center gap-4">
-                        <span>{item.name}</span>
-                        <span className="text-neutral-500 font-light text-4xl sm:text-6xl">/</span>
-                      </div>
+                        {/* 3. Solid Brand Typography */}
+                        <span className="text-4xl sm:text-6xl md:text-8xl tracking-tighter font-semibold text-white whitespace-nowrap">
+                          {item.name}
+                        </span>
 
-                      {/* 4. Vibrant GSAP Pill Badge 1 */}
-                      <div className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm uppercase shadow-lg shrink-0 whitespace-nowrap ${item.badgePill1.style}`}>
-                        {item.badgePill1.text}
-                      </div>
+                        {/* 4. Category Pill Tag */}
+                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-neutral-300 font-mono text-[11px] sm:text-xs tracking-widest uppercase backdrop-blur-md">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#00eb8f]" />
+                          <span>{item.category}</span>
+                        </div>
 
-                      {/* 5. Second Pill Image Capsule */}
-                      <div className="w-[220px] sm:w-[280px] h-[100px] sm:h-[130px] rounded-full overflow-hidden border border-white/20 bg-neutral-900 shadow-2xl relative shrink-0 group-hover:border-white/40 transition-colors">
-                        <img
-                          src={item.marqueeImages[1]}
-                          alt={`${item.name} preview`}
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-                        />
-                      </div>
+                        {/* 5. Additional Animated Graphic Anchor */}
+                        <div className="w-6 h-6 text-white/40 animate-shape-spin-reverse flex-shrink-0">
+                          <ShapeRings className="w-full h-full" />
+                        </div>
 
-                      {/* 6. Asterisk Accent */}
-                      <div className="text-3xl sm:text-5xl text-neutral-400 animate-spin-reverse shrink-0">
-                        ✱
+                        {/* 6. Timeline Marker */}
+                        <span className="font-mono text-xs sm:text-sm text-neutral-400 tracking-widest whitespace-nowrap">
+                          [{item.timeline}]
+                        </span>
                       </div>
+                    ))}
+                  </div>
+                </div>
 
-                      {/* 7. Vibrant GSAP Pill Badge 2 */}
-                      <div className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium uppercase shadow-sm shrink-0 whitespace-nowrap ${item.badgePill2.style}`}>
-                        {item.badgePill2.text}
-                      </div>
+                {/* ── TRACK 2: Lower Kinetic Stream (Moves RIGHT — Opposing Motion) ── */}
+                <div className="opposing-scroll-boost-right w-full overflow-hidden flex items-center mt-2">
+                  <div className="animate-opposing-right">
+                    {[...Array(3)].map((_, loopIdx) => (
+                      <div key={loopIdx} className="flex items-center gap-8 md:gap-14 px-4">
+                        {/* 1. Hollow Ghost Typography */}
+                        <span className="text-4xl sm:text-6xl md:text-8xl tracking-tighter font-semibold text-outline hover:text-white transition-colors duration-300 whitespace-nowrap">
+                          {item.name}
+                        </span>
 
-                      {/* 8. Second Rotating SVG Instance */}
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 opacity-80">
-                        <img
-                          src={item.shape}
-                          alt="GSAP Shape"
-                          className="w-full h-full object-contain animate-spin-reverse"
-                        />
+                        {/* 2. Opposing Animated Graphic Anchor */}
+                        <div className="w-7 h-7 sm:w-10 sm:h-10 text-[#a0ec06] animate-shape-spin-reverse flex-shrink-0">
+                          <ShapeStarburst className="w-full h-full" />
+                        </div>
+
+                        {/* 3. Project Image Pill 2 */}
+                        <div className="w-[180px] sm:w-[260px] md:w-[320px] h-[80px] sm:h-[110px] md:h-[130px] rounded-full overflow-hidden bg-neutral-900 border border-white/20 shadow-2xl flex-shrink-0">
+                          <img
+                            src={item.marqueeImages[1] || item.marqueeImages[0]}
+                            alt={`${item.name} highlight`}
+                            className="w-full h-full object-cover filter brightness-95"
+                          />
+                        </div>
+
+                        {/* 4. Role Specification Tag */}
+                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#00eb8f]/10 border border-[#00eb8f]/30 text-[#00eb8f] font-mono text-[11px] sm:text-xs tracking-widest uppercase">
+                          <span>{item.role}</span>
+                        </div>
+
+                        {/* 5. Additional Animated Graphic Anchor */}
+                        <div className="w-6 h-6 text-neutral-400 animate-shape-spin flex-shrink-0">
+                          <ShapeGear className="w-full h-full" />
+                        </div>
+
+                        {/* 6. Action prompt */}
+                        <span className="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase whitespace-nowrap">
+                          Explore System • Click to Pin
+                        </span>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subtle bottom detail strip inside hover */}
+                <div className="absolute bottom-2 left-6 right-6 hidden md:flex items-center justify-between text-[11px] font-mono text-neutral-500 pointer-events-none">
+                  <span>{item.description}</span>
+                  <span className="text-[#00eb8f]">OPPOSING KINETIC TICKER // DUAL STREAM</span>
                 </div>
               </div>
             </div>
@@ -327,9 +414,17 @@ export default function ExperienceList() {
         })}
       </div>
 
-      {/* Interactive Bottom Hint */}
-      <div className="mt-12 text-center text-[11px] font-mono tracking-widest uppercase text-neutral-600">
-        Hover row to launch kinetic stream • Click to toggle
+      {/* =========================================
+          BOTTOM TICKER BAND (GSAP BRANDING STYLE)
+          ========================================= */}
+      <div className="mt-16 pt-8 border-t border-[#181818] flex items-center justify-between max-w-7xl mx-auto px-4 md:px-8 text-neutral-500 text-xs font-mono">
+        <div className="flex items-center gap-3">
+          <ShapeGradientFlower className="w-4 h-4 animate-shape-spin" />
+          <span>Inline Graphic Anchors &bull; SplitText Roll Engine</span>
+        </div>
+        <div className="hidden sm:block text-neutral-600">
+          Crafted with GSAP ScrollTrigger &bull; Pure Vector Silicon
+        </div>
       </div>
     </section>
   );
