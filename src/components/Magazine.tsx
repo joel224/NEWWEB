@@ -68,30 +68,17 @@ export default function TextMarquee() {
     return () => ctx.revert();
   }, []);
 
-  // Helper: Character Splitting preserving exact original color
+  // Helper: Character Splitting on individual characters without hover swipe-up
   const renderSplitText = (word: string, textColor: string) => {
     return (
-      <span className="inline-flex group/word cursor-pointer">
+      <span className="inline-flex select-none">
         {word.split('').map((char, i) => (
           <span
             key={i}
-            className="kinetic-char relative inline-block overflow-hidden transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]"
-            style={{
-              transitionDelay: `${i * 18}ms`,
-            }}
+            className="kinetic-char inline-block select-none"
+            style={{ color: textColor }}
           >
-            <span
-              className="block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full"
-              style={{ color: textColor }}
-            >
-              {char}
-            </span>
-            <span
-              className="absolute top-full left-0 block transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover/word:-translate-y-full font-medium"
-              style={{ color: textColor }}
-            >
-              {char}
-            </span>
+            {char}
           </span>
         ))}
       </span>
