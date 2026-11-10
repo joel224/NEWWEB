@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiHeart, FiWind, FiRotateCcw } from 'react-icons/fi';
+import { FiHeart } from 'react-icons/fi';
 
 function SparkleIcon({ className = 'w-3 h-3' }: { className?: string }) {
   return (
@@ -666,34 +666,26 @@ export default function GlitterBanner() {
         className="absolute inset-0 w-full h-full block z-20 pointer-events-none"
       />
 
-      {/* TYPOGRAPHY: Revealed through ambient glowing gold currents */}
+      {/* TYPOGRAPHY: Elegant Editorial Christmas Atmosphere */}
       <div className="relative z-30 max-w-3xl w-full text-center flex flex-col items-center">
-        {/* Subtle HUD tag */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md text-[#fde68a] text-[10px] tracking-[0.3em] uppercase font-mono mb-6">
-          <FiWind className="w-3 h-3 text-amber-300" />
-          <span>Aerodynamic Airflow Draft</span>
-        </div>
-
-        {/* Elegant Luxury Headline */}
+        {/* Elegant Luxury Italic Headline */}
         <h2
-          className="text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-[#f5f5f7] mb-6   leading-[1.1] drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]"
-          style={{ fontFamily: 'var(--font-timesnewroman), "EB Garamond", serif' }}
+          className="text-4xl sm:text-5xl md:text-6xl font-light italic tracking-normal text-[#f5f5f7] mb-4 leading-[1.15]"
+          style={{ fontFamily: 'var(--font-timesnewroman), "EB Garamond", "Cormorant Garamond", Georgia, serif' }}
         >
           Merry Christmas
         </h2>
 
         {/* Poetic description */}
         <p
-          className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto mb-10 leading-relaxed font-light tracking-wide drop-shadow-md"
+          className="text-xs sm:text-sm text-neutral-400 max-w-xl mx-auto mb-8 font-light tracking-wide"
           style={{ fontFamily: 'var(--font-montserrat), sans-serif' }}
         >
           Moments Suspended in Gold
         </p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4">
-         
-
+        {/* Action Button */}
+        <div className="flex items-center justify-center">
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -705,11 +697,6 @@ export default function GlitterBanner() {
             <span>View Invitation</span>
           </button>
         </div>
-
-        {/* Interactive hint */}
-        <span className="mt-8 text-[11px] font-mono tracking-widest uppercase text-neutral-500 pointer-events-none">
-          Move cursor to stir airflow • Click to puff glitter
-        </span>
       </div>
 
       {/* Smooth top/bottom fade gradients into portfolio background */}
